@@ -1,0 +1,38 @@
+<div class="side-filter">
+  <!-- Header -->
+  <div class="sf-header">DANH SÁCH DOANH NGHIỆP</div>
+
+  <!-- Search -->
+  <div class="sf-search">
+    <span class="pi pi-search sf-search-icon"></span>
+    <input
+      type="text"
+      class="sf-search-input"
+      placeholder="Tìm kiếm doanh nghiệp"
+      [(ngModel)]="keyword"
+      (input)="onFilterChange()"
+    />
+  </div>
+
+  <!-- List groups -->
+  <div class="sf-groups">
+    <div class="sf-group" *ngFor="let parent of filteredNodes">
+      <div class="sf-group-header" (click)="toggleNode($event, parent)">
+        <span class="sf-group-title">{{ parent.label }}</span>
+        <i class="pi" [ngClass]="{ 'pi-chevron-down': parent.expanded, 'pi-chevron-right': !parent.expanded }"></i>
+      </div>
+
+      <div class="sf-children" *ngIf="parent.children?.length && parent.expanded">
+        <div
+          class="sf-child"
+          *ngFor="let child of parent.children"
+          (click)="onNodeClick($event, child)"
+          [ngClass]="{ selected: isNodeSelected(child) }"
+        >
+          <i class="pi pi-circle-fill sf-child-dot"></i>
+          <span class="sf-child-label">{{ child.label }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

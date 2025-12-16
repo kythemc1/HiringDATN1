@@ -1,0 +1,39 @@
+:host { display: block; }
+.d-none { display: none; }
+@media (min-width: 768px) { .d-md-grid { display: grid; grid-template-columns:  56px 1.3fr; gap: 8px; align-items: center; } }
+
+.header-row { font-weight: 600; color: #333; padding: 8px 12px; background: #f6f7fb; border: 1px solid #e6e6e6; border-bottom: none; }
+
+.section { border: 1px solid #e6e6e6; border-radius: 6px; overflow: hidden; margin-bottom: 12px; }
+.section-header { background: #1D469E; color: white; padding: 10px 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.section-title { text-transform: uppercase; }
+
+.section-items { background: #fff; }
+.item-row { display: grid; grid-template-columns: 56px 1.3fr ; gap: 8px; padding: 10px 12px; border-top: 1px solid #efefef; align-items: start; }
+
+.col-stt { display: flex; align-items: center; justify-content: center; font-weight: 600; color: #333; border-right: 1px solid #e6e6e6; }
+.col-toggle { display: flex; align-items: center; justify-content: center; cursor: pointer; color: #333; }
+.col-toggle .pi { font-size: 12px; }
+.item-title { font-weight: 600; margin-bottom: 4px; }
+.item-sub { color: #666; font-size: 12px; margin-top: -2px; }
+.item-summary { color: #999; font-size: 12px; font-style: italic; }
+
+.item-header { display: flex; align-items: flex-start; gap: 6px; cursor: pointer; }
+.item-header .pi { color: #666; font-size: 12px; margin-top: 3px; }
+
+.radio-group { display: flex; gap: 16px; align-items: center; padding: 6px 0; }
+.radio { display: inline-flex; align-items: center; gap: 6px; }
+
+.col-ly-do textarea { resize: vertical; }
+
+.add-attachment-link { display: inline-flex; align-items: center; cursor: pointer; user-select: none; width: fit-content; padding: 5px 0; }
+.icon-plus-orange { color: #ff8c00; font-size: 13px; font-weight: bold; margin-right: 5px; line-height: 1; display: inline-flex; }
+.text-link-orange { color: #ff8c00; font-size: 12px; font-weight: bold; line-height: 1.2; }
+.add-attachment-link:hover .text-link-orange, .add-attachment-link:hover .icon-plus-orange { color: #cc7000; }
+
+.file-display-item { display: flex; align-items: center; padding: 5px 0; }
+.remove-icon { color: #888; cursor: pointer; margin-right: 10px; font-size: 12px; padding: 4px; }
+.remove-icon:hover { color: #f44336; }
+.file-tag { display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 4px; background-color: #f0f0f0; border: 1px solid #ddd; }
+.file-icon-blue { color: #555; margin-right: 5px; font-size: 12px; }
+.file-name { font-size: 13px; font-weight: 500; color: #333; }

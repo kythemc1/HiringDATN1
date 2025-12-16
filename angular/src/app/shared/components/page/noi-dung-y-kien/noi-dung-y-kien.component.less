@@ -1,0 +1,261 @@
+:host {
+  display: block;
+}
+.d-none {
+  display: none;
+}
+@media (min-width: 768px) {
+  .d-md-grid {
+    display: grid;
+    grid-template-columns: 36px 56px 1.3fr 0.9fr 0.9fr 0.9fr;
+    gap: 8px;
+    align-items: center;
+  }
+}
+
+.ng-invalid.ng-dirty {
+  border: 1px solid #dc3545 !important;
+}
+
+.item-header {
+  display: grid;
+  grid-template-columns: 36px 56px 1.3fr 0.9fr 0.9fr 0.9fr;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+  color: #1d469e;
+  padding: 10px 12px;
+  min-height: 42px;
+  border-top: 1px solid #efefef;
+}
+.section-items > div:first-child .item-header {
+  border-top: none;
+}
+
+/* 2. Cập nhật item-row */
+.item-row {
+  display: grid;
+  grid-template-columns: 36px 56px 1.3fr 0.9fr 0.9fr 0.9fr;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid #efefef;
+  align-items: start;
+  background-color: #fcfcfc; /* <<< THÊM MỚI: Nền mờ cho hàng con */
+}
+
+.item-header-title-content {
+  grid-column: 2 / span 5;
+}
+
+.section {
+  border: 1px solid #e6e6e6;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.section-header {
+  background: #1d469e;
+  color: white;
+  padding: 10px 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.section-title {
+  text-transform: uppercase;
+}
+
+.section-items {
+  background: #fff;
+}
+
+.col-stt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #333;
+}
+.col-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #333;
+}
+.col-toggle .pi {
+  font-size: 12px;
+}
+.item-title {
+  font-weight: 600;
+}
+.item-sub {
+  color: #666;
+  font-size: 12px;
+  margin-top: -2px;
+}
+.item-summary {
+  color: #999;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.radio-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 6px 0;
+}
+.radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.col-ly-do textarea {
+  resize: vertical;
+}
+.col-tom-tat textarea {
+  resize: vertical;
+}
+
+.add-attachment-link {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  width: fit-content;
+  padding: 5px 0;
+}
+.icon-plus-orange {
+  color: #ff8c00;
+  font-size: 13px;
+  font-weight: bold;
+  margin-right: 5px;
+  line-height: 1;
+  display: inline-flex;
+}
+.text-link-orange {
+  color: #ff8c00;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+.add-attachment-link:hover .text-link-orange,
+.add-attachment-link:hover .icon-plus-orange {
+  color: #cc7000;
+}
+
+.file-display-item {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+}
+.remove-icon {
+  color: #888;
+  cursor: pointer;
+  margin-right: 10px;
+  font-size: 12px;
+  padding: 4px;
+}
+.remove-icon:hover {
+  color: #f44336;
+}
+.file-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+.file-icon-blue {
+  color: #555;
+  margin-right: 5px;
+  font-size: 12px;
+}
+.file-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+}
+.file-name:hover {
+  text-decoration: underline;
+}
+
+/* Bold the label when its radio is selected (modern browsers) */
+@supports selector(:has(*)) {
+  .radio:has(.p-radiobutton .p-radiobutton-box.p-highlight) label {
+    font-weight: 700;
+    color: #3b82f6;
+  }
+}
+
+/* Also support a manual selected class if template applies it */
+.radio.selected label {
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+/* Make the selected PrimeNG radio visually stronger */
+:host ::ng-deep .radio .p-radiobutton .p-radiobutton-box {
+  border-width: 2px;
+}
+:host ::ng-deep .radio .p-radiobutton .p-radiobutton-box.p-highlight {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(29, 70, 158, 0.15);
+}
+:host ::ng-deep .radio .p-radiobutton .p-radiobutton-icon {
+  background-color: #3b82f6;
+}
+
+/* ===== Disabled state styling (support PrimeNG and manual classes) ===== */
+/* Covers: manual .radio.disabled, aria-disabled, PrimeNG .p-disabled, and input[disabled] */
+.radio.disabled,
+.radio[aria-disabled='true'],
+:host ::ng-deep .p-radiobutton.p-disabled,
+:host ::ng-deep .p-radiobutton.p-disabled .p-radiobutton-box,
+:host ::ng-deep .p-radiobutton .p-radiobutton-box.p-disabled,
+:host ::ng-deep .p-radiobutton input[disabled] + .p-radiobutton-box {
+  cursor: not-allowed !important;
+  opacity: 0.6; /* Giữ lại opacity nếu bạn muốn hiệu ứng mờ */
+  pointer-events: none;
+}
+
+.radio.disabled label,
+.radio[aria-disabled='true'] label,
+:host ::ng-deep .p-radiobutton.p-disabled .p-radiobutton-label {
+  color: #3b82f6 !important; /* Giữ màu xanh cho label */
+}
+
+/* SỬA ĐỔI QUAN TRỌNG: Nền và Viền thành màu trắng/xám */
+:host ::ng-deep .p-radiobutton.p-disabled .p-radiobutton-box,
+:host ::ng-deep .p-radiobutton .p-radiobutton-box.p-disabled,
+:host ::ng-deep .p-radiobutton input[disabled] + .p-radiobutton-box {
+  background-color: #ffffff; /* Nền trắng */
+  border-color: #3b82f6; /* Viền xám */
+  box-shadow: none;
+}
+
+/* SỬA ĐỔI QUAN TRỌNG: Màu Icon (Dấu chấm tích chọn) */
+:host ::ng-deep .p-radiobutton.p-disabled .p-radiobutton-icon,
+:host ::ng-deep .p-radiobutton .p-radiobutton-icon.p-disabled,
+:host ::ng-deep .p-radiobutton input[disabled] + .p-radiobutton-box .p-radiobutton-icon {
+  background-color: #3b82f6 !important; /* Giữ màu xanh cho dấu chấm ĐÃ TÍCH */
+}
+
+/* Ensure no focus ring on disabled */
+:host ::ng-deep .p-radiobutton.p-disabled .p-radiobutton-box:focus,
+:host ::ng-deep .p-radiobutton .p-radiobutton-box.p-disabled:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Small utility: visually indicate disabled container */
+.radio.disabled {
+  opacity: 0.7;
+}
+/* ===================================================================== */

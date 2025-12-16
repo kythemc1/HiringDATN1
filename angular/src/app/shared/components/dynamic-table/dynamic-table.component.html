@@ -1,0 +1,291 @@
+<div class="vnx-dt">
+  <!-- Search + Filter toggle  -->
+  <div class="row" *ngIf="showFilter">
+    <div class="col-4 form-group">
+      <p-iconfield>
+        <p-inputicon styleClass="pi pi-search" />
+        <input
+          [ngModel]="searchKeyword"
+          (ngModelChange)="searchInputChange.emit($event)"
+          pInputText
+          type="text"
+          class="w-100"
+          [placeholder]="config?.globalFilterPlaceholder || 'Tìm kiếm'"
+          (keyup.enter)="onSearchEnter()"
+        />
+      </p-iconfield>
+    </div>
+    <div class="col-8 d-flex justify-content-between">
+      <div *ngIf="showToggleFilter">
+        <p-button
+          type="button"
+          icon="pi pi-filter"
+          [severity]="showAdvancedFilter ? 'primary' : 'secondary'"
+          (click)="toggleAdvancedFilter()"
+        />
+      </div>
+      <ng-container *ngIf="rightHeaderFilterTemplate; else emptyRightHeaderFilterTemplate">
+        <ng-container [ngTemplateOutlet]="rightHeaderFilterTemplate"></ng-container>
+      </ng-container>
+      <ng-template #emptyRightHeaderFilterTemplate></ng-template>
+    </div>
+  </div>
+
+  <!-- filter -->
+  <ng-container *ngIf="showAdvancedFilter">
+    <ng-container *ngIf="filterTemplate; else emptyFilter">
+      <ng-container [ngTemplateOutlet]="filterTemplate"></ng-container>
+    </ng-container>
+    <ng-template #emptyFilter></ng-template>
+  </ng-container>
+
+  <!-- [scrollHeight]="config?.scrollHeight || 'flex'" -->
+
+  <div class="primeng-datatable-container">
+    <p-table
+      #dt
+      showGridlines
+      [rowHover]="config?.rowHover !== false"
+      [value]="isTree ? displayRows : data"
+      [rowHover]="true"
+      [rows]="config?.rows || 10"
+      [scrollable]="!!config?.scrollHeight"
+      [scrollHeight]="tableScrollHeight"
+      [loading]="loading"
+      [lazy]="lazy"
+      [totalRecords]="totalRecords"
+      [globalFilterFields]="globalFilterFields"
+      [tableStyle]="config?.tableStyle || undefined"
+      [selection]="selection"
+      [selectionMode]="config?.selectionMode || null"
+      (selectionChange)="selectionChange.emit($event)"
+      (onLazyLoad)="lazyLoad.emit($event)"
+    >
+      <ng-template #header>
+        <tr>
+          <!-- Selection column -->
+          <th class="text-center header-color" *ngIf="config?.selectionMode" [width]="48">
+            <p-tableHeaderCheckbox
+              *ngIf="config?.selectionMode === 'multiple' && anyRowSelectable()"
+            ></p-tableHeaderCheckbox>
+          </th>
+          <!-- Index column -->
+          <th class="text-center header-color" *ngIf="config?.showIndex !== false" [width]="48">
+            {{ config?.indexHeader || '#' }}
+          </th>
+          <!-- Data columns -->
+          <th
+            class="header-color"
+            *ngFor="let col of columns"
+            [style.minWidth]="col.minWidth || null"
+            [style.width]="col.width || null"
+            [pSortableColumn]="col.sortable ? (col.sortField || col.field) : null"
+            [pSortableColumnDisabled]="!col.sortable"
+          >
+            <div class="vnx-dt__th">
+              <span>{{ col.header }}</span>
+              <p-sortIcon *ngIf="col.sortable" [field]="col.field"></p-sortIcon>
+            </div>
+          </th>
+          <!-- Actions header -->
+          <th
+            class="text-center header-color"
+            *ngIf="actions?.length"
+            [style.width.px]="getActionsColWidth()"
+            [style.minWidth.px]="getActionsColWidth()"
+          >
+            {{ config?.actionsHeader || 'Hành động' }}
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-row let-rowIndex="rowIndex">
+        <tr
+          (click)="rowClick.emit(row)"
+          (mouseenter)="onRowHover(row, true)"
+          (mouseleave)="onRowHover(row, false)"
+          [class.vnx-dt__group-hover-active]="row.__isHovered"
+        >
+          <!-- Selection cell -->
+          <td class="text-center" *ngIf="config?.selectionMode">
+            <p-tableCheckbox
+              *ngIf="config?.selectionMode === 'multiple' && row?.isSelectable !== false"
+              [value]="row"
+            ></p-tableCheckbox>
+            <p-tableRadioButton
+              *ngIf="config?.selectionMode === 'single'"
+              [value]="row"
+            ></p-tableRadioButton>
+          </td>
+          <!-- Index cell: always show per row; do not group/rowspan -->
+          <td class="text-center" *ngIf="config?.showIndex !== false">
+            <ng-container *ngIf="!isTree || (row.__level || 0) === 0; else emptyIndex">
+              {{
+                (config?.useExternalPaginator !== false
+                  ? (config?.rows || 10) * pageIndex
+                  : dt.first || 0) +
+                  rowIndex +
+                  1
+              }}
+            </ng-container>
+            <ng-template #emptyIndex></ng-template>
+          </td>
+          <!-- Data cells -->
+          <ng-container *ngFor="let col of columns; let colIndex = index">
+            <td
+              [style.text-align]="col.align || 'left'"
+              [attr.rowspan]="
+                isGroupSpannedColumn(col.field) && isGroupStart(rowIndex)
+                  ? getRowSpan(rowIndex)
+                  : null
+              "
+              [style.display]="
+                isGroupSpannedColumn(col.field) && !isGroupStart(rowIndex) ? 'none' : null
+              "
+            >
+              <div
+                class="vnx-dt__cell"
+                [ngStyle]="{
+                  'padding-left.px': isTree && colIndex === 0 ? 16 * (row.__level || 0) : null
+                }"
+              >
+                <!-- Tree toggle -->
+                <button
+                  *ngIf="isTree && colIndex === 0 && row.__hasChildren && !treeExpandAll"
+                  type="button"
+                  class="vnx-dt__tree-toggle"
+                  (click)="onToggleExpand($event, row)"
+                  [attr.aria-expanded]="row.__expanded ? 'true' : 'false'"
+                  pButton
+                  [text]="true"
+                  [rounded]="true"
+                  [disabled]="treeDisableToggle"
+                  [icon]="row.__expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                ></button>
+
+                <ng-container [ngSwitch]="col.type">
+                  <ng-container *ngSwitchCase="'date'">
+                    {{ row[col.field] | date : col.dateFormat || 'medium' : '+0700' }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'boolean'">
+                    <p-tag
+                      [value]="row[col.field] ? 'Có' : 'Không'"
+                      [severity]="row[col.field] ? 'success' : 'danger'"
+                    />
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'tag'">
+                    <p-tag [value]="row[col.field]" />
+                  </ng-container>
+                  <ng-container *ngSwitchDefault>
+                    <ng-container
+                      *ngIf="col.templateKey && cellTemplates?.[col.templateKey]; else defaultCell"
+                      [ngTemplateOutlet]="cellTemplates[col.templateKey]"
+                      [ngTemplateOutletContext]="{
+                        $implicit: row,
+                        value: row[col.field],
+                        rowIndex: rowIndex
+                      }"
+                    ></ng-container>
+                    <ng-template #defaultCell>
+                      <div
+                        [ngClass]="
+                          col.clampLines
+                            ? ['vnx-dt__clamp', 'vnx-dt__clamp-' + col.clampLines]
+                            : null
+                        "
+                        [pTooltip]="col.clampLines ? getTooltipText(row[col.field]) : ''"
+                        tooltipPosition="top"
+                      >
+                        {{ row[col.field] }}
+                      </div>
+                    </ng-template>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </td>
+          </ng-container>
+          <!-- Actions -->
+          <td
+            class="text-center"
+            *ngIf="actions?.length"
+            [style.width.px]="getActionsColWidth()"
+            [style.minWidth.px]="getActionsColWidth()"
+          >
+            <div class="d-flex justify-content-end align-items-center gap-1 flex-nowrap">
+              <ng-container *ngFor="let act of actions">
+                <p-button
+                  *ngIf="showAction(act, row)"
+                  type="button"
+                  [icon]="act.icon"
+                  [label]="act.iconOnly === false ? act.label || '' : ''"
+                  [rounded]="act.rounded ?? true"
+                  [outlined]="act.outlined ?? false"
+                  [text]="act.text ?? false"
+                  [severity]="act.severity || 'secondary'"
+                  [style]="getActionStyles(act)"
+                  [styleClass]="act.styleClass || ''"
+                  [pTooltip]="act.tooltip || act.label || ''"
+                  tooltipPosition="top"
+                  (click)="onActionClick($event, act, row)"
+                ></p-button>
+              </ng-container>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr>
+          <td
+            [attr.colspan]="
+              (columns?.length || 0) +
+              (config?.selectionMode ? 1 : 0) +
+              (config?.showIndex === false ? 0 : 1) +
+              (actions?.length ? 1 : 0)
+            "
+            class="text-center"
+          >
+            <div class="empty-state-container">
+              <div class="empty-icon">
+                <i class="pi pi-inbox" style="font-size: 4rem; color: #e0e0e0"></i>
+              </div>
+              <div class="empty-text">Không có dữ liệu</div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <!--paginator -->
+  <div class="primeng-paging-container" *ngIf="config?.useExternalPaginator !== false">
+    <span *ngIf="((totalRecords ?? data?.length) || 0) > 0">
+      Hiển thị
+      {{ ((totalRecords ?? data?.length) || 0) > 0 ? (config?.rows || 10) * pageIndex + 1 : 0 }}
+      đến
+      {{
+        (config?.rows || 10) * (pageIndex + 1) < ((totalRecords ?? data?.length) || 0)
+          ? (config?.rows || 10) * (pageIndex + 1)
+          : (totalRecords ?? data?.length) || 0
+      }}
+      trong số {{ (totalRecords ?? data?.length) || 0 }} bản ghi
+    </span>
+
+    <p-paginator
+      [totalRecords]="(totalRecords ?? data?.length) || 0"
+      [rows]="config?.rows || 10"
+      [pageLinkSize]="5"
+      [showFirstLastIcon]="true"
+      (onPageChange)="onExternalPageChange($event)"
+    />
+
+    <p-select
+      [ngModel]="config?.rows || 10"
+      size="small"
+      [options]="pageRowsOptions"
+      (ngModelChange)="onExternalRowsChange($event)"
+      appendTo="body"
+      panelStyleClass="vnx-select-panel"
+    />
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<div id="lang-switch" (click)="langMenu.toggle($event)">
+  <span>{{ '::Menu:Lang' | abpLocalization }}</span>
+  <i class="pi pi-sort-down-fill ms-2" style="font-size: 10px"></i>
+</div>
+<p-menu #langMenu [model]="languages" [popup]="true" id="lang-items-wrapper">
+  <ng-template #item let-item>
+    <div class="lang-item" [ngClass]="{ 'lang-item-active': item.value === currentLanguage }"
+      (click)="changeLang(item.value)">
+      <img [src]="item.icon" width="24" height="16" />
+      <span class="ms-2">{{ item.label }}</span>
+    </div>
+  </ng-template>
+</p-menu>

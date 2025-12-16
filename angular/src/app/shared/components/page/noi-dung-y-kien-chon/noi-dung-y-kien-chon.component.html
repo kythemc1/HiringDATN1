@@ -1,0 +1,38 @@
+<div class="noi-dung-y-kien">
+  <div class="header-row d-none d-md-grid">
+    <div class="col-stt">#</div>
+    <div class="col-noi-dung">CHỌN NỘI DUNG XIN Ý KIẾN</div>
+  </div>
+
+  <div *ngFor="let section of sections; let sIdx = index" class="section">
+    <div class="section-header" (click)="toggleSection(section)">
+      <i class="pi" [ngClass]="section.collapsed ? 'pi-angle-right' : 'pi-angle-down'"></i>
+      <span class="section-title">{{ section.title }}</span>
+    </div>
+
+    <div class="section-items" *ngIf="!section.collapsed">
+      <div *ngFor="let item of section.items; let iIdx = index" class="item-row">
+        <div class="col-stt">{{ getIndex(item.id) }}</div>
+
+        <div class="col-noi-dung">
+          <div class="item-header">
+            <span class="item-select">
+              <p-checkbox
+                [binary]="true"
+                [ngModel]="isChecked(item.id)"
+                (ngModelChange)="toggleSelected(item.id, $event)"
+                [inputId]="'chk-' + item.id"
+                class="item-checkbox"
+              ></p-checkbox>
+            </span>
+            <div>
+              <div [innerHTML]="item.title" class="item-title"></div>
+              <div class="item-sub" *ngIf="item.subTitle">{{ item.subTitle }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p-confirmdialog></p-confirmdialog>

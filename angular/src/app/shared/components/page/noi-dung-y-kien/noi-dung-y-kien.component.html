@@ -1,0 +1,142 @@
+<div class="noi-dung-y-kien">
+  <div class="header-row d-none d-md-grid">
+    <div class="col-toggle"></div>
+    <div class="col-stt">#</div>
+    <div class="col-noi-dung">NỘI DUNG XIN Ý KIẾN <span class="text-danger">*</span></div>
+    <div class="col-y-kien">Ý KIẾN CỦA NGƯỜI ĐẠI DIỆN <span class="text-danger">*</span></div>
+    <div class="col-ly-do">Ý KIẾN KHÁC / LÝ DO</div>
+    <div class="col-attachments">DANH SÁCH FILE ĐÍNH KÈM</div>
+  </div>
+
+  <div *ngFor="let section of sections; let sIdx = index" class="section">
+    <div class="section-header" (click)="toggleSection(section)">
+      <i class="pi" [ngClass]="section.collapsed ? 'pi-angle-right' : 'pi-angle-down'"></i>
+      <span class="section-title">{{ section.title }}</span>
+    </div>
+
+    <div class="section-items" *ngIf="!section.collapsed">
+      <ng-container *ngFor="let item of section.items; let iIdx = index">
+        <div *ngIf="isItemVisible(item, section.items)">
+          <ng-container
+            *ngIf="{
+              depth: calculateItemDepth(item, section.items)
+            } as data"
+          >
+            <div class="row item-header" (click)="toggleItem(item, section.items)">
+              <div
+                class="d-flex align-items-center gap-3"
+                [style.padding-left.px]="data.depth * 25"
+              >
+                <!-- Icon toggle -->
+                <div class="col-toggle">
+                  <i class="pi" [ngClass]="item.collapsed ? 'pi-angle-right' : 'pi-angle-down'"></i>
+                </div>
+
+                <!-- Nội dung title -->
+                <div class="item-header-title-content text-nowrap">
+                  <div [innerHTML]="item.title" class="item-title"></div>
+                  <div class="item-sub" *ngIf="item.subTitle">{{ item.subTitle }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="!item.isDeMuc && !item.collapsed" class="row item-row">
+              <div [style.padding-left.px]="data.depth * 25"></div>
+
+              <div class="col-stt">{{ getGlobalIndex(sIdx, iIdx) }}</div>
+
+              <div class="col-noi-dung">
+                <div>
+                  <div class="item-summary col-tom-tat" *ngIf="!item.subTitle">
+                    <textarea
+                      class="p-inputtextarea p-inputtext w-100"
+                      rows="2"
+                      placeholder="Tóm tắt chiến lược"
+                      [(ngModel)]="item.summary"
+                      (ngModelChange)="updateDto(); validateEntireInput()"
+                      [disabled]="disable"
+                    >
+                    </textarea>
+                    <div
+                      class="text-danger text-sm mt-1"
+                      *ngIf="(!item.summary || item.summary === '') && inputEntirely === false"
+                    >
+                     <span class="text-danger">(*)</span> Vui lòng nhập thông tin.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-y-kien">
+                <div class="radio-group">
+                  <div class="radio">
+                    <p-radiobutton
+                      [name]="'agree_' + sIdx + '_' + iIdx"
+                      [value]="true"
+                      [(ngModel)]="item.agree"
+                      (ngModelChange)="updateDto(); validateEntireInput()"
+                      [disabled]="disable"
+                    ></p-radiobutton>
+                    <label>Đồng ý</label>
+                  </div>
+                  <div class="radio">
+                    <p-radiobutton
+                      [name]="'agree_' + sIdx + '_' + iIdx"
+                      [value]="false"
+                      [(ngModel)]="item.agree"
+                      (ngModelChange)="updateDto(); validateEntireInput()"
+                      [disabled]="disable"
+                    ></p-radiobutton>
+                    <label>Không đồng ý</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-ly-do">
+                <textarea
+                  class="p-inputtextarea p-inputtext w-100"
+                  rows="2"
+                  placeholder="Ý kiến khác / lý do"
+                  [(ngModel)]="item.reason"
+                  (ngModelChange)="updateDto()"
+                  [disabled]="disable"
+                ></textarea>
+              </div>
+              <div class="col-attachments">
+                <input
+                  type="file"
+                  class="d-none"
+                  (change)="onFileSelect($event, sIdx, iIdx)"
+                  [attr.id]="'file_' + sIdx + '_' + iIdx"
+                  multiple
+                  [disabled]="disable"
+                />
+                <div class="add-attachment-link" (click)="triggerFileInput(sIdx, iIdx)">
+                  <i class="fa fa-plus icon-plus-orange"></i>
+                  <span class="text-link-orange">Thêm file đính kèm</span>
+                </div>
+                <div class="uploaded-files-list">
+                  <div
+                    *ngFor="let f of item.attachments; let fi = index"
+                    class="file-display-item"
+                    (click)="fileHelperService.viewAttachment(f)"
+                  >
+                    <i
+                      *ngIf="!disable"
+                      class="pi pi-times remove-icon"
+                      (click)="removeFile(sIdx, iIdx, fi)"
+                    ></i>
+                    <span class="file-tag">
+                      <i class="fa fa-paperclip file-icon-blue"></i>
+                      <span class="file-name" [title]="f.tenFile">
+                        {{ fileHelperService.shortenName(f.tenFile) }}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

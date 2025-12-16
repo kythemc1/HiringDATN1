@@ -1,0 +1,144 @@
+/* Layout tổng thể */
+.phoi-hop-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px dashed #7aa7ff;
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.phoi-hop-item {
+  background: transparent;
+  border: 1px solid #eef2f7;
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+
+/* Header */
+.phoi-hop-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.phoi-hop-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: #111827;
+}
+
+.phoi-hop-title .name {
+  font-weight: 600;
+}
+
+.phoi-hop-title .role,
+.phoi-hop-title .dept,
+.phoi-hop-title .time {
+  color: #4b5563;
+}
+
+.phoi-hop-title .divider {
+  color: #9ca3af;
+}
+
+/* Content */
+.phoi-hop-content {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+  color: #111827;
+}
+.phoi-hop-content .label {
+  color: #6b7280;
+}
+
+/* Attachments */
+.attachments {
+  margin-top: 10px;
+}
+.attachments .label {
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+.attachments .files {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.file {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 6px 10px;
+  width: fit-content;
+}
+.icon-attachment {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background: currentColor;
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path fill=\"white\" d=\"M16.5,6.5 L9,14 a3,3 0 1,0 4.24,4.24l7.07-7.07a5,5 0 0,0-7.07-7.07L5.64,7.64a7,7 0 1,0 9.9,9.9L21,12\"/></svg>') center/contain no-repeat;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path fill=\"white\" d=\"M16.5,6.5 L9,14 a3,3 0 1,0 4.24,4.24l7.07-7.07a5,5 0 0,0-7.07-7.07L5.64,7.64a7,7 0 1,0 9.9,9.9L21,12\"/></svg>') center/contain no-repeat;
+  color: #6b7280;
+}
+.file-name {
+  color: #2563eb;
+  text-decoration: none;
+}
+.file-name:hover { text-decoration: underline; }
+
+.btn-download {
+  border: none;
+  background: #e5e7eb;
+  color: #111827;
+  border-radius: 4px;
+  padding: 4px 6px;
+  cursor: pointer;
+}
+.btn-download:hover { background: #d1d5db; }
+.icon-download {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  background: currentColor;
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path fill=\"white\" d=\"M12 3v10m0 0 4-4m-4 4-4-4M5 21h14\" stroke=\"white\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>') center/contain no-repeat;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path fill=\"white\" d=\"M12 3v10m0 0 4-4m-4 4-4-4M5 21h14\" stroke=\"white\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>') center/contain no-repeat;
+}
+
+/* Note */
+.note {
+  margin-top: 8px;
+  color: #374151;
+}
+
+.p-tabpanels{
+    background-color: white;
+}
+
+/* Xen kẽ màu giữa các card */
+.phoi-hop-list > .phoi-hop-item:nth-child(odd) {
+  background: #ffffff !important;
+}
+// .phoi-hop-list > .phoi-hop-item:nth-child(even) {
+//   background: #eef2ff !important; /* tím nhạt dễ phân biệt */
+//   border-left: 3px solid #c7d2fe;
+// }
+
+.section-title{
+    font-size: 14px;
+    font-weight:600;
+}
+
+.file-display-item { display: flex; align-items: center; padding: 5px 0; }
+.remove-icon { color: #888; cursor: pointer; margin-right: 10px; font-size: 12px; padding: 4px; }
+.remove-icon:hover { color: #f44336; }
+.file-tag { display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 4px; background-color: #f0f0f0; border: 1px solid #ddd; cursor: pointer; }
+.file-icon-blue { color: #555; margin-right: 5px; font-size: 12px; }
+.file-name { font-size: 13px; font-weight: 500; color: #333; }
+.file-name:hover { text-decoration: underline; }

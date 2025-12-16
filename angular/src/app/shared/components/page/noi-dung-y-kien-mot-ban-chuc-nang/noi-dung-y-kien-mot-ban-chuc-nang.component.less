@@ -1,0 +1,149 @@
+.tnpc {
+  --border: #e5e7eb;
+  --text: #111827;
+  --muted: #6b7280;
+  --primary: #1f2937;
+  --link: #1d4ed8;
+
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+
+  /* Titles */
+  .group-title {
+    color: #1d4ed8;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .item-title { color: #1d4ed8; font-weight: 600; }
+  .desc { color: #6b7280; }
+
+  /* Level 2 reply block */
+  .reply-block { margin-top: 10px; }
+  .reply-label { font-weight: 600; color: #111827; margin-bottom: 6px; }
+  .reply-textarea {
+    width: 100%;
+    resize: unset;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 8px;
+  }
+
+  .reply-attachments { 
+    margin-top: 10px; 
+    display: flex; 
+    align-items: flex-start; 
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+  }
+  .reply-left { display: flex; flex-direction: column; gap: 6px;  }
+  /* Màu icon nút Thêm file đính kèm */
+  .reply-attachments :where(.p-button, .p-button-text, button) .pi { color: #F79009; }
+  .reply-file-list { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+  .reply-file-chip {
+    display: flex; align-items: center; gap: 8px;
+    background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 16px;
+    padding: 4px 8px; width: fit-content;
+  }
+  .file-icon { color: #F79009; }
+  .file-link { color: #2563eb; text-decoration: none; display: inline-block; max-width: 100%; }
+
+  /* Files column */
+  .files-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0; /* allow flex child to shrink inside 20% column */
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .files-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .file-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 8px 10px;
+    min-width: 0; /* prevent row from stretching column */
+    width: 100%; /* ensure row never exceeds cell width */
+    box-sizing: border-box;
+  }
+  .file-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0; /* enable ellipsis inside flex */
+  }
+  .file-name { }
+  .file-download { color: #2563eb; }
+
+  /* Issues */
+  .issues { border: 1px solid var(--border); border-radius: 6px; margin-top: 12px; }
+  .issues-header { display: flex; align-items: center; padding: 10px 12px; cursor: pointer; }
+  .issues-title { font-weight: 700; color: #111827; padding-left: 10px; }
+  .issues-body { padding: 12px; border-top: 1px solid var(--border); }
+  .issues-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+  .issue-item { background: #f9fafb; border: 1px solid #eef2f7; border-radius: 6px; padding: 8px; color: #111827; }
+  .issue-time { font-size: 12px; color: #6b7280; }
+  .issue-input-row { display: flex; gap: 8px; align-items: flex-start; }
+  .issue-textarea { flex: 1; resize: unset; border: 1px solid #e5e7eb; border-radius: 4px; padding: 8px; }
+
+  /* Attachments section */
+  .attachments-section { margin-top: 12px; display: flex; flex-direction: column; gap: 14px;margin-left: 15px; }
+  .attach-row { display: flex; align-items: center; gap: 10px; }
+  .attach-chevron { color: #111827; font-size: 10px; }
+  .attach-title { color: #111827; font-weight: 600; }
+  .required { color: #ef4444; }
+  /* Màu icon + và label của nút */
+  .attachments-section :where(.p-button, .p-button-text, button) {
+    padding: 0;
+  }
+  .attachments-section :where(.p-button, .p-button-text, button) .pi { color: #F79009; }
+  .attachments-section :where(.p-button, .p-button-text, button) .p-button-label { color: #F79009; font-weight: 500; }
+
+  .send-icon-btn{
+    width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; background: transparent; color: #1d4ed8; cursor: pointer;
+  }
+}
+
+/* Force table fixed layout and strict column widths for the dynamic table */
+:host ::ng-deep .tnpc .p-datatable table {
+  table-layout: fixed;
+  width: 100%;
+}
+:host ::ng-deep .tnpc .p-datatable .p-datatable-thead > tr > th:first-child,
+:host ::ng-deep .tnpc .p-datatable .p-datatable-tbody > tr > td:first-child {
+  width: 80% !important;
+  max-width: 80% !important;
+  overflow: hidden;
+}
+:host ::ng-deep .tnpc .p-datatable .p-datatable-thead > tr > th:last-child,
+:host ::ng-deep .tnpc .p-datatable .p-datatable-tbody > tr > td:last-child {
+  width: 20% !important;
+  max-width: 20% !important;
+  overflow: hidden;
+}
+:host ::ng-deep .tnpc .p-datatable .p-datatable-thead > tr > th,
+:host ::ng-deep .tnpc .p-datatable .p-datatable-tbody > tr > td {
+  box-sizing: border-box;
+}
+:host ::ng-deep .tnpc .p-datatable .p-datatable-tbody > tr > td:last-child .file-row {
+  width: 100%;
+}
+
+/* Ensure inner content respects column width */
+:host ::ng-deep .tnpc .p-datatable .p-datatable-tbody > tr > td .files-col,
+:host ::ng-deep .tnpc .p-datatable .p-datatable-tbody > tr > td .files-list,
+:host ::ng-deep .tnpc .p-datatable .p-datatable-tbody > tr > td .file-row,
+:host ::ng-deep .tnpc .p-datatable .p-datatable-tbody > tr > td .file-ellipsis {
+  min-width: 0;
+  max-width: 100%;
+}

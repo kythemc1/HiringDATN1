@@ -1,0 +1,203 @@
+.tnpc {
+  --border: #e5e7eb;
+  --text: #111827;
+  --muted: #6b7280;
+  --primary: #1f2937;
+  --link: #1d4ed8;
+
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+
+  .tnpc__table {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .tnpc__header {
+    display: grid;
+    grid-template-columns: 1fr 240px 240px;
+    gap: 0;
+    background: #f3f4f6;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .tnpc__body, .tnpc__header {
+    .tnpc__col {
+      padding: 10px 12px;
+      &.tnpc__col--content { border-right: 1px solid var(--border); }
+    }
+  }
+
+  .tnpc__row {
+    display: grid;
+    grid-template-columns: 1fr 240px 240px;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+
+    .tnpc__col--xu-ly {
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+
+    &--group {
+      background: #f9fafb;
+      font-weight: 600;
+      cursor: pointer;
+
+      .title { margin-left: 6px; color: #1d4ed8; }
+      &:hover { background: #f3f4f6; }
+    }
+
+    &--item {
+      .link {
+        color: var(--link);
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .link:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &--note {
+      .note { color: var(--muted); }
+    }
+  }
+
+  .indent {
+    display: inline-block;
+    width: calc((var(--lvl, 1) - 1) * 16px);
+  }
+
+  .caret {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid var(--primary);
+    border-bottom: 2px solid var(--primary);
+    transform: rotate(-45deg);
+    margin-right: 8px;
+    transition: transform 0.15s ease-in-out;
+
+    &.open {
+      transform: rotate(45deg);
+    }
+
+    &.caret--item {
+      margin-left: 4px;
+    }
+  }
+}
+
+/* khắc phục khi file quá dài */
+.files-col {
+  .files-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .file-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0; /* allow children to shrink */
+  }
+  .file-icon {
+    color: #6b7280;
+    flex: 0 0 auto;
+  }
+  .file-ellipsis {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .file-link {
+    color: #2563eb;
+    text-decoration: none;
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .file-link:hover {
+    text-decoration: underline;
+  }
+}
+
+/* Ensure table cell provides a max width context for ellipsis */
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  min-width: 0;
+}
+
+/* Force fixed layout and lock 20% width for the Files column (2nd column) */
+:host ::ng-deep .p-datatable .p-datatable-table {
+  table-layout: fixed;
+  width: 100%;
+}
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th:nth-child(2),
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(2) {
+  width: 20% !important;
+  max-width: 20% !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Ensure inner containers don't expand beyond the column width */
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(2) .files-col,
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(2) .files-list,
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(2) .file-row {
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(2) .file-ellipsis,
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(2) .file-link {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Also handle the case when File column is the 3rd column */
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th:nth-child(3),
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(3) {
+  width: 20% !important;
+  max-width: 20% !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(3) .files-col,
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(3) .files-list,
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(3) .file-row {
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(3) .file-ellipsis,
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td:nth-child(3) .file-link {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.pi-label{
+  font-weight: 700;
+}

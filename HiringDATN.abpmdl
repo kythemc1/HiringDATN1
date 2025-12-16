@@ -1,0 +1,101 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.LeptonXLiteTheme": {
+      "version": "4.3.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.Account": {
+      "version": "9.3.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.OpenIddict": {
+      "version": "9.3.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.Identity": {
+      "version": "9.3.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "9.3.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.SettingManagement": {
+      "version": "9.3.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.PermissionManagement": {
+      "version": "9.3.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.FeatureManagement": {
+      "version": "9.3.1",
+      "isInstalled": true
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "HiringDATN.Application": {
+      "path": "src/HiringDATN.Application/HiringDATN.Application.abppkg",
+      "folder": "src"
+    },
+    "HiringDATN.Application.Tests": {
+      "path": "test/HiringDATN.Application.Tests/HiringDATN.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "HiringDATN.Domain.Shared": {
+      "path": "src/HiringDATN.Domain.Shared/HiringDATN.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "HiringDATN.Application.Contracts": {
+      "path": "src/HiringDATN.Application.Contracts/HiringDATN.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "HiringDATN.HttpApi": {
+      "path": "src/HiringDATN.HttpApi/HiringDATN.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "HiringDATN.HttpApi.Client": {
+      "path": "src/HiringDATN.HttpApi.Client/HiringDATN.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "HiringDATN.EntityFrameworkCore.Tests": {
+      "path": "test/HiringDATN.EntityFrameworkCore.Tests/HiringDATN.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "HiringDATN.EntityFrameworkCore": {
+      "path": "src/HiringDATN.EntityFrameworkCore/HiringDATN.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "HiringDATN.TestBase": {
+      "path": "test/HiringDATN.TestBase/HiringDATN.TestBase.abppkg",
+      "folder": "test"
+    },
+    "HiringDATN.Domain.Tests": {
+      "path": "test/HiringDATN.Domain.Tests/HiringDATN.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "HiringDATN.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/HiringDATN.HttpApi.Client.ConsoleTestApp/HiringDATN.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "HiringDATN.DbMigrator": {
+      "path": "src/HiringDATN.DbMigrator/HiringDATN.DbMigrator.abppkg",
+      "folder": "src"
+    },
+    "HiringDATN.HttpApi.Host": {
+      "path": "src/HiringDATN.HttpApi.Host/HiringDATN.HttpApi.Host.abppkg",
+      "folder": "src"
+    },
+    "HiringDATN.Domain": {
+      "path": "src/HiringDATN.Domain/HiringDATN.Domain.abppkg",
+      "folder": "src"
+    }
+  }
+}

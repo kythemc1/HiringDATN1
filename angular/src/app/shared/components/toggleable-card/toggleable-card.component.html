@@ -1,0 +1,22 @@
+<div class="card mb-3">
+  <div
+    class="card-header d-flex align-items-center justify-content-between toggle-header"
+    (click)="collapsed = !collapsed">
+    <div class="d-flex align-items-center">
+      <i class="pi toggle-icon"
+        [ngClass]="collapsed ? 'pi-angle-right' : 'pi-angle-down'"></i>
+      <div class="ms-2">{{ title }}</div>
+    </div>
+    <button *ngIf="showAddButton"
+      type="button"
+      class="btn btn-link text-primary p-0 add-button"
+      (click)="handleAddClick($event)">
+      <i class="pi pi-plus"></i>
+      <span>{{ addButtonText }}</span>
+    </button>
+  </div>
+  <div class="card-body collapse-body" [class.no-padding]="!isPadding"
+    [@slideToggle]="isCardExpanded ? 'expanded' : 'collapsed'">
+    <ng-content></ng-content>
+  </div>
+</div>

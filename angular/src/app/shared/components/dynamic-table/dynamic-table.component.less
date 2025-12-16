@@ -1,0 +1,170 @@
+@gap-sm: 0.25rem;
+@gap-md: 0.5rem;
+
+.vnx-dt {
+  &__toolbar {
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__toolbar-left {
+    display: flex;
+    gap: @gap-md;
+    align-items: center;
+  }
+
+  &__filter-btn {
+    min-width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  &__th {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: @gap-sm;
+  }
+
+  &__actions {
+    display: flex;
+    gap: @gap-md;
+    justify-content: flex-start;
+  }
+
+  &__cell {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  &__tree-toggle {
+    width: 1.75rem;
+    height: 1.75rem;
+    min-width: 1.75rem;
+  }
+
+  &__clamp {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+    cursor: pointer;
+  }
+
+  &__clamp-1 {
+    -webkit-line-clamp: 1;
+  }
+  &__clamp-2 {
+    -webkit-line-clamp: 2;
+  }
+  &__clamp-3 {
+    -webkit-line-clamp: 3;
+  }
+  &__clamp-4 {
+    -webkit-line-clamp: 4;
+  }
+  &__clamp-5 {
+    -webkit-line-clamp: 5;
+  }
+
+  &__th-center,
+  &__cell-center {
+    text-align: center;
+  }
+
+  &__total {
+    color: var(--text-color-secondary);
+  }
+  tr.vnx-dt__group-hover-active {
+    background-color: var(--p-table-row-hover-bg, #F1F5F9) !important;
+
+    &:hover {
+      background-color: var(--p-table-row-hover-bg, #F1F5F9) !important;
+    }
+
+    & > td {
+      background-color: inherit !important;
+    }
+  }
+}
+
+.empty-state-cell {
+  padding: 60px 20px !important;
+  background-color: #fafafa;
+  border: none !important;
+}
+
+.empty-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 200px;
+}
+
+.empty-icon {
+  opacity: 0.6;
+  animation: fadeIn 0.5s ease-in-out;
+
+  i {
+    display: block;
+  }
+}
+
+.empty-text {
+  font-size: 16px;
+  color: #bdbdbd;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  animation: fadeIn 0.5s ease-in-out 0.1s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.primeng-datatable-container {
+  margin-top: 0.5rem;
+}
+
+.primeng-paging-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  margin-top: 0.5rem;
+}
+
+/* Keep paginator and total on a single row */
+.paginator-total {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+}
+
+/* Ensure paginator component doesn't force line breaks */
+.paginator-total .p-paginator {
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+/* Prevent wrapping of the info text */
+.paginator-total .paginator-info {
+  white-space: nowrap;
+  color: var(--text-color-secondary);
+}
+
+// .header-color{
+//   background-color: rgb(64, 66, 65);
+// }

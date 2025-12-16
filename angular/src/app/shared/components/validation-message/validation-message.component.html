@@ -1,0 +1,40 @@
+<small *ngIf="showError" class="text-danger">
+  <!-- Required -->
+  <ng-container *ngIf="control?.errors?.['required']">
+    {{ fieldName }} không được để trống.
+  </ng-container>
+
+  <!-- Minlength -->
+  <ng-container *ngIf="control?.errors?.['minlength']">
+    {{ fieldName }} phải có ít nhất
+    {{ control?.errors?.['minlength'].requiredLength }} ký tự.
+  </ng-container>
+
+  <!-- Maxlength -->
+  <ng-container *ngIf="control?.errors?.['maxlength']">
+    {{ fieldName }} không được vượt quá
+    {{ control?.errors?.['maxlength'].requiredLength }} ký tự.
+  </ng-container>
+
+  <!-- Pattern code -->
+  <ng-container *ngIf="control?.errors?.['invalidCodePattern']">
+    {{ fieldName }} không được chứa dấu, ký tự đặc biệt, khoảng trắng.
+  </ng-container>
+
+  <!-- Pattern -->
+  <ng-container *ngIf="control?.errors?.['pattern']">
+    {{ fieldName }} không đúng định dạng.
+  </ng-container>
+
+  <ng-container *ngIf="control?.errors?.['invalidCodeSpecialChar']">
+    {{ fieldName }} không được phép có dấu, ký tự đặc biệt, khoảng trắng.
+  </ng-container>
+
+  <!-- Email -->
+  <ng-container *ngIf="control?.errors?.['email']">
+    Định dạng {{ fieldName }} không đúng.
+  </ng-container>
+  
+  <!-- Ng-content: cho phép custom message -->
+  <ng-content></ng-content>
+</small>

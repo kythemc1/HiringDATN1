@@ -1,0 +1,77 @@
+/* CSS / SCSS */
+.toggle-header {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem;
+  background: #f4f4f4; /* darker header */
+  color: #000000;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.add-button {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 6px;
+  background-color: #f79009;
+  padding: 5px !important;
+
+  &:hover {
+    text-decoration: none;
+    opacity: 0.8;
+  }
+}
+
+.add-button i,
+.add-button span {
+  color: white;
+}
+
+.toggle-icon {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+/* Xoay icon khi collapse/expand */
+.toggle-icon.pi-angle-down {
+  transform: rotate(0deg);
+}
+.toggle-icon.pi-angle-right {
+  transform: rotate(-90deg);
+}
+
+.collapse-body {
+  /* Angular animations will drive height/opacity; provide smooth padding transition as fallback */
+  transition: padding 220ms ease;
+  opacity: 1;
+  padding: 1.25rem;
+  overflow: visible;
+}
+
+.collapse-body.collapsed {
+  padding: 0 1rem;
+  opacity: 0;
+  overflow: hidden;
+}
+
+/* card container styling (component-scoped) */
+.card {
+  width: 100%;
+  margin: 0.75rem auto;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.no-padding {
+  padding: 0 0 2.25rem 0 !important;
+}
+
+.toggle-header:hover {
+  background: darken(#f4f4f4, 6%);
+}

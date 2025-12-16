@@ -1,0 +1,28 @@
+﻿{
+  "applications": {
+    "HiringDATN.HttpApi.Host": {
+      "type": "dotnet-project",
+      "launchUrl": "https://localhost:44322",
+      "path": "../../../src/HiringDATN.HttpApi.Host/HiringDATN.HttpApi.Host.csproj",
+      "kubernetesService": ".*-httpapihost$",
+      "healthCheckEndpoint": "/health-status",
+      "healthUiEndpoint": "/health-ui",
+      "execution": {
+        "order": 4
+      }
+    },
+    "HiringDATN.Angular": {
+      "type": "cli",
+      "workingDirectory": "../../../angular",
+      "startCommand": "./start.ps1",
+      "launchUrl": "http://localhost:4200",
+      "kubernetesService": ".*-angular$",
+      "execution": {
+        "order": 2
+      }    
+    }
+  },
+  "containers": {
+    "serviceName": "HiringDATN-Containers",
+  }
+}

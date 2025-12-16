@@ -1,0 +1,371 @@
+<ng-template #contentTpl let-row>
+  <div class="tnpc-cell" style="width: 100%">
+    <ng-container [ngSwitch]="row.__level || 0">
+      <span *ngSwitchCase="0" class="group-title">{{ row.title | romanPrefix : row.sIdx }} - {{ getGroupLabel(row) }}</span>
+      <span *ngSwitchCase="1" class="item-title">{{ row.title }}</span>
+      <span *ngSwitchDefault class="desc">{{ row.title }}</span>
+
+      <!-- Hiển thị thêm cho cấp level 2: Nội dung trả lời -->
+      <div *ngIf="(row.__level || 0) === 2" class="reply-block">
+        <div class="reply-label">Nội dung trả lời</div>
+        <input
+          type="text"
+          class="reply-textarea"
+          [value]="row.replyContent || ''"
+          (input)="row.replyContent = $any($event.target).value"
+          placeholder="Nhập nội dung trả lời"
+          [disabled]="disabled"
+        />
+
+        <!-- File đính kèm cho cấp 2 -->
+        <div class="reply-attachments">
+          <div class="reply-left">
+            <!-- input ẩn cho file trả lời -->
+            <input
+              type="file"
+              class="d-none"
+              [attr.id]="'reply_file_' + row.id"
+              multiple
+              (change)="onFileSelectReply($event, row)"
+              [disabled]="disabled"
+            />
+            <button
+              pButton
+              type="button"
+              class="p-button-text p-0"
+              icon="pi pi-plus"
+              style="color: #f79009"
+              label="Thêm file đính kèm"
+              (click)="triggerFileInput('reply_file_' + row.id); $event.stopPropagation()"
+              [disabled]="disabled"
+            ></button>
+            <div *ngIf="row.filesReply && row.filesReply.length" class="reply-file-list">
+              <div *ngFor="let f of row.filesReply; let i = index" class="reply-file-chip">
+                <i class="pi pi-paperclip file-icon"></i>
+                <a
+                  *ngIf="f.url; else nameOnly2"
+                  [href]="f.url"
+                  target="_blank"
+                  rel="noopener"
+                  class="file-link"
+                  (click)="$event.stopPropagation()"
+                  >{{ f.name }}</a
+                >
+                <ng-template #nameOnly2>
+                  <span>{{ f.name }}</span>
+                </ng-template>
+                <button
+                  pButton
+                  type="button"
+                  class="p-button-text p-button-danger p-0"
+                  icon="pi pi-times"
+                  title="Xóa"
+                  (click)="removeReplyFile(row, i); $event.stopPropagation()"
+                  [disabled]="disabled"
+                ></button>
+              </div>
+            </div>
+          </div>
+          <button
+            *ngIf="row?.parentIsXuLy === false"
+            type="button"
+            (click)="onSendReply(row)"
+            class="send-icon-btn"
+            title="Gửi"
+            aria-label="Gửi"
+            [disabled]="disabled"
+          >
+            <i class="pi pi-send" style="font-size: 1.1rem; color: #1d4ed8"></i>
+          </button>
+          <!-- <ng-template #noFiles2>
+            <div class="desc">Chưa có file</div>
+          </ng-template> -->
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>
+
+<!-- Cột FILE ĐÍNH KÈM -->
+<ng-template #filesTpl let-row>
+  <div class="files-col">
+    <div *ngIf="row.files && row.files.length; else noFiles" class="files-list">
+      <div *ngFor="let f of row.files" class="file-row">
+        <i class="pi pi-paperclip file-icon"></i>
+        <a
+          *ngIf="f.url; else nameOnly"
+          [href]="f.url"
+          target="_blank"
+          rel="noopener"
+          class="file-ellipsis file-link"
+          (click)="onViewAttachment(f)"
+          [title]="f.name"
+        >
+          {{ f.name }}
+        </a>
+        <ng-template #nameOnly>
+          <span class="file-ellipsis" [title]="f.name">{{ f.name }}</span>
+        </ng-template>
+        <a
+          *ngIf="f.url"
+          [href]="f.url"
+          download
+          (click)="$event.stopPropagation()"
+          title="Tải xuống"
+          class="file-download"
+        >
+          <i class="pi pi-download"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<div class="tnpc">
+  <vnx-dynamic-table
+    [data]="dataSig()"
+    [isTree]="true"
+    [childrenField]="'children'"
+    [treeExpandAll]="false"
+    [columns]="[
+      { field: 'title', header: 'NỘI DUNG XIN Ý KIẾN', templateKey: 'content', width: '80%' },
+      { field: 'files', header: 'FILE ĐÍNH KÈM', templateKey: 'files', width: '20%' }
+    ]"
+    [config]="{
+      rows: 50,
+      rowHover: true,
+      showIndex: false,
+      useExternalPaginator: false,
+      scrollHeight: 'flex'
+    }"
+    [cellTemplates]="{ content: contentTpl, files: filesTpl }"
+    [showFilter]="false"
+    [showToggleFilter]="false"
+  ></vnx-dynamic-table>
+
+  <!-- Mục Vướng mắc -->
+  <div class="issues" *ngIf="isChuyenVienXuLy !== false">
+    <div class="issues-header" (click)="showIssues = !showIssues">
+      <i class="pi" [ngClass]="showIssues ? 'pi-chevron-up' : 'pi-chevron-down'"></i>
+      <div class="issues-title">Vướng mắc</div>
+    </div>
+    <div *ngIf="showIssues" class="issues-body">
+      <div class="issues-list">
+        <div *ngFor="let c of issues" class="issue-item">
+          <div class="issue-time">{{ parseDate(c.ngayThucHien) }}</div>
+          <div>{{ c.noiDung }}</div>
+        </div>
+      </div>
+      <div class="issue-input-row" style="position: relative" *ngIf="formKey !== 'BanChucNangChoDuyetKetQua' && formKey !== 'BanChucNangDaTrinhKy' && formKey !== 'BanChucNangDangChinhSua' ">
+        <textarea
+          rows="3"
+          class="issue-textarea"
+          placeholder="Nhập nội dung"
+          [value]="issueDraft"
+          (input)="issueDraft = $any($event.target).value"
+          style="padding-right: 44px; width: 100%"
+          [disabled]="disabled"
+        ></textarea>
+        <button
+          type="button"
+          (click)="onSubmitIssue()"
+          class="send-icon-btn"
+          title="Gửi"
+          aria-label="Gửi"
+          style="
+            position: absolute;
+            right: 8px;
+            bottom: 8px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: #1d4ed8;
+            cursor: pointer;
+          "
+          [disabled]="disabled"
+        >
+          <i class="pi pi-send" style="font-size: 1.1rem"></i>
+        </button>
+      </div>
+    </div>
+    <div class="attachments-section">
+      <!-- input ẩn cho 3 nhóm file -->
+      <input
+        type="file"
+        class="d-none"
+        id="att_tt"
+        [multiple]="false"
+        (change)="onFileSelectBottom($event, 'toTrinh')"
+        [disabled]="disabled"
+      />
+      <input
+        type="file"
+        class="d-none"
+        id="att_cv"
+        [multiple]="false"
+        (change)="onFileSelectBottom($event, 'congVan')"
+        [disabled]="disabled"
+      />
+      <input
+        type="file"
+        class="d-none"
+        id="att_dk"
+        multiple
+        (change)="onFileSelectBottom($event, 'dinhKem')"
+        [disabled]="disabled"
+      />
+
+      <div class="attach-row" *ngIf="isAttachmentVisible('toTrinh')">
+        <div class="attach-title">File tờ trình <span class="required">*</span></div>
+        <button
+          pButton
+          type="button"
+          class="p-button-text p-0"
+          icon="pi pi-plus"
+          label="Thêm file đính kèm"
+          style="color: #f79009"
+          (click)="triggerFileInput('att_tt'); $event.stopPropagation()"
+          [disabled]="disabled || (filesToTrinhDisplay && filesToTrinhDisplay.length >= 1)"
+        ></button>
+      </div>
+      <div class="files-list" *ngIf="isAttachmentVisible('toTrinh') && filesToTrinhDisplay.length">
+        <div class="file-row" *ngFor="let f of filesToTrinhDisplay; let i = index">
+          <i class="pi pi-paperclip file-icon"></i>
+          <a
+            *ngIf="f.url; else ttNameOnly"
+            [href]="f.url"
+            target="_blank"
+            rel="noopener"
+            class="file-ellipsis file-link"
+            (click)="$event.stopPropagation()"
+            >{{ f.name }}</a
+          >
+          <ng-template #ttNameOnly
+            ><span class="file-ellipsis">{{ f.name }}</span></ng-template
+          >
+          <a
+            *ngIf="f.url"
+            [href]="f.url"
+            download
+            (click)="$event.stopPropagation()"
+            title="Tải xuống"
+            class="file-download"
+            ><i class="pi pi-download"></i
+          ></a>
+          <button
+            pButton
+            type="button"
+            class="p-button-text p-button-danger p-0"
+            icon="pi pi-times"
+            title="Xóa"
+            (click)="removeBottomFile('toTrinh', i); $event.stopPropagation()"
+            [disabled]="disabled"
+          ></button>
+        </div>
+      </div>
+
+      <div class="attach-row" *ngIf="isAttachmentVisible('congVan')">
+        <div class="attach-title">File công văn <span class="required">*</span></div>
+        <button
+          pButton
+          type="button"
+          class="p-button-text p-0"
+          icon="pi pi-plus"
+          label="Thêm file đính kèm"
+          style="color: #f79009"
+          (click)="triggerFileInput('att_cv'); $event.stopPropagation()"
+          [disabled]="disabled || (filesCongVanDisplay && filesCongVanDisplay.length >= 1)"
+        ></button>
+      </div>
+      <div class="files-list" *ngIf="isAttachmentVisible('congVan') && filesCongVanDisplay.length">
+        <div class="file-row" *ngFor="let f of filesCongVanDisplay; let i = index">
+          <i class="pi pi-paperclip file-icon"></i>
+          <a
+            *ngIf="f.url; else cvNameOnly"
+            [href]="f.url"
+            target="_blank"
+            rel="noopener"
+            class="file-ellipsis file-link"
+            (click)="$event.stopPropagation()"
+            >{{ f.name }}</a
+          >
+          <ng-template #cvNameOnly
+            ><span class="file-ellipsis">{{ f.name }}</span></ng-template
+          >
+          <a
+            *ngIf="f.url"
+            [href]="f.url"
+            download
+            (click)="$event.stopPropagation()"
+            title="Tải xuống"
+            class="file-download"
+            ><i class="pi pi-download"></i
+          ></a>
+          <button
+            pButton
+            type="button"
+            class="p-button-text p-button-danger p-0"
+            icon="pi pi-times"
+            title="Xóa"
+            (click)="removeBottomFile('congVan', i); $event.stopPropagation()"
+            [disabled]="disabled"
+          ></button>
+        </div>
+      </div>
+
+      <div class="attach-row" *ngIf="isAttachmentVisible('dinhKem')">
+        <div class="attach-title">File đính kèm</div>
+        <button
+          pButton
+          type="button"
+          class="p-button-text p-0"
+          icon="pi pi-plus"
+          label="Thêm file đính kèm"
+          style="color: #f79009"
+          (click)="triggerFileInput('att_dk'); $event.stopPropagation()"
+          [disabled]="disabled"
+        ></button>
+      </div>
+      <div class="files-list" *ngIf="isAttachmentVisible('dinhKem') && filesDinhKemDisplay.length">
+        <div class="file-row" *ngFor="let f of filesDinhKemDisplay; let i = index">
+          <i class="pi pi-paperclip file-icon"></i>
+          <a
+            *ngIf="f.url; else dkNameOnly"
+            [href]="f.url"
+            target="_blank"
+            rel="noopener"
+            class="file-ellipsis file-link"
+            (click)="$event.stopPropagation()"
+            >{{ f.name }}</a
+          >
+          <ng-template #dkNameOnly
+            ><span class="file-ellipsis">{{ f.name }}</span></ng-template
+          >
+          <a
+            *ngIf="f.url"
+            [href]="f.url"
+            download
+            (click)="$event.stopPropagation()"
+            title="Tải xuống"
+            class="file-download"
+            ><i class="pi pi-download"></i
+          ></a>
+          <button
+            pButton
+            type="button"
+            class="p-button-text p-button-danger p-0"
+            icon="pi pi-times"
+            title="Xóa"
+            (click)="removeBottomFile('dinhKem', i); $event.stopPropagation()"
+            [disabled]="disabled"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

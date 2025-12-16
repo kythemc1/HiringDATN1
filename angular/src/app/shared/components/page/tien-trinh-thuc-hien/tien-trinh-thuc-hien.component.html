@@ -1,0 +1,61 @@
+
+<div class="ttth-container">
+  <!-- Left: Vertical stepper -->
+  <div class="ttth-left">
+    <div class="ttth-steps">
+      <div class="ttth-step" *ngFor="let step of steps; let i = index; let last = last" [ngClass]="step.status">
+        <div class="ttth-line">
+          <div class="ttth-node">
+            <i *ngIf="step.status === 'done'" class="pi pi-check"></i>
+            <span *ngIf="step.status !== 'done'">{{ i + 1 }}</span>
+          </div>
+          <div class="ttth-connector" *ngIf="!last"></div>
+        </div>
+        <div class="ttth-label">{{ i + 1 }}. {{ step.title }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Details of active step -->
+  <div class="ttth-right">
+    <ng-container *ngFor="let step of steps">
+      <div class="ttth-detail" *ngIf="step.status === 'active'">
+        <div class="ttth-detail-header">
+          <span class="ttth-detail-title">{{ step.title }}</span>
+          <span class="ttth-detail-status" [ngClass]="{ 'processing': step.status === 'active', 'done': step.status === 'done', 'pending': step.status === 'pending' }">
+            {{ step.status === 'active' ? '(Đang xử lý)' : (step.status === 'done' ? '(Hoàn thành)' : '(Chưa bắt đầu)') }}
+          </span>
+        </div>
+
+        <div class="ttth-section">
+          <div class="ttth-section-title">Thời gian</div>
+          <div class="ttth-row">
+            <div class="label">Bắt đầu</div>
+            <div class="value">-</div>
+          </div>
+          <div class="ttth-row">
+            <div class="label">Hoàn thành</div>
+            <div class="value">-</div>
+          </div>
+        </div>
+
+        <div class="ttth-section">
+          <div class="ttth-section-title">Người thực hiện</div>
+          <div class="ttth-row">
+            <div class="label">Người thực hiện</div>
+            <div class="value">-</div>
+          </div>
+          <div class="ttth-row">
+            <div class="label">Đơn vị</div>
+            <div class="value">-</div>
+          </div>
+        </div>
+
+        <div class="ttth-section">
+          <div class="ttth-section-title">Ý kiến &amp; Ghi chú</div>
+          <div class="ttth-notes">{{ step.description || '-' }}</div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,91 @@
+<ng-template #contentTpl let-row>
+  <div class="tnpc-cell">
+    <ng-container [ngSwitch]="row.__level || 0">
+      <span *ngSwitchCase="0" class="group-title" style="color:#1d4ed8; font-weight:700; text-transform:uppercase;">{{ row.title | romanPrefix : row.sIdx }}</span>
+      <span *ngSwitchCase="1" class="item-title" style="color:#1d4ed8; font-weight:600;">{{ row.title }}</span>
+      <span *ngSwitchDefault class="desc" style="color:#6b7280;">{{ row.title }}</span>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #xuLyTpl let-row>
+  {{ (row.__level || 0) === 0 ? (row.groupXuLy || '') : ((row.__level || 0) === 1 ? (row.xuLy || '') : '') }}
+</ng-template>
+
+<ng-template #partnerTpl let-row>
+  {{ (row.__level || 0) === 0 ? (row.groupPartner || '') : '' }}
+</ng-template>
+
+
+<vnx-dynamic-table
+  *ngIf="isChuyenVienXuLy"
+  [data]="dataSig()"
+  [isTree]="true"
+  [childrenField]="'children'"
+  [treeExpandAll]="false"
+  [columns]="[
+    { field: 'title', header: 'NỘI DUNG XIN Ý KIẾN', templateKey: 'content', width: '60%' },
+    { field: 'xuLy', header: 'BAN XỬ LÝ', templateKey: 'xuLy', width: '20%' },
+    { field: 'partner', header: 'BAN PHỐI HỢP', templateKey: 'partner', width: '20%' }
+  ]"
+  [config]="{ rows: 50, rowHover: true, showIndex: false, useExternalPaginator: false, scrollHeight: 'flex' }"
+  [cellTemplates]="{ content: contentTpl, xuLy: xuLyTpl, partner: partnerTpl }"
+  [showFilter]="false"
+  [showToggleFilter]="false"
+></vnx-dynamic-table>
+
+<!-- Bảng cho chuyên viên xử lý: Nội dung + File đính kèm + Thông tin xử lý -->
+<ng-template #filesTpl let-row>
+  <div class="files-col">
+    <div *ngIf="row.files && row.files.length; else noFiles" class="files-list">
+      <div *ngFor="let f of row.files" class="file-row">
+        <i class="pi pi-paperclip file-icon"></i>
+        <a *ngIf="f.url; else nameOnly" [href]="f.url" target="_blank" rel="noopener" class="file-ellipsis file-link" [title]="f.name">
+          {{ f.name }}
+        </a>
+        <ng-template #nameOnly>
+          <span class="file-ellipsis" [title]="f.name">{{ f.name }}</span>
+        </ng-template>
+      </div>
+    </div>
+    <ng-template #noFiles>
+      <span class="desc" style="color:#6b7280;">-</span>
+    </ng-template>
+  </div>
+</ng-template>
+
+<!--  THÔNG TIN XỬ LÝ -->
+<ng-template #thongTinTpl let-row>
+  <div class="thongtin-col">
+    <ng-container [ngSwitch]="row.__level || 0">
+      <div *ngSwitchCase="0" class="process-info">
+        <div class="pi-row">
+          <span class="pi-label">Ban: </span>
+          <span class="pi-value">{{ row.ban  }}</span>
+        </div>
+        <div class="pi-row">
+          <span class="pi-label">Chuyên viên: </span>
+          <span class="pi-value">{{  row.chuyenVien }}</span>
+        </div>
+      </div>
+      <div *ngSwitchDefault></div>
+    </ng-container>
+  </div>
+</ng-template>
+
+<vnx-dynamic-table
+  *ngIf="!isChuyenVienXuLy"
+  [data]="dataSig()"
+  [isTree]="true"
+  [childrenField]="'children'"
+  [treeExpandAll]="false"
+  [columns]="[
+    { field: 'title', header: 'NỘI DUNG XIN Ý KIẾN', templateKey: 'content', width: '60%' },
+    { field: 'thongTin', header: 'THÔNG TIN XỬ LÝ', templateKey: 'thongTin', width: '20%' },
+    { field: 'files', header: 'FILE ĐÍNH KÈM', templateKey: 'files', width: '20%' }
+  ]"
+  [config]="{ rows: 50, rowHover: true, showIndex: false, useExternalPaginator: false, scrollHeight: 'flex' }"
+  [cellTemplates]="{ content: contentTpl, files: filesTpl,  thongTin: thongTinTpl }"
+  [showFilter]="false"
+  [showToggleFilter]="false"
+></vnx-dynamic-table>

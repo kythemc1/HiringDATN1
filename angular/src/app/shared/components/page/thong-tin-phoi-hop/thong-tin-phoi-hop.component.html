@@ -1,0 +1,66 @@
+<div class="section-title">Chuyên viên phối hợp</div>
+
+<ng-template #cellGroupTitle let-row>
+  <span class="roman-title">{{ row.title | romanPrefix : row.sIdx }}</span>
+</ng-template>
+
+<vnx-dynamic-table
+  [data]="flatGroups"
+  [columns]="[
+    { field: 'title', header: 'Đề mục', templateKey: 'title', minWidth: '50%' },
+    { field: 'partner', header: 'Ban phối hợp', minWidth: '25%' },
+    { field: 'chuyenVienPhoiHop', header: 'Chuyên viên phối hợp', minWidth: '25%' }
+  ]"
+  [config]="{
+    rows: 100,
+    rowHover: true,
+    showIndex: true,
+    useExternalPaginator: false,
+    scrollHeight: 'flex'
+  }"
+  [cellTemplates]="{ title: cellGroupTitle }"
+  [showFilter]="false"
+  [showToggleFilter]="false"
+></vnx-dynamic-table>
+
+<div class="section-title" style="margin-top: 16px">Nội dung phối hợp</div>
+
+<div class="phoi-hop-list">
+  <div class="phoi-hop-item" *ngFor="let item of noiDungPhoiHopDtos; trackBy: trackByPhoiHop">
+    <div class="phoi-hop-header">
+      <div class="phoi-hop-title">
+        <strong class="time">{{ item.nguoiThucHien?.hoTen }}</strong>
+        <span class="divider">•</span>
+        <span class="time">{{ getLabel(item.toChucId) }}</span>
+        <span class="divider">•</span>
+        <span class="time">{{ item.ngayThucHien | date : 'HH:mm:ss - dd/MM/yyyy' }}</span>
+        <!-- <span class="flag" *ngIf="item.isLast">Mới nhất</span> -->
+      </div>
+    </div>
+
+    <div class="phoi-hop-content">
+      <div class="label">Nội dung:</div>
+      <div class="value">{{ item.noiDung }}</div>
+    </div>
+    <div class="phoi-hop-attachments" *ngIf="item.fileDinhKems?.length">
+      <div class="row mt-3">
+        <div class="col-12">
+          <div class="attach-title">Tập tin đính kèm</div>
+          <div
+            *ngFor="let f of item.fileDinhKems; let fi = index"
+            class="file-display-item"
+            (click)="fileHelperService.viewAttachment(f)"
+          >
+            <span class="file-tag">
+              <i class="fa fa-paperclip file-icon-blue"></i>
+              <span class="file-name" [title]="f.tenFile">
+                {{ fileHelperService.shortenName(f.tenFile) }}
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-muted" *ngIf="!noiDungPhoiHopDtos?.length">Không có nội dung phối hợp.</div>
+</div>

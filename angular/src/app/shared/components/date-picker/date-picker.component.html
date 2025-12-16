@@ -1,0 +1,33 @@
+<p-inputgroup #calendarContainer class="date-picker-group">
+  <p-inputmask
+    [id]="id"
+    [mask]="showTime ? '99/99/9999 99:99' : '99/99/9999'"
+    [placeholder]="placeholder"
+    [slotChar]="showTime ? 'dd/mm/yyyy hh:mm' : 'dd/mm/yyyy'"
+    [ngModel]="value"
+    (ngModelChange)="onInputMaskChange($event)"
+    class="inputmask-custom"
+    [disabled]="disabled"
+  ></p-inputmask>
+
+  <p-datepicker
+    #calendar
+    [(ngModel)]="calendarValue"
+    (ngModelChange)="onCalendarChange($event)"
+    dateFormat="dd/mm/yy"
+    [showIcon]="true"
+    appendTo="body"
+    [readonlyInput]="true"
+    [inputId]="id + '-calendar'"
+    showButtonBar
+    fluid
+    class="custom-calendar"
+    (onShow)="onCalendarShow($event)"
+    (onHide)="onCalendarClose()"
+    [disabled]="disabled"
+    [showTime]="showTime"
+    [hourFormat]="hourFormat"
+    [stepMinute]="stepMinute"
+    [stepHour]="stepHour"
+  ></p-datepicker>
+</p-inputgroup>

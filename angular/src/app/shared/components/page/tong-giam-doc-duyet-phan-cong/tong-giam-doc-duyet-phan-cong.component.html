@@ -1,0 +1,113 @@
+<div class="tong-giam-doc-duyet-phan-cong">
+  <div class="header-row d-none d-md-grid">
+    <div class="col-toggle"></div>
+    <div class="col-stt">#</div>
+    <div class="col-noi-dung">NỘI DUNG XIN Ý KIẾN</div>
+    <div class="col-ban-xu-ly">BAN XỬ LÝ</div>
+    <div class="col-ban-phoi-hop">BAN PHỐI HỢP</div>
+  </div>
+
+  <div *ngFor="let section of sections; let sIdx = index" class="section">
+    <div class="section-header d-md-grid">
+      <div class="col-toggle" (click)="toggleSection(section)">
+        <i class="pi" [ngClass]="section.collapsed ? 'pi-angle-right' : 'pi-angle-down'" [style.color]="section.collapsed ? '#fff' : null"></i>
+      </div>
+      <div class="col-stt"></div>
+      <div class="col-noi-dung" (click)="toggleSection(section)">
+        <span class="section-title">{{ section.title  | romanPrefix:sIdx}}
+        
+        </span>
+      </div>
+      <div class="col-ban-xu-ly" *ngIf="!section.collapsed" (click)="$event.stopPropagation()">
+        <p-select 
+          [options]="banChucNangOptions"
+          [(ngModel)]="section.xuLyBan"
+          (ngModelChange)="onXuLyBanChange(section)"
+          optionLabel="label"
+          optionValue="value"
+          [name]="'xuLyBan_' + sIdx"
+          #xuLyCtrl="ngModel"
+          required
+          placeholder="Chọn ban xử lý"
+          [showClear]="true"
+          [style]="{width: '100%'}"
+          [class.p-invalid]="(xuLyCtrl.invalid && (xuLyCtrl.touched || xuLyCtrl.dirty)) || banChuTriMismatch"
+          appendTo="body">
+        </p-select>
+        <small class="p-error" *ngIf="xuLyCtrl.invalid && (xuLyCtrl.touched || xuLyCtrl.dirty)">
+          Vui lòng chọn Ban chức năng
+        </small>
+        <small class="p-error" *ngIf="!xuLyCtrl.invalid && banChuTriMismatch">
+          Ban chủ trì phải thuộc một trong các ban chức năng xử lý. Vui lòng kiểm tra lại.
+        </small>
+      </div>
+      <div class="col-ban-phoi-hop" *ngIf="!section.collapsed" (click)="$event.stopPropagation()">
+        <p-multiSelect
+        [options]="getPhoiHopOptions(section)"
+        optionLabel="label"
+        optionValue="value"
+        [(ngModel)]="section.phoiHopBan"
+        placeholder="Chọn ban phối hợp"
+        [style]="{ width: '100%' }"
+        [showClear]="true"
+        appendTo="body">
+      >
+     <ng-template pTemplate="selectedItems" let-value>
+              <ng-container *ngIf="value?.length; else placeholderTpl">
+                <div class="selected-items-scroll">
+                  <span *ngFor="let v of value" class="chip">
+                    {{ v?.label ?? v }}
+                  </span>
+                </div>
+              </ng-container>
+            </ng-template>
+    </p-multiSelect>
+      </div>
+    </div>
+
+    
+    <div class="section-items" *ngIf="!section.collapsed">
+      <div *ngFor="let item of section.items; let iIdx = index" class="item-row">
+        <!-- Row 1: Title line -->
+        <div class="col-toggle" (click)="toggleItem(item)">
+          <i class="pi" [ngClass]="item.collapsed ? 'pi-angle-right' : 'pi-angle-down'"></i>
+        </div>
+        <div class="col-stt">{{ getGlobalIndex(sIdx, iIdx) }}</div>
+        <div class="col-noi-dung">
+          <div class="item-header">
+            <div class="item-title">{{ item.title }}
+              <ng-container *ngIf="item.agree !== null"> - {{ item.agree ? 'Đồng ý' : 'Không đồng ý' }}</ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="col-ban-xu-ly"></div>
+        <div class="col-ban-phoi-hop">
+          <div class="scic-check">
+            <p-checkbox [binary]="true" [(ngModel)]="item.xinScic" [inputId]="'xinScic_' + sIdx + '_' + iIdx"></p-checkbox>
+            <label class="scic-label" [attr.for]="'xinScic_' + sIdx + '_' + iIdx">
+              Xin HĐQT
+              <ng-container *ngIf="item?.soTienSCIC > 0"> - Số tiền từ {{ item.soTienSCIC }} tỷ</ng-container>
+            </label>
+          </div>
+        </div>
+
+        <!-- Row 2: Details under the title -->
+        <ng-container *ngIf="!item.collapsed">
+          <div class="col-toggle"></div>
+          <div class="col-stt"></div>
+          <div class="col-noi-dung item-content">
+            <div class="item-sub" *ngIf="item.subTitle; else defaultSummaryLabel">{{ item.subTitle }}</div>
+            <ng-template #defaultSummaryLabel>
+              <div class="item-sub">Tóm tắt chiến lược</div>
+            </ng-template>
+            <div class="summary-input">
+              <textarea class="p-inputtextarea p-inputtext w-100" rows="2"  [(ngModel)]="item.summary"></textarea>
+            </div>
+          </div>
+          <div class="col-ban-xu-ly"></div>
+          <div class="col-ban-phoi-hop"></div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

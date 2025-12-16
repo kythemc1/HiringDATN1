@@ -1,0 +1,55 @@
+{
+  "id": "6f180fb6-d784-4f07-89f3-0549bbfcf95b",
+  "template": "app",
+  "versions": {
+    "AbpFramework": "9.3.1",
+    "AbpStudio": "1.2.1",
+    "TargetDotnetFramework": "net9.0"
+  },
+  "modules": {
+    "HiringDATN": {
+      "path": "HiringDATN.abpmdl"
+    }
+  },
+  "runProfiles": {
+    "Default": {
+      "path": "etc/abp-studio/run-profiles/Default.abprun.json"
+    }
+  },
+  "options": {
+    "httpRequests": {
+      "ignoredUrls": [
+      
+      ]
+    }
+  },
+  "creatingStudioConfiguration": {
+    "template": "app",
+    "createdAbpStudioVersion": "1.2.1",
+    "tiered": "false",
+    "runInstallLibs": "true",
+    "useLocalReferences": "false",
+    "multiTenancy": "true",
+    "includeTests": "true",
+    "kubernetesConfiguration": "false",
+    "uiFramework": "angular",
+    "mobileFramework": "none",
+    "distributedEventBus": "none",
+    "databaseProvider": "ef",
+    "runDbMigrator": "true",
+    "databaseManagementSystem": "postgresql",
+    "separateTenantSchema": "false",
+    "createInitialMigration": "true",
+    "theme": "leptonx-lite",
+    "themeStyle": "",
+    "themeMenuPlacement": "",
+    "mobileFramework": "none",
+    "progressiveWebApp": "false",
+    "runProgressiveWebAppSupport": "false",
+    "publicWebsite": "false",
+    "socialLogin": "true",
+    "selectedLanguages": ["English", "English (United Kingdom)", "Chinese (Simplified)", "Spanish", "Arabic", "Hindi ", "Portuguese (Brazil)", "French", "Russian", "German (Germany)", "Turkish", "Italian", "Czech", "Hungarian", "Romanian (Romania)", "Swedish", "Finnish", "Slovak", "Icelandic", "Chinese (Traditional)", ],
+    "defaultLanguage": "English",
+    "createCommand": "abp new HiringDATN -t app --ui-framework angular --database-provider ef --database-management-system postgresql --theme leptonx-lite --without-cms-kit --dont-run-bundling -no-file-management"
+  }
+}
