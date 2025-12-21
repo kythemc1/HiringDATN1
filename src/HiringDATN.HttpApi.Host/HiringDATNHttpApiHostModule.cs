@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -39,6 +39,10 @@ using Volo.Abp.OpenIddict;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.Studio.Client.AspNetCore;
 using Volo.Abp.Security.Claims;
+using Microsoft.SemanticKernel.Plugins.Web;
+using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Plugins.Web.Google;
+using HiringDATN.Service;
 
 namespace HiringDATN;
 
@@ -109,6 +113,41 @@ public class HiringDATNHttpApiHostModule : AbpModule
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
             });
         }
+        context.Services.AddSingleton<WebSearchEnginePlugin>(sp =>
+        {
+            // Đọc config từ phần "GoogleSearch"
+            var apiKey = configuration["GoogleSearch:ApiKey"];
+            var searchEngineId = configuration["GoogleSearch:SearchEngineId"];
+
+            if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(searchEngineId))
+            {
+                throw new Exception("Chưa cấu hình GoogleSearch (ApiKey hoặc SearchEngineId)!");
+            }
+
+            // Sử dụng GoogleConnector thay vì BingConnector
+            var googleConnector = new GoogleConnector(apiKey, searchEngineId);
+            return new WebSearchEnginePlugin(googleConnector);
+        });
+
+        // 2. Đăng ký Kernel (Để inject được vào Service)
+        context.Services.AddTransient<Kernel>(sp =>
+        {
+            // Tạo builder
+            var builder = Kernel.CreateBuilder();
+
+            // Thêm Google Gemini
+            var apiKey = configuration["GoogleSearch:ApiKey"]; // Cấu hình trong appsettings.json
+            var modelId = "gemini-2.0-flash"; // Hoặc gemini-1.0-pro
+
+            builder.AddGoogleAIGeminiChatCompletion(
+                modelId: modelId,
+                apiKey: apiKey);
+
+            // Xây dựng Kernel
+            return builder.Build();
+        });
+        context.Services.AddHostedService<RagDataLoaderService>();
+        // ===========================
 
         ConfigureAuthentication(context);
         ConfigureUrls(configuration);

@@ -6,6 +6,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <RootNamespace>HiringDATN</RootNamespace>
+		<NoWarn>$(NoWarn);SKEXP0050;SKEXP0110;SKEXP0001</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
+		<PackageReference Include="Microsoft.SemanticKernel" Version="1.68.0" />
+		<PackageReference Include="Microsoft.SemanticKernel.Agents.Core" Version="1.68.0" />
+		<PackageReference Include="Microsoft.SemanticKernel.Connectors.Google" Version="1.68.0-alpha" />
+		<PackageReference Include="Microsoft.SemanticKernel.Plugins.Memory" Version="1.68.0-alpha" />
+		<PackageReference Include="Microsoft.SemanticKernel.Plugins.Web" Version="1.68.0-alpha" />
 		<PackageReference Include="Volo.Abp.AutoMapper" Version="9.3.1" />
     <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="9.3.1" />
     <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="9.3.1" />
