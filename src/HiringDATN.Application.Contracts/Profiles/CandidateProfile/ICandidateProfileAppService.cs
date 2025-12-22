@@ -7,6 +7,6 @@ using HiringDATN.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace HiringDATN.Interfaces;
-public interface ICandidateProfileAppService : ICrudAppService<CandidateProfileDto, Guid, SearchInputDto, CreateUpdateCandidateProfileDto>
+public interface ICandidateProfileAppService : ICrudAppService<CandidateProfileDto, long, SearchInputDto, CreateUpdateCandidateProfileDto>
 {
 }

@@ -16,7 +16,8 @@ import { provideRouter } from '@angular/router';
 import { environment } from '../environments/environment';
 import { APP_ROUTES } from './app.routes';
 import { APP_ROUTE_PROVIDER } from './route.provider';
-
+import { providePrimeNG } from 'primeng/config';
+import LaraLightBlue from '@primeng/themes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -39,5 +40,18 @@ export const appConfig: ApplicationConfig = {
     provideAccountConfig(),
     provideTenantManagementConfig(),
     provideAbpThemeShared(),
+    providePrimeNG({
+      theme: {
+          preset: LaraLightBlue,
+          options: {
+              prefix: 'p',
+              darkModeSelector: 'system',
+              cssLayer: {
+                  name: 'primeng',
+                  order: 'tailwind-base, primeng, tailwind-utilities' // Nếu bạn không dùng tailwind thì bỏ dòng cssLayer này cũng được
+              }
+          }
+      }
+  })
   ]
 };

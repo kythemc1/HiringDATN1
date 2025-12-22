@@ -9,6 +9,7 @@
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "target": "ES2022",
     "module": "es2020",
@@ -21,6 +22,7 @@
       "@swimlane/*": ["node_modules/@swimlane/*"],
       "@ngx-validate/core":["node_modules/@ngx-validate/core"],
       "@ng-bootstrap/ng-bootstrap": ["node_modules/@ng-bootstrap/ng-bootstrap"],
+      "@primeng/themes/*": ["./node_modules/primeng/themes/*"]
     },
     "useDefineForClassFields": false
   },
