@@ -1,0 +1,260 @@
+/* You can add global styles to this file, and also import other style files */
+@import './assets/fonts/noto-serif/noto-serif.css';
+@import './assets/fonts/roboto/roboto.css';
+@import './assets/fonts/tilt-warp/tilt-warp.css';
+@import './assets/styles/custom-abp.less';
+@import './assets/styles/custom-bootstrap.less';
+@import './assets/styles/custom-primeng.less';
+/* Material Icons (local) */
+@import "~material-icons/iconfont/material-icons.css";
+
+@keyframes donut-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.donut {
+  display: inline-block;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #7983ff;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: donut-spin 1.2s linear infinite;
+
+  &.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+}
+
+
+
+
+.page { padding: 0.75rem 1rem !important; }
+.page h3 { margin: 0 0 1rem 0; }
+
+.footer-cm{
+  position: sticky;
+  bottom: 0;
+  z-index: 999;
+  background-color: #ffffff;
+}
+
+.card-header{
+  background-color: #f9f9f9;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 0.75rem 1.25rem;
+}
+
+.p-button-outlined.p-button-danger{
+  padding: 4px;
+}
+
+.p-popover-content {
+  padding:  0 !important;
+}
+
+.sticky-footer {
+  position: sticky;
+  bottom: 0;
+  background-color: #fff;
+  padding: 1rem 0;
+  margin-top: 1rem;
+  z-index: 100;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.line-clamp-1,
+.line-clamp-2,
+.line-clamp-3,
+.line-clamp-4,
+.line-clamp-5 {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+}
+
+.line-clamp-1 {
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  -webkit-line-clamp: 3;
+}
+
+.line-clamp-4 {
+  -webkit-line-clamp: 4;
+}
+
+.line-clamp-5 {
+  -webkit-line-clamp: 5;
+}
+
+.detail-form {
+  margin-top: -1.25rem;
+  margin-bottom: -1.25rem;
+}
+
+.detail-form > div.row {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.detail-form > div.row:not(:last-of-type) {
+    border-bottom: 1px solid rgba(229, 231, 235, 1);
+}
+
+.detail-form > div.row > .key {
+    color: rgba(77, 87, 97, 1);
+}
+
+.detail-form > div.row > .value {
+    color: rgba(9, 9, 11, 1);
+    font-weight: 500;
+    text-align: right;
+}
+
+.info-card {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.info-card .card-header {
+  background-color: #f9f9f9;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid #dee2e6; /* 👈 line giữa header và body */
+}
+
+.info-card .card-body {
+  padding: 1.25rem;
+  font-size: 14px;
+}
+
+.info-card .grid {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 0.75rem;
+}
+
+.info-card .col-4 {
+  width: 30%;
+  color: #555;
+}
+
+.info-card .col-8 {
+  width: 70%;
+}
+
+.font-bold {
+  font-weight: 600;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+// .p-datatable-table-container{
+//   height: calc(100vh - 250px) !important;
+// }
+
+.p-datatable-thead{
+  z-index: 99;
+  top: 0;
+}
+
+/* Global custom  color(soạn thảo)*/
+.p-tag.custom-draft,
+.p-tag.p-tag-custom-draft {
+  background-color: #444CE7 !important;
+  border-color: #444CE7 !important;
+  color: #fff !important;
+}
+
+/* Global custom  color(Hoạt Động)*/
+.p-tag.custom-success,
+.p-tag.p-tag-custom-success {
+  background-color: #16B364 !important;
+  border-color: #16B364 !important;
+  color: #fff !important;
+}
+
+
+
+/* Global custom  color( Không Hoạt Động)*/
+.p-tag.custom-danger,
+.p-tag.p-tag-custom-danger {
+  background-color: #DC4B37 !important;
+  border-color: #DC4B37 !important;
+  color: #fff !important;
+}
+
+:host ::ng-deep .app-modal .p-dialog {
+  background: #ffffff !important; /* nền trắng */
+  color: #000000 !important; /* chữ đen */
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+:host ::ng-deep .app-modal .p-dialog-header {
+  font-size: 1.1rem !important;
+  font-weight: bold !important;
+  padding: 1rem 1.5rem !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  white-space: normal !important; /* tiêu đề dài tự xuống dòng */
+}
+
+:host ::ng-deep .app-modal .p-dialog-content {
+  padding: 1rem 1.5rem !important;
+  max-height: 50vh !important; /* giới hạn chiều cao nội dung */
+  overflow-y: auto !important; /* scroll riêng nội dung dài */
+  overflow-x: hidden !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+:host ::ng-deep .app-modal .p-dialog-footer {
+  padding: 1rem 1.5rem !important;
+  border-top: 1px solid #f0f0f0 !important;
+  text-align: right !important;
+}
+
+/* Global rules for p-multiselect selected items horizontal scroll */
+.p-multiselect .p-multiselect-label .selected-items-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.p-multiselect.p-disabled .p-multiselect-label .selected-items-scroll {
+  pointer-events: auto; /* allow scroll when disabled */
+}
+
+.p-multiselect .p-multiselect-label {
+  overflow: hidden; /* keep scroll region inside selected-items-scroll */
+}
+
+.p-multiselect .p-multiselect-label .selected-items-scroll .chip {
+  display: inline-flex;
+}
+
+.file-download:hover {
+  cursor: pointer;
+}

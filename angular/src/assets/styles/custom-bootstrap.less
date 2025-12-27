@@ -1,0 +1,106 @@
+:root {
+
+}
+
+html, body {
+  color: rgba(9, 9, 11, 1);
+  font-family: 'Roboto';
+  font-size: 12px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.line-clamp-1,
+.line-clamp-2,
+.line-clamp-3,
+.line-clamp-4 {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+}
+
+.line-clamp-1 {
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  -webkit-line-clamp: 3;
+}
+
+.line-clamp-4 {
+  -webkit-line-clamp: 4;
+}
+
+.line-clamp-5 {
+  -webkit-line-clamp: 5;
+}
+
+embed {
+  pointer-events: none;
+}
+
+.app-container {
+  /* border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color); */
+  /* border-radius: var(--bs-border-radius); */
+  /* box-shadow: var(--bs-box-shadow); */
+  /* margin: 16px; */
+  /* padding: 12px; */
+  margin: 12px 12px 0;
+}
+
+.app-input-group {
+  position: relative;
+
+  .app-input-group-prepend {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+  }
+
+  input {
+    padding-inline-start: calc(10px + 14px + 10px);
+  }
+}
+
+.btn-group-xs > .btn,
+.btn-xs {
+  --bs-btn-padding-y: 4px;
+  --bs-btn-padding-x: 8px;
+  --bs-btn-font-size: 14px;
+  --bs-btn-line-height: 100%;
+  --bs-btn-border-radius: 4px;
+}
+
+.btn-group-xs > .btn > i,
+.btn-xs > i {
+  font-size: 13px;
+}
+
+.btn + .btn {
+  margin-left: 0.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+
+  > label {
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+}
+
+.small-icon-button {
+  padding: 0% 0px !important;
+  font-size: 12px;
+  line-height: 1;
+  min-width: 26px !important;
+  min-height: 26px !important;
+}

@@ -1,0 +1,27 @@
+abp-loader-bar {
+  display: none;
+}
+
+.abp-loading {
+  background: rgba(0, 0, 0, 0.1) !important;
+  z-index: 1108 !important;
+
+  .abp-spinner {
+    font-size: xx-large !important;
+  }
+}
+
+abp-validation-error {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  abp-current-user,
+  abp-languages {
+    .dropdown .dropdown-menu {
+      min-width: unset;
+      max-width: 128px;
+      overflow: hidden;
+    }
+  }
+}

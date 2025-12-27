@@ -1,0 +1,77 @@
+<!-- <app-page-header
+  [title]="'::DanhMucs' | abpLocalization"
+  (titleClick)="onHeaderTitleClick()"
+>
+  <div class="d-flex" *ngIf="viewMode === 'list'">
+    <vt-button
+      type="button"
+      [label]="'::CreateNew' | abpLocalization"
+      [color]="'custom'"
+      [width]="112"
+      [height]="36"
+      breadcrumbMode="create"
+      breadcrumbEntity="mô hình AI" 
+      [breadcrumb]="true"
+      (buttonClick)="startCreate()"
+    ></vt-button>
+  </div>
+  <p-menu #excelMenu [popup]="true" [model]="excelMenuItems" />
+</app-page-header> -->
+
+<div class="page">
+  <app-create-update-ai-model-config-modal
+    *ngIf="viewMode !== 'list'"
+    #inlineCreateUpdate
+    [inline]="true"
+    [modalTitle]="formTitle"
+      [updateAIModelConfigDto]="updateAIModelConfigDto"
+    [readOnly]="viewMode === 'view'"
+    (saved)="onChildSaved($event)"
+    (canceled)="onChildCanceled()"
+  ></app-create-update-ai-model-config-modal>
+  <!-- Advanced filter template -->
+  <ng-template #advancedFilter>
+    <div class="row">
+      <div class="col-3 form-group">
+        <label for="trangThai">Trạng thái</label>
+        <p-select
+          [(ngModel)]="searchTerms.trangThai"
+          id="trangThai"
+          styleClass="w-100"
+          [options]="trangThaiOptionsWithAll"
+          optionLabel="displayName"
+          optionValue="id"
+          display="chip"
+          (onChange)="onSearchSubmit()"
+        ></p-select>
+      </div>
+    </div>
+  </ng-template>
+
+  <vnx-dynamic-table
+    *ngIf="viewMode === 'list'"
+    [data]="dataDisplay"
+    [columns]="columns"
+    [actions]="actions"
+    [config]="config"
+    [totalRecords]="totalRecords"
+    [loading]="loading"
+    [lazy]="false"
+    [autoBreadcrumbActions]="true"
+    breadcrumbEntity=""
+    [searchKeyword]="searchKeyword"
+    [showAdvancedFilter]="showFilter"
+    [filterTemplate]="advancedFilter"
+    [selection]="selectedRows"
+    (selectionChange)="onSelectionChange($event)"
+    (searchInputChange)="onSearchKeywordChange($event)"
+    (searchSubmit)="onSearchSubmit()"
+    (toggleFilterChange)="onToggleFilter($event)"
+    (pageChange)="onPageChange($event)"
+    (rowsPerPageChange)="onRowsPerPageChange($event)"
+    (actionClick)="onAction($event)"
+    (rowClick)="onRowClick($event)"
+  >
+  </vnx-dynamic-table>
+</div>
+

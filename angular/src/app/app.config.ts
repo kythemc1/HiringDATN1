@@ -17,7 +17,10 @@ import { environment } from '../environments/environment';
 import { APP_ROUTES } from './app.routes';
 import { APP_ROUTE_PROVIDER } from './route.provider';
 import { providePrimeNG } from 'primeng/config';
-import LaraLightBlue from '@primeng/themes';
+// Removed invalid import of '@primeng/themes'
+// Define LaraLightBlue inline as a placeholder or handle absence
+
+const LaraLightBlue: any = undefined; // TODO: Replace with actual theme or install '@primeng/themes'
 
 export const appConfig: ApplicationConfig = {
   providers: [

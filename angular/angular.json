@@ -11,7 +11,7 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "less"
         }
       },
       "root": "",
@@ -26,7 +26,7 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
+            "inlineStyleLanguage": "less",
             "allowedCommonJsDependencies": ["chart.js", "js-sha256"],
             "assets": [
               "src/favicon.ico",
@@ -105,27 +105,27 @@
                 },
                 {
                   "input": "node_modules/@volo/ngx-lepton-x.lite/assets/css/font-bundle.css",
-                  "inject": false,
+                  "inject": true,
                   "bundleName": "font-bundle"
                 },
                 {
                   "input": "node_modules/@volo/ngx-lepton-x.lite/assets/css/font-bundle.rtl.css",
-                  "inject": false,
+                  "inject": true,
                   "bundleName": "font-bundle.rtl"
                 },
                 {
                   "input": "node_modules/@volo/ngx-lepton-x.lite/assets/css/ng-bundle.rtl.css",
-                  "inject": false,
+                  "inject": true,
                   "bundleName": "ng-bundle.rtl"
                 },
                 {
                   "input": "node_modules/@volo/ngx-lepton-x.lite/assets/css/side-menu/layout-bundle.rtl.css",
-                  "inject": false,
+                  "inject": true,
                   "bundleName": "layout-bundle.rtl"
                 },
                 {
                   "input": "node_modules/@abp/ng.theme.lepton-x/assets/css/abp-bundle.rtl.css",
-                  "inject": false,
+                  "inject": true,
                   "bundleName": "abp-bundle.rtl"
                 },
                 {
@@ -133,7 +133,12 @@
                   "inject": true,
                   "bundleName": "bootstrap-icons"
                 },
-                "src/styles.scss"
+                {
+                  "input": "primeicons/primeicons.css",
+                  "inject": true,
+                  "bundleName": "primeicons.min"
+                },
+                "src/styles.less"
               ],
             "scripts": []
           },
@@ -195,10 +200,12 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "inlineStyleLanguage": "scss",
+            "inlineStyleLanguage": "less",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
-              "src/styles.scss",
+              "src/styles.less",
+              "node_modules/material-icons/iconfont/material-icons.css",
+              "src/assets/fonts/roboto/roboto.css",
               "node_modules/primeicons/primeicons.css"
             ],
             "scripts": []
