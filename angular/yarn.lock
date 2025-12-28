@@ -1899,6 +1899,14 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
+"@primeng/themes@^21.0.2":
+  version "21.0.2"
+  resolved "https://registry.npmjs.org/@primeng/themes/-/themes-21.0.2.tgz"
+  integrity sha512-wSw8BtrNUZBmgU5umzMj9WQKVyrLRQkAYORnRYI4wD6+TXVb/J2kQLHCA26vHbXfI6pO4fruft9mySFWlzXk0Q==
+  dependencies:
+    "@primeuix/styled" "^0.7.4"
+    "@primeuix/themes" "^2.0.2"
+
 "@primeuix/styled@^0.7.3", "@primeuix/styled@^0.7.4":
   version "0.7.4"
   resolved "https://registry.npmjs.org/@primeuix/styled/-/styled-0.7.4.tgz"
@@ -1912,6 +1920,13 @@
   integrity sha512-nypFRct/oaaBZqP4jinT0puW8ZIfs4u+l/vqUFmJEPU332fl5ePj6DoOpQgTLzo3OfmvSmz5a5/5b4OJJmmi7Q==
   dependencies:
     "@primeuix/styled" "^0.7.3"
+
+"@primeuix/themes@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.npmjs.org/@primeuix/themes/-/themes-2.0.2.tgz"
+  integrity sha512-prwQvA3tDGBz8yWSUenaJUttEMCEvPvxwOfFhDPmSe1vwsfVKL2Nmh5eZvtPFQnxmIOPsHZS7zc0/L3CzJ83Eg==
+  dependencies:
+    "@primeuix/styled" "^0.7.4"
 
 "@primeuix/utils@^0.6.1", "@primeuix/utils@^0.6.2":
   version "0.6.3"
@@ -4868,7 +4883,24 @@ less-loader@12.3.0:
   resolved "https://registry.npmjs.org/less-loader/-/less-loader-12.3.0.tgz"
   integrity sha512-0M6+uYulvYIWs52y0LqN4+QM9TqWAohYSNTo4htE8Z7Cn3G/qQMEmktfHmyJT23k+20kU9zHH2wrfFXkxNLtVw==
 
-less@*, "less@^3.5.0 || ^4.0.0", less@^4.2.0, less@4.3.0:
+less@*, "less@^3.5.0 || ^4.0.0", less@^4.2.0, less@^4.5.1:
+  version "4.5.1"
+  resolved "https://registry.npmjs.org/less/-/less-4.5.1.tgz"
+  integrity sha512-UKgI3/KON4u6ngSsnDADsUERqhZknsVZbnuzlRZXLQCmfC/MDld42fTydUE9B+Mla1AL6SJ/Pp6SlEFi/AVGfw==
+  dependencies:
+    copy-anything "^2.0.1"
+    parse-node-version "^1.0.1"
+    tslib "^2.3.0"
+  optionalDependencies:
+    errno "^0.1.1"
+    graceful-fs "^4.1.2"
+    image-size "~0.5.0"
+    make-dir "^2.1.0"
+    mime "^1.4.1"
+    needle "^3.1.0"
+    source-map "~0.6.0"
+
+less@4.3.0:
   version "4.3.0"
   resolved "https://registry.npmjs.org/less/-/less-4.3.0.tgz"
   integrity sha512-X9RyH9fvemArzfdP8Pi3irr7lor2Ok4rOttDXBhlwDg+wKQsXOXgHWduAJE1EsF7JJx0w0bcO6BC6tCKKYnXKA==

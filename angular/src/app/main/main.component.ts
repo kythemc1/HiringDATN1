@@ -79,5 +79,68 @@ export class MainComponent implements OnInit {
     const list = permissions.filter((p) => !!p && p.trim().length > 0);
     return this.permissionService.getGrantedPolicy(list.join(' || '));
   }
+
+  onNavClick(event: MouseEvent): void {
+    
+    // Nếu đang collapsed, chặn toggle submenu khi click vào header, cho phép click item leaf điều hướng
+    const headerEl = (event.target as HTMLElement).closest('.p-panelmenu-header-link');
+    if (headerEl) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+  }
+
+  isSectionActive(item: MenuItem): boolean {
+    const current = this.router.url.split(/[?#]/)[0];
+    const link = typeof item.routerLink === 'string' ? item.routerLink : '';
+    if (link && current.startsWith(link)) return true;
+    if (item.items?.length) {
+      return item.items.some(sm => {
+        const smLink = typeof sm.routerLink === 'string' ? sm.routerLink : '';
+        return smLink && current.startsWith(smLink);
+      });
+    }
+    return false;
+  }
+
+  mapIcon(icon?: string): string {
+    if (!icon) return 'menu';
+    if (!/\s/.test(icon) && !icon.startsWith('pi')) return icon;
+    const map: Record<string, string> = {
+      'pi pi-home': 'home',
+      'pi pi-briefcase': 'work',
+      'pi pi-users': 'group',
+      'pi pi-user': 'person',
+      'pi pi-star': 'grade',
+      'pi pi-cog': 'settings',
+      'pi pi-sitemap': 'account_tree',
+      'pi pi-book': 'menu_book',
+      'pi pi-chart-bar': 'bar_chart',
+      'pi pi-chart-line': 'show_chart',
+      'pi pi-envelope': 'mail',
+      'pi pi-file': 'description',
+      'pi pi-list': 'list',
+      'pi pi-shield': 'security',
+      'pi pi-database': 'storage',
+      'pi pi-globe': 'public',
+      'pi pi-bell': 'notifications',
+      'pi pi-calendar': 'event',
+      'pi pi-chart-pie': 'pie_chart',
+      'pi pi-folder': 'folder',
+      'pi pi-clipboard': 'assignment',
+      'pi pi-tags': 'sell',
+    };
+    return map[icon] || 'folder';
+  }
+
+  onSectionClick(index: number, item: MenuItem, event?: MouseEvent): void {
+    if (item.items?.length) {
+      // Prevent navigation when clicking a section header with children
+      event?.preventDefault();
+      // Allow toggling regardless of collapsed state so users can open lists
+      item.expanded = !item.expanded;
+      // Cập nhật đề mục cha khi người dùng tương tác vào section
+    } 
+  }
   //#endregion
 }

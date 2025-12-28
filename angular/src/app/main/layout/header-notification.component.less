@@ -1,0 +1,200 @@
+.notification-icon {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0 8px;
+}
+
+.notification-icon i {
+  font-size: 18px;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  transform: translate(50%, -50%);
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 12px;
+  line-height: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.notification-dropdown {
+  position: fixed;
+  top: 60px;
+  right: 10%;
+  background: white;
+  width: 550px;
+  max-height: 600px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.notification-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid #b1b4b7;
+  transition: background-color 0.5s ease;
+}
+
+/* Thông báo */
+.notification-item.unread.type-thongbao {
+  background-color: #f9f9ff;
+  border-left: 4px solid #007bff;
+}
+
+/* Cảnh báo */
+.notification-item.unread.type-canhbao {
+  background-color: #fff8e1;
+  border-left: 4px solid #ffc107;
+}
+
+/* Thông báo khẩn cấp */
+.notification-item.unread.type-khancap {
+  background-color: #fff0f0;
+  border-left: 4px solid #dc3545;
+}
+
+/* Đã đọc - vạch nhạt */
+.notification-item.type-thongbao:not(.unread) {
+  border-left: 4px solid #007bff40;
+}
+
+.notification-item.type-canhbao:not(.unread) {
+  border-left: 4px solid #ffc10740;
+}
+
+.notification-item.type-khancap:not(.unread) {
+  border-left: 4px solid #dc354540;
+}
+
+.notification-item.new-message {
+  animation: fadeSlideIn 0.6s ease;
+  background-color: #e6f7ff; /* màu nền nhạt khi mới vào */
+}
+
+.notification-item:hover {
+  background-color: #f1f1f1;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notification-header .title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+  margin-right: 10px;
+  /* cắt bớt khi dài */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  max-width: 350px;
+}
+
+.notification-header .date {
+  font-size: 12px;
+  color: #999;
+  white-space: nowrap;
+}
+
+.notification-item .content {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.4;
+  /* cắt bớt khi dài */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  max-height: 40px;
+}
+
+.empty-text {
+  text-align: center;
+  font-size: 13px;
+  color: #999;
+  padding: 20px 0;
+}
+
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+:host ::ng-deep .app-modal .p-dialog {
+  background: #ffffff !important; /* nền trắng */
+  color: #000000 !important; /* chữ đen */
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+:host ::ng-deep .app-modal .p-dialog-header {
+  font-size: 1.1rem !important;
+  font-weight: bold !important;
+  padding: 1rem 1.5rem !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  white-space: normal !important; /* tiêu đề dài tự xuống dòng */
+}
+
+:host ::ng-deep .app-modal .p-dialog-content {
+  padding: 1rem 1.5rem !important;
+  max-height: 50vh !important; /* giới hạn chiều cao nội dung */
+  overflow-y: auto !important; /* scroll riêng nội dung dài */
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+:host ::ng-deep .app-modal .p-dialog-footer {
+  padding: 1rem 1.5rem !important;
+  border-top: 1px solid #f0f0f0 !important;
+  text-align: right !important;
+}
+
+.dialog-body {
+  white-space: pre-line !important; /* xuống dòng đúng format */
+  line-height: 1.6 !important;
+}
+
+.link-icon {
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 1rem;
+  color: #007bff;
+}
+
+.link-icon {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.link-icon:hover {
+  color: #0056b3;
+  transform: translateY(-2px);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.link-icon.disabled {
+  opacity: 0.5;
+  pointer-events: none; /* chặn click */
+  cursor: not-allowed;
+}

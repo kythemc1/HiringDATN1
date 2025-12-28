@@ -4,7 +4,7 @@ import { AuthService, LocalizationPipe } from '@abp/ng.core';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  styleUrls: ['./home.component.less'],
   imports: [LocalizationPipe]
 })
 export class HomeComponent {

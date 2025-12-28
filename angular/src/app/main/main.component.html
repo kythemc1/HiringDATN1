@@ -1,31 +1,50 @@
 <div class="d-flex" style="height: 100vh" [abpLoading]="loading$ | async">
   <div id="left-panel">
     <a id="cts-banner" href="/">
-      <img id="cts-logo" src="assets/images/logo/logodatn.png" />
+      <img id="cts-logo" [src]="'assets/images/logo/logodatn.png' " alt="Vinatex logo" />
       <div id="cts-title-wrapper">
-        <div id="cts-title">HIRING DATN</div>
-        <div id="cts-subtitle">Hiring DATN</div>
+        <div id="cts-title">Hiring</div>
+        <div id="cts-subtitle">DATN</div>
       </div>
     </a>
     <div id="nav-menu">
-      <p-panelmenu [model]="navMenu" [multiple]="true" />
+      <ul class="menu-root">
+        <li class="menu-section" *ngFor="let m of navMenu; let i = index" [class.active]="isSectionActive(m)">
+          <a class="menu-link" [routerLink]="m.items?.length ? null : m.routerLink" (click)="onSectionClick(i, m, $event)" [class.has-children]="m.items?.length">
+            <span class="material-icons menu-icon">{{ mapIcon(m.icon) }}</span>
+            <span class="menu-text" >{{ m.label }}</span>
+            <span class="material-icons chevron" *ngIf="m.items?.length ">{{ m.expanded ? 'expand_more' : 'chevron_right' }}</span>
+          </a>
+          <ul class="submenu" *ngIf="m.items?.length && m.expanded ">
+            <li *ngFor="let sm of m.items" [routerLinkActive]="'active'">
+              <a class="submenu-link" [routerLink]="sm.routerLink">
+                <span class="submenu-decorator"></span>
+                <span class="menu-text">{{ sm.label }}</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div id="left-panel-footer">
+    
+  </div>
+
+</div>
+<div id="right-panel">
+  <div id="right-panel-header">
+    <div id="app-name">APP Hiring DATN</div>
+    <div id="control-bars">
+      <app-language-switch></app-language-switch>
+      <!-- <app-header-notification></app-header-notification> -->
+      <app-user-menu></app-user-menu>
     </div>
   </div>
-  <div id="right-panel">
-    <div id="right-panel-header">
-      <div id="app-name">APP Hiring DATN</div>
-      <div id="control-bars">
-        <!-- <app-language-switch></app-language-switch> -->
-        <!-- <app-header-notification></app-header-notification> -->
-        <app-user-menu></app-user-menu>
-      </div>
-    </div>
-    <div id="right-panel-body">
-      <router-outlet></router-outlet>
-    </div>
+  <div id="right-panel-body">
+    <router-outlet></router-outlet>
   </div>
 </div>
-<p-confirmdialog [header]="'::AreYouSure' | abpLocalization" icon="pi pi-exclamation-triangle" styleClass="app-confirm-dialog"
-  acceptIcon="pi pi-check" [acceptLabel]="'::Yes' | abpLocalization" rejectIcon="pi pi-times" [rejectLabel]="'::Cancel' | abpLocalization"
+<p-confirmdialog [header]="'Are you sure'" icon="pi pi-exclamation-triangle" styleClass="app-confirm-dialog"
+  acceptIcon="pi pi-check" [acceptLabel]="'Yes'" rejectIcon="pi pi-times" [rejectLabel]="'Cancel'"
   acceptButtonStyleClass="p-button-danger" rejectButtonStyleClass="p-button-secondary" appendTo="body" key="global" focusTrap />
 <p-toast key="global" position="bottom-right" style="z-index: 2222;"/>

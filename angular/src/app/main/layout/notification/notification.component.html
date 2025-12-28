@@ -1,0 +1,97 @@
+<!-- <button 
+  type="button" 
+  aria-label="Thông báo" 
+  title="Thông báo" 
+  class="notif-btn"
+  (click)="togglePanel($event)">
+  <span class="material-icons" style="color: #384250;">notifications</span>
+  <span class="notif-badge" *ngIf="unreadCount > 0">{{ unreadCount > 99 ? '99+' : unreadCount }}</span>
+</button>
+
+<p-overlayPanel 
+  #notifPanel 
+  [style]="{'width': '400px', 'max-height': '600px'}"
+  [showCloseIcon]="false"
+  styleClass="notif-overlay">
+  
+  <ng-template pTemplate="content">
+    <div class="notif-container">
+      <div class="notif-header d-flex justify-content-between">
+        <h4 class="notif-title">Thông báo</h4>
+
+        <div style="color: #20479E; font-size: 15px; cursor: pointer;" (click)="viewAll()">Xem tất cả</div>
+      </div>
+
+      <div class="notif-tabs">
+        <button 
+          type="button"
+          class="notif-tab"
+          [class.active]="activeTab === 'all'"
+          (click)="switchTab('all')">
+          Tất cả
+        </button>
+        <button 
+          type="button"
+          class="notif-tab"
+          [class.active]="activeTab === 'unread'"
+          (click)="switchTab('unread')">
+          Chưa đọc
+        </button>
+      </div>
+
+      <!-- <div class="notif-all d-flex justify-content-between" style="padding: 12px 10px;">
+        <div style="color: #09090B; font-weight: 700; font-size: 18px">Trước đó</div>
+        <div style="color: #20479E; font-size: 15px; cursor: pointer;" (click)="viewAll()">Xem tất cả</div>
+      </div> -->
+
+      <!-- <div class="notif-list">
+        <div *ngIf="loading && notifications.length === 0" class="text-center py-4">
+          <i class="pi pi-spin pi-spinner" style="font-size: 2rem;"></i>
+        </div>
+
+        <div *ngIf="!loading && notifications.length === 0" class="notif-empty">
+          <i class="pi pi-inbox" style="font-size: 3rem; color: #ccc;"></i>
+          <p>Không có thông báo</p>
+        </div>
+
+        <div 
+          *ngFor="let notif of notifications"
+          class="notif-item"
+          [class.unread]="!notif.isDoc"
+          (click)="onNotificationClick(notif)">
+          
+          <div class="notif-avatar">
+            <i class="pi pi-bell"></i>
+          </div>
+
+          <div class="notif-content">
+            <div class="notif-text line-clamp-2">
+              {{ notif.duLieu }}
+            </div>
+            <div class="notif-meta">
+              <span class="notif-time">{{ getTimeAgo(notif.thoiGiantao) }}</span>
+            </div>
+          </div>
+
+          <div class="notif-indicator" *ngIf="!notif.isDoc">
+            <span class="unread-dot"></span>
+          </div>
+        </div>
+
+        <div 
+          *ngIf="hasMore && notifications.length > 0 && !loading" 
+          class="notif-load-more"
+          (click)="loadMore()">
+          <button type="button" class="load-more-btn">
+            <span>Xem thông báo trước đó</span>
+          </button>
+        </div>
+
+        <div *ngIf="loading && notifications.length > 0" class="text-center py-3">
+          <i class="pi pi-spinner pi-spin" style="font-size: 1.5rem;"></i>
+        </div>
+      </div>
+
+    </div>
+  </ng-template>
+</p-overlayPanel> --> 

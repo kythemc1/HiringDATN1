@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { MainRoutingModule } from './main-routing.module';
 
-// import { LanguageSwitchComponent } from './layout/language-switch.component';
+import { LanguageSwitchComponent } from './layout/language-switch.component';
 import { UserMenuComponent } from './layout/user-menu.component';
 import { MainComponent } from './main.component';
 
@@ -18,7 +18,7 @@ import { DynamicDialogModule, DialogService } from 'primeng/dynamicdialog';
 import { SharedModule as AppSharedModule } from '../shared/shared.module';
 // import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { DialogModule } from 'primeng/dialog';
-// import { NotificationComponent } from './layout/notification/notification.component';
+import { NotificationComponent } from './layout/notification/notification.component';
 
 @NgModule({
   imports: [
@@ -32,12 +32,11 @@ import { DialogModule } from 'primeng/dialog';
     AsyncPipe,
     DynamicDialogModule,
     AppSharedModule,
-    // OverlayPanelModule,
     DialogModule, 
 ],
   declarations: [
-    // LanguageSwitchComponent,
-    // NotificationComponent,
+    LanguageSwitchComponent,
+    NotificationComponent,
     UserMenuComponent,
     MainComponent,
   ],
