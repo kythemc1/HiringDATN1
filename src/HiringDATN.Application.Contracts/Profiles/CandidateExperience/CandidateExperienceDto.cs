@@ -18,7 +18,7 @@ public class CandidateExperienceDto : AuditedEntityDto<long?>
     public string? Description { get; set; }
 }
 
-public class CreateUpdateCandidateExperienceDto : AuditedEntityDto<long?>
+public class CreateUpdateCandidateExperienceDto : EntityDto<long?>
 {
     public long ProfileId { get; set; }
     public string? CompanyName { get; set; }

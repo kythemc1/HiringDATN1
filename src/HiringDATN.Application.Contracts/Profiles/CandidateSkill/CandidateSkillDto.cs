@@ -13,7 +13,7 @@ public class CandidateSkillDto : AuditedEntityDto<long?>
     public SkillLevel Level { get; set; }
 }
 
-public class CreateUpdateCandidateSkillDto : AuditedEntityDto<long?>
+public class CreateUpdateCandidateSkillDto : EntityDto<long?>
 {
     public long ProfileId { get; set; }
     public long SkillDefinitionId { get; set; }

@@ -20,7 +20,7 @@ public class CandidateProfileDto : AuditedEntityDto<long?>
     public string? LinkedInUrl { get; set; }
 }
 
-public class CreateUpdateCandidateProfileDto : AuditedEntityDto<long?>
+public class CreateUpdateCandidateProfileDto : EntityDto<long?>
 {
     public long UserId { get; set; }
     public string? FullName { get; set; }

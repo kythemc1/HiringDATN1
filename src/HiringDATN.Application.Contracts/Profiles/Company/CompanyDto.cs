@@ -16,7 +16,7 @@ public class CompanyDto : AuditedEntityDto<long?>
     public string? Address { get; set; }
 }
 
-public class CreateUpdateCompanyDto : AuditedEntityDto<long?>
+public class CreateUpdateCompanyDto : EntityDto<long?>
 {
     public string? Name { get; set; }
     public string? Description { get; set; }

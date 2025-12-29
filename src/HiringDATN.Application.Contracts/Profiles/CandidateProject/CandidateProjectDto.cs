@@ -17,7 +17,7 @@ public class CandidateProjectDto : AuditedEntityDto<long?>
     public string? Role { get; set; }
 }
 
-public class CreateUpdateCandidateProjectDto : AuditedEntityDto<long?>
+public class CreateUpdateCandidateProjectDto : EntityDto<long?>
 {
     public long ProfileId { get; set; }
     public string? Name { get; set; }

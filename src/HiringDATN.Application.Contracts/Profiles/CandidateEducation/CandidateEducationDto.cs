@@ -18,7 +18,7 @@ public class CandidateEducationDto : AuditedEntityDto<long?>
     public string? Description { get; set; }
 }
 
-public class CreateUpdateCandidateEducationDto : AuditedEntityDto<long?>
+public class CreateUpdateCandidateEducationDto : EntityDto<long?>
 {
     public long ProfileId { get; set; }
     public string? SchoolName { get; set; }

@@ -16,7 +16,7 @@ public class CandidateCertificateDto : AuditedEntityDto<long?>
     public string? CredentialUrl { get; set; }
 }
 
-public class CreateUpdateCandidateCertificateDto : AuditedEntityDto<long?>
+public class CreateUpdateCandidateCertificateDto : EntityDto<long?>
 {
     public long ProfileId { get; set; }
     public string? Name { get; set; }
