@@ -14,7 +14,7 @@ export class JobPositionService {
     this.restService.request<any, JobPositionDto>({
       method: 'POST',
       url: '/api/JobPosition',
-      params: { name: input.name, alias: input.alias, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { name: input.name, alias: input.alias, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class JobPositionService {
     this.restService.request<any, JobPositionDto>({
       method: 'PUT',
       url: '/api/JobPosition',
-      params: { id, name: input.name, alias: input.alias, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { id, name: input.name, alias: input.alias, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId},
     },
     { apiName: this.apiName,...config });
 

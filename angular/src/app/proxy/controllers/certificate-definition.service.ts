@@ -14,7 +14,7 @@ export class CertificateDefinitionService {
     this.restService.request<any, CertificateDefinitionDto>({
       method: 'POST',
       url: '/api/CertificateDefinition',
-      params: { name: input.name, issuer: input.issuer, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { name: input.name, issuer: input.issuer, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class CertificateDefinitionService {
     this.restService.request<any, CertificateDefinitionDto>({
       method: 'PUT',
       url: '/api/CertificateDefinition',
-      params: { id, name: input.name, issuer: input.issuer, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { id, name: input.name, issuer: input.issuer, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId},
     },
     { apiName: this.apiName,...config });
 

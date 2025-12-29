@@ -14,7 +14,7 @@ export class CandidateProfileService {
     this.restService.request<any, CandidateProfileDto>({
       method: 'POST',
       url: '/api/CandidateProfile',
-      params: { userId: input.userId, fullName: input.fullName, jobTitle: input.jobTitle, aboutMe: input.aboutMe, dateOfBirth: input.dateOfBirth, phoneNumber: input.phoneNumber, email: input.email, address: input.address, githubUrl: input.githubUrl, linkedInUrl: input.linkedInUrl, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { userId: input.userId, fullName: input.fullName, jobTitle: input.jobTitle, aboutMe: input.aboutMe, dateOfBirth: input.dateOfBirth, phoneNumber: input.phoneNumber, email: input.email, address: input.address, githubUrl: input.githubUrl, linkedInUrl: input.linkedInUrl, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class CandidateProfileService {
     this.restService.request<any, CandidateProfileDto>({
       method: 'PUT',
       url: '/api/CandidateProfile',
-      params: { id, userId: input.userId, fullName: input.fullName, jobTitle: input.jobTitle, aboutMe: input.aboutMe, dateOfBirth: input.dateOfBirth, phoneNumber: input.phoneNumber, email: input.email, address: input.address, githubUrl: input.githubUrl, linkedInUrl: input.linkedInUrl, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { id, userId: input.userId, fullName: input.fullName, jobTitle: input.jobTitle, aboutMe: input.aboutMe, dateOfBirth: input.dateOfBirth, phoneNumber: input.phoneNumber, email: input.email, address: input.address, githubUrl: input.githubUrl, linkedInUrl: input.linkedInUrl},
     },
     { apiName: this.apiName,...config });
 

@@ -14,7 +14,7 @@ export class AiModelConfigService {
     this.restService.request<any, AiModelConfigDto>({
       method: 'POST',
       url: '/api/AiModelConfig',
-      params: { providerName: input.providerName, modelName: input.modelName, apiKey: input.apiKey, baseUrl: input.baseUrl, isActive: input.isActive, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { providerName: input.providerName, modelName: input.modelName, apiKey: input.apiKey, baseUrl: input.baseUrl, isActive: input.isActive, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class AiModelConfigService {
     this.restService.request<any, AiModelConfigDto>({
       method: 'PUT',
       url: '/api/AiModelConfig',
-      params: { id, providerName: input.providerName, modelName: input.modelName, apiKey: input.apiKey, baseUrl: input.baseUrl, isActive: input.isActive, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId },
+      params: { id, providerName: input.providerName, modelName: input.modelName, apiKey: input.apiKey, baseUrl: input.baseUrl, isActive: input.isActive, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId},
     },
     { apiName: this.apiName,...config });
 

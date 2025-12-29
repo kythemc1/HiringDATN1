@@ -14,7 +14,7 @@ export class CandidateEducationService {
     this.restService.request<any, CandidateEducationDto>({
       method: 'POST',
       url: '/api/CandidateEducation',
-      params: { profileId: input.profileId, schoolName: input.schoolName, degree: input.degree, major: input.major, startDate: input.startDate, endDate: input.endDate, gpa: input.gpa, description: input.description, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { profileId: input.profileId, schoolName: input.schoolName, degree: input.degree, major: input.major, startDate: input.startDate, endDate: input.endDate, gpa: input.gpa, description: input.description, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class CandidateEducationService {
     this.restService.request<any, CandidateEducationDto>({
       method: 'PUT',
       url: '/api/CandidateEducation',
-      params: { id, profileId: input.profileId, schoolName: input.schoolName, degree: input.degree, major: input.major, startDate: input.startDate, endDate: input.endDate, gpa: input.gpa, description: input.description, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { id, profileId: input.profileId, schoolName: input.schoolName, degree: input.degree, major: input.major, startDate: input.startDate, endDate: input.endDate, gpa: input.gpa, description: input.description},
     },
     { apiName: this.apiName,...config });
 

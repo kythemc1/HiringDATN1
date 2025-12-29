@@ -14,7 +14,7 @@ export class UniversityService {
     this.restService.request<any, UniversityDto>({
       method: 'POST',
       url: '/api/University',
-      params: { name: input.name, code: input.code, country: input.country, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { name: input.name, code: input.code, country: input.country, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class UniversityService {
     this.restService.request<any, UniversityDto>({
       method: 'PUT',
       url: '/api/University',
-      params: { id, name: input.name, code: input.code, country: input.country, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { id, name: input.name, code: input.code, country: input.country, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId},
     },
     { apiName: this.apiName,...config });
 

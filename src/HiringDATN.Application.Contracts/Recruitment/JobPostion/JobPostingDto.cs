@@ -19,7 +19,7 @@ public class JobPostingDto : AuditedEntityDto<long?>
     public bool IsAiGenerated { get; set; }
 }
 
-public class CreateUpdateJobPostingDto : AuditedEntityDto<long?>
+public class CreateUpdateJobPostingDto : EntityDto<long?>
 {
     public long CompanyId { get; set; }
     public string? Title { get; set; }

@@ -14,7 +14,7 @@ export class JobApplicationService {
     this.restService.request<any, JobApplicationDto>({
       method: 'POST',
       url: '/api/JobApplication',
-      params: { jobId: input.jobId, candidateProfileId: input.candidateProfileId, profileSnapshotJson: input.profileSnapshotJson, coverLetter: input.coverLetter, status: input.status, aiMatchingScore: input.aiMatchingScore, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { jobId: input.jobId, candidateProfileId: input.candidateProfileId, profileSnapshotJson: input.profileSnapshotJson, coverLetter: input.coverLetter, status: input.status, aiMatchingScore: input.aiMatchingScore, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class JobApplicationService {
     this.restService.request<any, JobApplicationDto>({
       method: 'PUT',
       url: '/api/JobApplication',
-      params: { id, jobId: input.jobId, candidateProfileId: input.candidateProfileId, profileSnapshotJson: input.profileSnapshotJson, coverLetter: input.coverLetter, status: input.status, aiMatchingScore: input.aiMatchingScore, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { id, jobId: input.jobId, candidateProfileId: input.candidateProfileId, profileSnapshotJson: input.profileSnapshotJson, coverLetter: input.coverLetter, status: input.status, aiMatchingScore: input.aiMatchingScore},
     },
     { apiName: this.apiName,...config });
 

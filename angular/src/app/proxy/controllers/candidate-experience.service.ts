@@ -14,7 +14,7 @@ export class CandidateExperienceService {
     this.restService.request<any, CandidateExperienceDto>({
       method: 'POST',
       url: '/api/CandidateExperience',
-      params: { profileId: input.profileId, companyName: input.companyName, position: input.position, startDate: input.startDate, endDate: input.endDate, isCurrent: input.isCurrent, description: input.description, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { profileId: input.profileId, companyName: input.companyName, position: input.position, startDate: input.startDate, endDate: input.endDate, isCurrent: input.isCurrent, description: input.description, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class CandidateExperienceService {
     this.restService.request<any, CandidateExperienceDto>({
       method: 'PUT',
       url: '/api/CandidateExperience',
-      params: { id, profileId: input.profileId, companyName: input.companyName, position: input.position, startDate: input.startDate, endDate: input.endDate, isCurrent: input.isCurrent, description: input.description, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { id, profileId: input.profileId, companyName: input.companyName, position: input.position, startDate: input.startDate, endDate: input.endDate, isCurrent: input.isCurrent, description: input.description},
     },
     { apiName: this.apiName,...config });
 

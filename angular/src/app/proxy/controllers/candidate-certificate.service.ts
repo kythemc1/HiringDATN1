@@ -14,7 +14,7 @@ export class CandidateCertificateService {
     this.restService.request<any, CandidateCertificateDto>({
       method: 'POST',
       url: '/api/CandidateCertificate',
-      params: { profileId: input.profileId, name: input.name, issuer: input.issuer, issueDate: input.issueDate, expiryDate: input.expiryDate, credentialUrl: input.credentialUrl, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { profileId: input.profileId, name: input.name, issuer: input.issuer, issueDate: input.issueDate, expiryDate: input.expiryDate, credentialUrl: input.credentialUrl, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class CandidateCertificateService {
     this.restService.request<any, CandidateCertificateDto>({
       method: 'PUT',
       url: '/api/CandidateCertificate',
-      params: { id, profileId: input.profileId, name: input.name, issuer: input.issuer, issueDate: input.issueDate, expiryDate: input.expiryDate, credentialUrl: input.credentialUrl, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId },
+      params: { id, profileId: input.profileId, name: input.name, issuer: input.issuer, issueDate: input.issueDate, expiryDate: input.expiryDate, credentialUrl: input.credentialUrl},
     },
     { apiName: this.apiName,...config });
 

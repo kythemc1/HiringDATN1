@@ -14,7 +14,7 @@ export class ChatMessageService {
     this.restService.request<any, ChatMessageDto>({
       method: 'POST',
       url: '/api/ChatMessage',
-      params: { sessionId: input.sessionId, role: input.role, content: input.content, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { sessionId: input.sessionId, role: input.role, content: input.content, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class ChatMessageService {
     this.restService.request<any, ChatMessageDto>({
       method: 'PUT',
       url: '/api/ChatMessage',
-      params: { id, sessionId: input.sessionId, role: input.role, content: input.content, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { id, sessionId: input.sessionId, role: input.role, content: input.content, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId},
     },
     { apiName: this.apiName,...config });
 

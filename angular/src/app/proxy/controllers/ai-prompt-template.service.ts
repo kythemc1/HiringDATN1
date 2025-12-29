@@ -14,7 +14,7 @@ export class AiPromptTemplateService {
     this.restService.request<any, AiPromptTemplateDto>({
       method: 'POST',
       url: '/api/AiPromptTemplate',
-      params: { code: input.code, templateContent: input.templateContent, description: input.description, modelConfigId: input.modelConfigId, temperature: input.temperature, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { code: input.code, templateContent: input.templateContent, description: input.description, modelConfigId: input.modelConfigId, temperature: input.temperature, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class AiPromptTemplateService {
     this.restService.request<any, AiPromptTemplateDto>({
       method: 'PUT',
       url: '/api/AiPromptTemplate',
-      params: { id, code: input.code, templateContent: input.templateContent, description: input.description, modelConfigId: input.modelConfigId, temperature: input.temperature, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId },
+      params: { id, code: input.code, templateContent: input.templateContent, description: input.description, modelConfigId: input.modelConfigId, temperature: input.temperature, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId},
     },
     { apiName: this.apiName,...config });
 

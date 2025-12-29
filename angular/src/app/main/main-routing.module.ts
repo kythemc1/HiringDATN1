@@ -78,7 +78,10 @@ const routes: Routes = [
       {
         path: 'quan-ly-nghiep-vu',
         children: [
-
+          {
+            path: '',
+            loadChildren: () => import('./nghiep-vu/cv/cv.module').then(m => m.CvModule),
+          },
         ],
       },
       //#endregion

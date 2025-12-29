@@ -67,6 +67,7 @@ import { SafePipe } from './pipes/safe.pipe';
 
 //#region Components
 import { DynamicTableComponent } from './components/dynamic-table/dynamic-table.component';
+import { CommonButtonComponent } from './components/common-button/common-button.component';
 //#endregion
 
 const modules = [
@@ -128,13 +129,14 @@ const modules = [
 ];
 
 // const components = [
-//   PageHeaderComponent,
-//   ImportExcelModalComponent,
-//   ExportExcelDialogComponent,
-//   ImportExcelDialogComponent,
-//   PdfViewerComponent, 
-//   SourceLabelComponent,
-//   StatusLabelComponent
+//   // PageHeaderComponent,
+//   // ImportExcelModalComponent,
+//   // ExportExcelDialogComponent,
+//   // ImportExcelDialogComponent,
+//   // PdfViewerComponent, 
+//   // SourceLabelComponent,
+//   // StatusLabelComponent
+//   // CommonButtonComponent,
 // ];
 
 const directives = [
@@ -152,6 +154,7 @@ const services = [
 @NgModule({
   declarations: [
     DynamicTableComponent,
+    CommonButtonComponent,
     // ...components,
     ...directives,
     ...pipes,
@@ -162,6 +165,7 @@ const services = [
   exports: [
     ...modules,
     DynamicTableComponent,
+    CommonButtonComponent,
     // ...components,
   ],
   providers: [

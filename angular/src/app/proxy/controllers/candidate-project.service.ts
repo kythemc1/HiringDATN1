@@ -14,7 +14,7 @@ export class CandidateProjectService {
     this.restService.request<any, CandidateProjectDto>({
       method: 'POST',
       url: '/api/CandidateProject',
-      params: { profileId: input.profileId, name: input.name, linkUrl: input.linkUrl, description: input.description, technologies: input.technologies, teamSize: input.teamSize, role: input.role, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { profileId: input.profileId, name: input.name, linkUrl: input.linkUrl, description: input.description, technologies: input.technologies, teamSize: input.teamSize, role: input.role, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class CandidateProjectService {
     this.restService.request<any, CandidateProjectDto>({
       method: 'PUT',
       url: '/api/CandidateProject',
-      params: { id, profileId: input.profileId, name: input.name, linkUrl: input.linkUrl, description: input.description, technologies: input.technologies, teamSize: input.teamSize, role: input.role, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { id, profileId: input.profileId, name: input.name, linkUrl: input.linkUrl, description: input.description, technologies: input.technologies, teamSize: input.teamSize, role: input.role},
     },
     { apiName: this.apiName,...config });
 

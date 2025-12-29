@@ -13,6 +13,7 @@ export * from './chat-session.service';
 export * from './company.service';
 export * from './cover-letter.service';
 export * from './cv-content-app.service';
+export * from './cv.service';
 export * from './generate-job-description.service';
 export * from './job-application.service';
 export * from './job-position.service';

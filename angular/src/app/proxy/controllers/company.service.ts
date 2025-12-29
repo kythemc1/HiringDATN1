@@ -14,7 +14,7 @@ export class CompanyService {
     this.restService.request<any, CompanyDto>({
       method: 'POST',
       url: '/api/Company',
-      params: { name: input.name, description: input.description, website: input.website, logoUrl: input.logoUrl, address: input.address, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { name: input.name, description: input.description, website: input.website, logoUrl: input.logoUrl, address: input.address, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class CompanyService {
     this.restService.request<any, CompanyDto>({
       method: 'PUT',
       url: '/api/Company',
-      params: { id, name: input.name, description: input.description, website: input.website, logoUrl: input.logoUrl, address: input.address, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { id, name: input.name, description: input.description, website: input.website, logoUrl: input.logoUrl, address: input.address},
     },
     { apiName: this.apiName,...config });
 

@@ -14,7 +14,7 @@ export class UserFeedbackService {
     this.restService.request<any, UserFeedbackDto>({
       method: 'POST',
       url: '/api/UserFeedback',
-      params: { messageId: input.messageId, rating: input.rating, comment: input.comment, isHelpful: input.isHelpful, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { messageId: input.messageId, rating: input.rating, comment: input.comment, isHelpful: input.isHelpful, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class UserFeedbackService {
     this.restService.request<any, UserFeedbackDto>({
       method: 'PUT',
       url: '/api/UserFeedback',
-      params: { id, messageId: input.messageId, rating: input.rating, comment: input.comment, isHelpful: input.isHelpful, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { id, messageId: input.messageId, rating: input.rating, comment: input.comment, isHelpful: input.isHelpful, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId},
     },
     { apiName: this.apiName,...config });
 

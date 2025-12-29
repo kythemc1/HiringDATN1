@@ -14,7 +14,7 @@ export class AgentThinkingLogService {
     this.restService.request<any, AgentThinkingLogDto>({
       method: 'POST',
       url: '/api/AgentThinkingLog',
-      params: { messageId: input.messageId, agentName: input.agentName, stepName: input.stepName, inputData: input.inputData, outputData: input.outputData, durationMs: input.durationMs, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { messageId: input.messageId, agentName: input.agentName, stepName: input.stepName, inputData: input.inputData, outputData: input.outputData, durationMs: input.durationMs, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class AgentThinkingLogService {
     this.restService.request<any, AgentThinkingLogDto>({
       method: 'PUT',
       url: '/api/AgentThinkingLog',
-      params: { id, messageId: input.messageId, agentName: input.agentName, stepName: input.stepName, inputData: input.inputData, outputData: input.outputData, durationMs: input.durationMs, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { id, messageId: input.messageId, agentName: input.agentName, stepName: input.stepName, inputData: input.inputData, outputData: input.outputData, durationMs: input.durationMs, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId},
     },
     { apiName: this.apiName,...config });
 

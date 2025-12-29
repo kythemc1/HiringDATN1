@@ -14,7 +14,7 @@ export class CandidateSkillService {
     this.restService.request<any, CandidateSkillDto>({
       method: 'POST',
       url: '/api/CandidateSkill',
-      params: { profileId: input.profileId, skillDefinitionId: input.skillDefinitionId, level: input.level, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { profileId: input.profileId, skillDefinitionId: input.skillDefinitionId, level: input.level, id: input.id },
     },
     { apiName: this.apiName,...config });
   
@@ -50,7 +50,7 @@ export class CandidateSkillService {
     this.restService.request<any, CandidateSkillDto>({
       method: 'PUT',
       url: '/api/CandidateSkill',
-      params: { id, profileId: input.profileId, skillDefinitionId: input.skillDefinitionId, level: input.level, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId  },
+      params: { id, profileId: input.profileId, skillDefinitionId: input.skillDefinitionId, level: input.level},
     },
     { apiName: this.apiName,...config });
 

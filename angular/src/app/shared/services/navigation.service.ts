@@ -28,6 +28,9 @@ export class NavigationService {
         new AppMenuItem('Skill definition', '', null, '/main/danh-muc-chung/skill-definition'),
           
       ]),
+      new AppMenuItem('Quản lý nghiệp vụ', '', null, '', [
+        new AppMenuItem('CV', '', null, '/main/quan-ly-nghiep-vu/cv'),
+      ]),
      
     ];
   }

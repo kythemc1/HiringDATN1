@@ -1,0 +1,288 @@
+<ng-container *ngIf="inline">
+  <app-toggleable-card title="Thông tin hồ sơ ứng viên">
+    <div class="card-body">
+      <form [formGroup]="form" class="p-fluid" (ngSubmit)="!readOnly && save()">
+        <div formGroupName="createUpdateCandidateProfileDto">
+          <div class="row g-3">
+            <div class="col-4 form-group">
+              <label>Họ và tên</label>
+              <input pInputText type="text" formControlName="fullName" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Email</label>
+              <input pInputText type="email" formControlName="email" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Số điện thoại</label>
+              <input pInputText type="text" formControlName="phoneNumber" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Chức danh</label>
+              <input pInputText type="text" formControlName="jobTitle" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Ngày sinh</label>
+              <input pInputText type="date" formControlName="dateOfBirth" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Địa chỉ</label>
+              <input pInputText type="text" formControlName="address" class="w-100" />
+            </div>
+            <div class="col-6 form-group">
+              <label>GitHub</label>
+              <input pInputText formControlName="githubUrl" class="w-100" />
+            </div>
+            <div class="col-6 form-group">
+              <label>LinkedIn</label>
+              <input pInputText formControlName="linkedInUrl" class="w-100" />
+            </div>
+            <div class="col-12 form-group">
+              <label>Giới thiệu</label>
+              <textarea pInputTextarea rows="3" formControlName="aboutMe" class="form-control"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <ng-container formArrayName="createUpdateCandidateCertificateDtos">
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <h5 class="mb-0">Chứng chỉ</h5>
+            <vt-button type="button" [label]="'Thêm'" [outline]="true" (buttonClick)="addCertificate()"></vt-button>
+          </div>
+          <div
+            *ngFor="let certificate of candidateCertificateForms.controls; let i = index"
+            [formGroupName]="i"
+            class="row g-3 mt-2 border rounded px-3 py-2"
+          >
+            <div class="col-5 form-group">
+              <label>Tên chứng chỉ</label>
+              <input pInputText formControlName="name" class="w-100" />
+            </div>
+            <div class="col-5 form-group">
+              <label>Đơn vị cấp</label>
+              <input pInputText formControlName="issuer" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Ngày cấp</label>
+              <input pInputText type="date" formControlName="issueDate" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Ngày hết hạn</label>
+              <input pInputText type="date" formControlName="expiryDate" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Liên kết</label>
+              <input pInputText formControlName="credentialUrl" class="w-100" />
+            </div>
+            <div class="col-12 text-end">
+              <vt-button
+                type="button"
+                [label]="'Xóa'"
+                [color]="'danger'"
+                [outline]="true"
+                (buttonClick)="removeCertificate(i)"
+              ></vt-button>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container formArrayName="createUpdateCandidateEducationDtos">
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <h5 class="mb-0">Học vấn</h5>
+            <vt-button type="button" [label]="'Thêm'" [outline]="true" (buttonClick)="addEducation()"></vt-button>
+          </div>
+          <div
+            *ngFor="let education of candidateEducationForms.controls; let i = index"
+            [formGroupName]="i"
+            class="row g-3 mt-2 border rounded px-3 py-2"
+          >
+            <div class="col-4 form-group">
+              <label>Trường</label>
+              <input pInputText formControlName="schoolName" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Bằng cấp</label>
+              <input pInputText formControlName="degree" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Chuyên ngành</label>
+              <input pInputText formControlName="major" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Từ</label>
+              <input pInputText type="date" formControlName="startDate" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Đến</label>
+              <input pInputText type="date" formControlName="endDate" class="w-100" />
+            </div>
+            <div class="col-3 form-group">
+              <label>GPA</label>
+              <input pInputText type="number" formControlName="gpa" class="w-100" />
+            </div>
+            <div class="col-12 form-group">
+              <label>Mô tả</label>
+              <textarea pInputTextarea rows="2" formControlName="description" class="form-control"></textarea>
+            </div>
+            <div class="col-12 text-end">
+              <vt-button
+                type="button"
+                [label]="'Xóa'"
+                [color]="'danger'"
+                [outline]="true"
+                (buttonClick)="removeEducation(i)"
+              ></vt-button>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container formArrayName="createUpdateCandidateExperienceDtos">
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <h5 class="mb-0">Kinh nghiệm</h5>
+            <vt-button type="button" [label]="'Thêm'" [outline]="true" (buttonClick)="addExperience()"></vt-button>
+          </div>
+          <div
+            *ngFor="let experience of candidateExperienceForms.controls; let i = index"
+            [formGroupName]="i"
+            class="row g-3 mt-2 border rounded px-3 py-2"
+          >
+            <div class="col-4 form-group">
+              <label>Công ty</label>
+              <input pInputText formControlName="companyName" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Vị trí</label>
+              <input pInputText formControlName="position" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Từ</label>
+              <input pInputText type="date" formControlName="startDate" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Đến</label>
+              <input pInputText type="date" formControlName="endDate" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Còn làm?</label>
+              <input type="checkbox" formControlName="isCurrent" />
+            </div>
+            <div class="col-12 form-group">
+              <label>Mô tả</label>
+              <textarea pInputTextarea rows="2" formControlName="description" class="form-control"></textarea>
+            </div>
+            <div class="col-12 text-end">
+              <vt-button
+                type="button"
+                [label]="'Xóa'"
+                [color]="'danger'"
+                [outline]="true"
+                (buttonClick)="removeExperience(i)"
+              ></vt-button>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container formArrayName="createUpdateCandidateSkillDtos">
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <h5 class="mb-0">Kỹ năng</h5>
+            <vt-button type="button" [label]="'Thêm'" [outline]="true" (buttonClick)="addSkill()"></vt-button>
+          </div>
+          <div
+            *ngFor="let skill of candidateSkillForms.controls; let i = index"
+            [formGroupName]="i"
+            class="row g-3 mt-2 border rounded px-3 py-2"
+          >
+            <div class="col-5 form-group">
+              <label>Mã kỹ năng</label>
+              <input pInputText formControlName="skillDefinitionId" class="w-100" />
+            </div>
+            <div class="col-5 form-group">
+              <label>Level</label>
+              <input pInputText formControlName="level" class="w-100" />
+            </div>
+            <div class="col-12 text-end">
+              <vt-button
+                type="button"
+                [label]="'Xóa'"
+                [color]="'danger'"
+                [outline]="true"
+                (buttonClick)="removeSkill(i)"
+              ></vt-button>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container formArrayName="createUpdateCandidateProjectDtos">
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <h5 class="mb-0">Dự án</h5>
+            <vt-button type="button" [label]="'Thêm'" [outline]="true" (buttonClick)="addProject()"></vt-button>
+          </div>
+          <div
+            *ngFor="let project of candidateProjectForms.controls; let i = index"
+            [formGroupName]="i"
+            class="row g-3 mt-2 border rounded px-3 py-2"
+          >
+            <div class="col-4 form-group">
+              <label>Tên</label>
+              <input pInputText formControlName="name" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Url</label>
+              <input pInputText formControlName="linkUrl" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Công nghệ</label>
+              <input pInputText formControlName="technologies" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Team size</label>
+              <input type="number" pInputText formControlName="teamSize" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Vai trò</label>
+              <input pInputText formControlName="role" class="w-100" />
+            </div>
+            <div class="col-12 form-group">
+              <label>Mô tả</label>
+              <textarea pInputTextarea rows="2" formControlName="description" class="form-control"></textarea>
+            </div>
+            <div class="col-12 text-end">
+              <vt-button
+                type="button"
+                [label]="'Xóa'"
+                [color]="'danger'"
+                [outline]="true"
+                (buttonClick)="removeProject(i)"
+              ></vt-button>
+            </div>
+          </div>
+        </ng-container>
+      </form>
+    </div>
+    <div class="card-fotter d-flex justify-content-between align-items-center" style="padding: 10px">
+      <div></div>
+      <div class="d-flex gap-2">
+        <vt-button
+          type="button"
+          [label]="readOnly ? 'Đóng' : 'Hủy'"
+          [color]="readOnly ? 'danger' : 'danger'"
+          [outline]="true"
+          [width]="112"
+          [height]="36"
+          (buttonClick)="close()"
+        >
+          <i class="pi pi-times"></i>
+        </vt-button>
+        <vt-button
+          *ngIf="!readOnly"
+          type="submit"
+          [label]="'Lưu'"
+          [color]="'custom'"
+          [width]="112"
+          [height]="36"
+        >
+          <i class="pi pi-check"></i>
+        </vt-button>
+      </div>
+    </div>
+  </app-toggleable-card>
+</ng-container>

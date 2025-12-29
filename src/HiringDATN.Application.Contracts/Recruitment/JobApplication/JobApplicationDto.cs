@@ -16,7 +16,7 @@ public class JobApplicationDto : AuditedEntityDto<long?>
     public double? AiMatchingScore { get; set; }
 }
 
-public class CreateUpdateJobApplicationDto : AuditedEntityDto<long?>
+public class CreateUpdateJobApplicationDto : EntityDto<long?>
 {
     public long JobId { get; set; }
     public long CandidateProfileId { get; set; }
