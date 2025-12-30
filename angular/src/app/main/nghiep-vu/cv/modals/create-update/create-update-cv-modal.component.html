@@ -274,11 +274,12 @@
         </vt-button>
         <vt-button
           *ngIf="!readOnly"
-          type="submit"
+          type="button"
           [label]="'Lưu'"
           [color]="'custom'"
           [width]="112"
           [height]="36"
+          (buttonClick)="save()"
         >
           <i class="pi pi-check"></i>
         </vt-button>

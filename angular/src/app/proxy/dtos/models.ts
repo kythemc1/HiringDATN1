@@ -2,6 +2,7 @@ import type { AuditedEntityDto, EntityDto, PagedAndSortedResultRequestDto } from
 import type { SkillLevel } from './skill-level.enum';
 import type { CoverLetterTone } from './cover-letter-tone.enum';
 import type { ApplicationStatus } from './application-status.enum';
+import type { JobStatus } from './job-status.enum';
 
 export interface AgentThinkingLogDto extends AuditedEntityDto<number> {
   messageId: number;
@@ -265,6 +266,18 @@ export interface CreateUpdateJobPositionDto extends AuditedEntityDto<number> {
   alias?: string;
 }
 
+export interface CreateUpdateJobPostingDto extends EntityDto<number> {
+  companyId: number;
+  title?: string;
+  jobDescription?: string;
+  jobRequirements?: string;
+  benefits?: string;
+  salaryRange?: string;
+  location?: string;
+  status?: JobStatus;
+  isAiGenerated: boolean;
+}
+
 export interface CreateUpdateSkillDefinitionDto extends AuditedEntityDto<number> {
   name?: string;
   category?: string;
@@ -303,6 +316,18 @@ export interface JobApplicationDto extends AuditedEntityDto<number> {
 export interface JobPositionDto extends AuditedEntityDto<number> {
   name?: string;
   alias?: string;
+}
+
+export interface JobPostingDto extends AuditedEntityDto<number> {
+  companyId: number;
+  title?: string;
+  jobDescription?: string;
+  jobRequirements?: string;
+  benefits?: string;
+  salaryRange?: string;
+  location?: string;
+  status?: JobStatus;
+  isAiGenerated: boolean;
 }
 
 export interface OptimizeWorkExperienceInputDto {

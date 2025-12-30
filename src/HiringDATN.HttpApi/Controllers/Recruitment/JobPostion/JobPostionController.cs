@@ -1,50 +1,50 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using HiringDATN.Dtos;
-//using HiringDATN.Interfaces;
-//using HiringDATN.Service;
-//using Microsoft.AspNetCore.Mvc;
-//using Volo.Abp.Application.Dtos;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using HiringDATN.Dtos;
+using HiringDATN.Interfaces;
+using HiringDATN.Service;
+using Microsoft.AspNetCore.Mvc;
+using Volo.Abp.Application.Dtos;
 
-//namespace HiringDATN.Controllers;
+namespace HiringDATN.Controllers;
 
-//[Area("HiringDATN")]
-//[Route("api/JobPostionRecruitment")]
-//public class JobPostionRecruitmentController(IJobPostionAppService JobPostionRecruitmentAppService) : AdministrationController
-//{
-//    private readonly IJobPostionRecruitmentAppService _JobPostionRecruitmentAppService = JobPostionRecruitmentAppService;
+[Area("HiringDATN")]
+[Route("api/JobPostionRecruitment")]
+public class JobPostionRecruitmentController(IJobPostingAppService jobPostingAppService) : AdministrationController
+{
+    private readonly IJobPostingAppService _jobPostingAppService = jobPostingAppService;
 
-//    [HttpGet]
-//    public async Task<JobPostionRecruitmentDto> GetByIdAsync(long id)
-//    {
-//        return await _JobPostionRecruitmentAppService.GetAsync(id);
-//    }
+    [HttpGet]
+    public async Task<JobPostingDto> GetByIdAsync(long id)
+    {
+        return await _jobPostingAppService.GetAsync(id);
+    }
 
-//    [HttpPost("search")]
-//    public async Task<PagedResultDto<JobPostionRecruitmentDto>> SearchAsync(SearchInputDto input)
-//    {
-//        return await _JobPostionRecruitmentAppService.GetListAsync(input);
-//    }
+    [HttpPost("search")]
+    public async Task<PagedResultDto<JobPostingDto>> SearchAsync(SearchInputDto input)
+    {
+        return await _jobPostingAppService.GetListAsync(input);
+    }
 
 
-//    [HttpPost]
-//    public async Task<JobPostionRecruitmentDto> CreateAsync(CreateUpdateJobPostionRecruitmentDto input)
-//    {
-//        return await _JobPostionRecruitmentAppService.CreateAsync(input);
-//    }
+    [HttpPost]
+    public async Task<JobPostingDto> CreateAsync(CreateUpdateJobPostingDto input)
+    {
+        return await _jobPostingAppService.CreateAsync(input);
+    }
 
-//    [HttpPut]
-//    public async Task<JobPostionRecruitmentDto> UpdateAsync(long id, CreateUpdateJobPostionRecruitmentDto input)
-//    {
-//        return await _JobPostionRecruitmentAppService.UpdateAsync(id, input);
-//    }
+    [HttpPut]
+    public async Task<JobPostingDto> UpdateAsync(long id, CreateUpdateJobPostingDto input)
+    {
+        return await _jobPostingAppService.UpdateAsync(id, input);
+    }
 
-//    [HttpDelete()]
-//    public async Task DeleteAsync(long id)
-//    {
-//        await _JobPostionRecruitmentAppService.DeleteAsync(id);
-//    }
-//}
+    [HttpDelete()]
+    public async Task DeleteAsync(long id)
+    {
+        await _jobPostingAppService.DeleteAsync(id);
+    }
+}

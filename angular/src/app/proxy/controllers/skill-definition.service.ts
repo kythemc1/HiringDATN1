@@ -14,7 +14,7 @@ export class SkillDefinitionService {
     this.restService.request<any, SkillDefinitionDto>({
       method: 'POST',
       url: '/api/SkillDefinition',
-      params: { name: input.name, category: input.category, description: input.description, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId},
+      params: { name: input.name, category: input.category, description: input.description, lastModificationTime: input.lastModificationTime, lastModifierId: input.lastModifierId, creationTime: input.creationTime, creatorId: input.creatorId, id: input.id },
     },
     { apiName: this.apiName,...config });
   

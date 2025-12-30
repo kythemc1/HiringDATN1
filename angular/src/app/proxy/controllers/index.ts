@@ -17,6 +17,7 @@ export * from './cv.service';
 export * from './generate-job-description.service';
 export * from './job-application.service';
 export * from './job-position.service';
+export * from './job-postion-recruitment.service';
 export * from './skill-definition.service';
 export * from './university.service';
 export * from './user-feedback.service';
