@@ -10,23 +10,23 @@ using Volo.Abp.Domain.Repositories;
 using System.Linq.Dynamic.Core;
 namespace HiringDATN.Service;
 
-public class JobPositionRecuitmentAppService : HiringDATNAppService, IJobPositionAppService
+public class JobPostingAppService : HiringDATNAppService, IJobPostingAppService
 {
-    private readonly IRepository<JobPosition, long> _jobPositionRepository;
+    private readonly IRepository<JobPosting, long> _JobPostingRepository;
 
-    public JobPositionRecuitmentAppService(IRepository<JobPosition, long> jobPositionRepository)
+    public JobPostingAppService(IRepository<JobPosting, long> JobPostingRepository)
     {
-        _jobPositionRepository = jobPositionRepository;
+        _JobPostingRepository = JobPostingRepository;
     }
 
     #region CRUD services
 
-    public async Task<JobPositionDto> GetAsync(long id)
+    public async Task<JobPostingDto> GetAsync(long id)
     {
         try
         {
-            var data = await _jobPositionRepository.GetAsync(id);
-            return ObjectMapper.Map<JobPosition, JobPositionDto>(data);
+            var data = await _JobPostingRepository.GetAsync(id);
+            return ObjectMapper.Map<JobPosting, JobPostingDto>(data);
         }
         catch (Exception ex)
         {
@@ -34,11 +34,11 @@ public class JobPositionRecuitmentAppService : HiringDATNAppService, IJobPositio
         }
     }
 
-    public async Task<PagedResultDto<JobPositionDto>> GetListAsync(SearchInputDto input)
+    public async Task<PagedResultDto<JobPostingDto>> GetListAsync(SearchInputDto input)
     {
-        var query = (await _jobPositionRepository.WithDetailsAsync())
+        var query = (await _JobPostingRepository.WithDetailsAsync())
             .WhereIf(!string.IsNullOrWhiteSpace(input.Keyword),
-                x => x.Name.Contains(input.Keyword));
+                x => x.Benefits.Contains(input.Keyword));
 
         // Đếm sau khi filter
         var totalCount = await AsyncExecuter.CountAsync(query);
@@ -53,30 +53,30 @@ public class JobPositionRecuitmentAppService : HiringDATNAppService, IJobPositio
 
         // Map
         var result = items
-            .Select(o => ObjectMapper.Map<JobPosition, JobPositionDto>(o))
+            .Select(o => ObjectMapper.Map<JobPosting, JobPostingDto>(o))
             .ToList();
 
-        return new PagedResultDto<JobPositionDto>(totalCount, result);
+        return new PagedResultDto<JobPostingDto>(totalCount, result);
     }
 
 
-    public async Task<JobPositionDto> CreateAsync(CreateUpdateJobPositionDto input)
+    public async Task<JobPostingDto> CreateAsync(CreateUpdateJobPostingDto input)
     {
-        var data = ObjectMapper.Map<CreateUpdateJobPositionDto, JobPosition>(input);
+        var data = ObjectMapper.Map<CreateUpdateJobPostingDto, JobPosting>(input);
 
-        var dataResult = await _jobPositionRepository.InsertAsync(data);
+        var dataResult = await _JobPostingRepository.InsertAsync(data);
         await CurrentUnitOfWork.SaveChangesAsync();
         return new();
     }
 
-    public async Task<JobPositionDto> UpdateAsync(long id, CreateUpdateJobPositionDto input)
+    public async Task<JobPostingDto> UpdateAsync(long id, CreateUpdateJobPostingDto input)
     {
 
         try
         {
-            var data = await _jobPositionRepository.GetAsync(id);
+            var data = await _JobPostingRepository.GetAsync(id);
             ObjectMapper.Map(input, data);
-            await _jobPositionRepository.UpdateAsync(data);
+            await _JobPostingRepository.UpdateAsync(data);
             return new();
         }
         catch (Exception e)
@@ -88,7 +88,7 @@ public class JobPositionRecuitmentAppService : HiringDATNAppService, IJobPositio
 
     public async Task DeleteAsync(long id)
     {
-        await _jobPositionRepository.DeleteAsync(id);
+        await _JobPostingRepository.DeleteAsync(id);
     }
 
     #endregion

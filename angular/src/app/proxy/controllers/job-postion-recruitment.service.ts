@@ -50,7 +50,7 @@ export class JobPostionRecruitmentService {
     this.restService.request<any, JobPostingDto>({
       method: 'PUT',
       url: '/api/JobPostionRecruitment',
-      params: { id, companyId: input.companyId, title: input.title, jobDescription: input.jobDescription, jobRequirements: input.jobRequirements, benefits: input.benefits, salaryRange: input.salaryRange, location: input.location, status: input.status, isAiGenerated: input.isAiGenerated, id: input.id },
+      params: { id, companyId: input.companyId, title: input.title, jobDescription: input.jobDescription, jobRequirements: input.jobRequirements, benefits: input.benefits, salaryRange: input.salaryRange, location: input.location, status: input.status, isAiGenerated: input.isAiGenerated },
     },
     { apiName: this.apiName,...config });
 

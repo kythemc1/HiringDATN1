@@ -82,6 +82,10 @@ const routes: Routes = [
             path: '',
             loadChildren: () => import('./nghiep-vu/cv/cv.module').then(m => m.CvModule),
           },
+          {
+            path: '',
+            loadChildren: () => import('./nghiep-vu/job-posting/job-posting.module').then(m => m.JobPostingModule),
+          },
         ],
       },
       //#endregion
