@@ -27,43 +27,19 @@ export function mapJobPostingResponse(
     [];
 
   const data: JobPostingRowView[] = items.map((it: any) => {
-    const payload = (it?.JobPosting ?? it?.JobPosting ?? it) as JobPostingDto | any;
-
-    const displayProvider =
-      payload?.providerName ??
-      payload?.tenJobPosting ??
-      payload?.provider ??
-      payload?.ten ??
-      payload?.ma ??
-      '';
-    const displayModel =
-      payload?.modelName ??
-      payload?.tenJobPosting ??
-      payload?.name ??
-      payload?.ten ??
-      '';
-    const displayDescription = payload?.description ?? payload?.moTa ?? '';
-    const statusValue =
-      payload?.isActive ??
-      (payload?.trangThai != null ? (payload.trangThai === '1' || payload.trangThai === 1 || payload.trangThai === true) : null);
+    const payload = (it?.jobPosting ?? it?.JobPosting ?? it) as JobPostingDto | any;
 
     return {
       id: payload?.id ?? it?.id ?? 0,
-      providerName: payload?.providerName,
-      modelName: payload?.modelName,
-      apiKey: payload?.apiKey,
-      baseUrl: payload?.baseUrl,
-      isActive: payload?.isActive,
-      creationTime: payload?.creationTime,
-      lastModificationTime: payload?.lastModificationTime,
-      ma: payload?.ma,
-      ten: payload?.ten,
-      moTa: payload?.moTa,
-      trangThai: payload?.trangThai,
-      displayProvider,
-      displayModel,
-      displayDescription,
-      displayStatus: statusValue,
+      companyId: payload?.companyId ?? null,
+      title: payload?.title ?? '',
+      jobDescription: payload?.jobDescription ?? '',
+      jobRequirements: payload?.jobRequirements ?? '',
+      benefits: payload?.benefits ?? '',
+      salaryRange: payload?.salaryRange ?? '',
+      location: payload?.location ?? '',
+      status: payload?.status ?? null,
+      isAiGenerated: payload?.isAiGenerated ?? false,
     };
   });
 

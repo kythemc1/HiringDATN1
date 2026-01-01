@@ -12,7 +12,11 @@ import {
 } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { JobPostionRecruitmentService } from '../../../../../proxy/controllers/job-postion-recruitment.service';
-import {  JobPostingDto,CreateUpdateJobPostingDto } from '../../../../../proxy/dtos/models';
+import {
+  JobPostingDto,
+  CreateUpdateJobPostingDto,
+} from '../../../../../proxy/dtos/models';
+import { JobStatus, jobStatusOptions } from '../../../../../proxy/dtos/job-status.enum';
 import { Dialog } from 'primeng/dialog';
 import { EMPTY, catchError, finalize, map, of, switchMap, takeWhile, tap, timer } from 'rxjs';
 import { AppBaseComponent } from 'src/app/shared/components/base-component/base-component';
@@ -38,6 +42,7 @@ export class CreateUpdateJobPostingModalComponent
   @Input() updateJobPostingDto: JobPostingDto;
 
   form: FormGroup;
+  statusOptions = jobStatusOptions;
 
   //#endregion
 
@@ -58,7 +63,7 @@ export class CreateUpdateJobPostingModalComponent
       this.buildForm();
     }
   }
-
+  
   ngOnDestroy(): void {
     this.componentActive = false;
   }
@@ -72,11 +77,18 @@ export class CreateUpdateJobPostingModalComponent
   }
 
   buildForm(): void {
-    this.form = this.fb.group(
-      {
-        
-      },
-    );
+    const dto = this.updateJobPostingDto ?? ({} as JobPostingDto);
+    this.form = this.fb.group({
+      companyId: [dto.companyId ?? null, Validators.required],
+      title: [dto.title ?? '', [Validators.required, this.noWhitespaceValidator()]],
+      jobDescription: [dto.jobDescription ?? ''],
+      jobRequirements: [dto.jobRequirements ?? ''],
+      benefits: [dto.benefits ?? ''],
+      salaryRange: [dto.salaryRange ?? ''],
+      location: [dto.location ?? ''],
+      status: [dto.status ?? JobStatus.Draft, Validators.required],
+      isAiGenerated: [dto.isAiGenerated ?? false],
+    });
 
     // ⚙️ Nếu là read-only thì disable toàn form và return sớm
     if (this.readOnly) {
