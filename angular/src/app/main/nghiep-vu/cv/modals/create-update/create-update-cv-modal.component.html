@@ -28,6 +28,18 @@
               <label>Địa chỉ</label>
               <input pInputText type="text" formControlName="address" class="w-100" />
             </div>
+            <div class="col-4 form-group">
+              <label>Tên công ty ứng tuyển</label>
+              <input pInputText formControlName="targetCompanyName" class="w-100" />
+            </div>
+            <div class="col-4 form-group">
+              <label>Vị trí ứng tuyển</label>
+              <input pInputText formControlName="targetJobTitle" class="w-100" />
+            </div>
+            <div class="col-4 form-group">  
+              <label>Số năm kinh nghiệm</label>
+              <input pInputText type="number" formControlName="yearsOfExperience" class="w-100" />
+            </div>
             <div class="col-6 form-group">
               <label>GitHub</label>
               <input pInputText formControlName="githubUrl" class="w-100" />
@@ -36,8 +48,12 @@
               <label>LinkedIn</label>
               <input pInputText formControlName="linkedInUrl" class="w-100" />
             </div>
+            
             <div class="col-12 form-group">
-              <label>Giới thiệu</label>
+              <div class="d-flex justify-content-between align-items-center gap-2 margin-bottom-10">
+                <label>Mục tiêu nghề nghiệp</label>
+                <vt-button type="button" [label]="'Tạo tự động'" [outline]="true" (buttonClick)="onGenerateCareerObjective()"></vt-button>
+              </div>
               <textarea pInputTextarea rows="3" formControlName="aboutMe" class="form-control"></textarea>
             </div>
           </div>

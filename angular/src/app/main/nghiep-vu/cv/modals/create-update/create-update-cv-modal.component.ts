@@ -25,6 +25,7 @@ import {
 import { Dialog } from 'primeng/dialog';
 import { EMPTY, catchError, finalize, map, of, switchMap, takeWhile, tap, timer } from 'rxjs';
 import { AppBaseComponent } from 'src/app/shared/components/base-component/base-component';
+import { CvContentAppService } from 'src/app/proxy/controllers/cv-content-app.service';
 
 @Component({
   standalone: false,
@@ -55,6 +56,8 @@ export class CreateUpdateCvModalComponent
     injector: Injector,
     private fb: FormBuilder,
     private CvService: CVService,
+    private cvContentAppService: CvContentAppService,
+    
   ) {
     super(injector);
   }
@@ -95,6 +98,10 @@ export class CreateUpdateCvModalComponent
         address: [profile?.address ?? ''],
         githubUrl: [profile?.githubUrl ?? ''],
         linkedInUrl: [profile?.linkedInUrl ?? ''],
+        targetCompanyName: [ ''],
+        targetJobTitle: [ ''],
+        yearsOfExperience: [0],
+        
       }),
       createUpdateCandidateCertificateDtos: this.fb.array(
         this.mapToCertificateGroups(this.updateCvDto?.candidateCertificateDtos)
@@ -183,9 +190,6 @@ export class CreateUpdateCvModalComponent
 
   //#endregion
 
-  //#region OnChange methods
-
-  //#endregion
 
   //#region Main methods
   save(): void {
@@ -268,7 +272,7 @@ export class CreateUpdateCvModalComponent
     this.isModalOpen = false;
     this.form.reset();
   }
-
+  //#endregion
 
   //#region Private methods
   private mapToCertificateGroups(items?: CandidateCertificateDto[]): FormGroup[] {
@@ -357,4 +361,44 @@ export class CreateUpdateCvModalComponent
   }
 
   //#endregion
+
+  
+  //# region generate content
+  onGenerateCareerObjective(): void {
+    // 1. Lấy giá trị từ form group profile
+    const profileForm = this.form.get('createUpdateCandidateProfileDto');
+    
+    if (!profileForm) return;
+  
+    const rawValue = profileForm.value;
+  
+    this.cvContentAppService.generateCareerObjective({
+      currentRole: rawValue.jobTitle,
+      targetCompanyName: rawValue.targetCompanyName,
+      targetJobTitle: rawValue.targetJobTitle,
+      yearsOfExperience: rawValue.yearsOfExperience,
+    }).subscribe({
+      next: (res: string) => {
+        if (res) {
+          profileForm.patchValue({
+            aboutMe: res
+          });
+          
+        }
+      },
+      error: (err) => {
+        console.error('Lỗi khi generate:', err);
+      }
+    });
+  }
+  onOptimizeWorkExperience(): void {
+    this.cvContentAppService.optimizeWorkExperience({
+      jobTitle: this.form.value.createUpdateCandidateProfileDto?.jobTitle,
+      companyName: this.form.value.createUpdateCandidateProfileDto?.companyName,
+      rawDescription: this.form.value.createUpdateCandidateProfileDto?.rawDescription,
+    }).subscribe((res: any) => {
+      console.log(res);
+    });
+  }
+  //# endregion
 }
