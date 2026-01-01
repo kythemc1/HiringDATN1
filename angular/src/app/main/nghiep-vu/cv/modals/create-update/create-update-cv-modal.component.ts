@@ -391,14 +391,31 @@ export class CreateUpdateCvModalComponent
       }
     });
   }
-  onOptimizeWorkExperience(): void {
-    this.cvContentAppService.optimizeWorkExperience({
-      jobTitle: this.form.value.createUpdateCandidateProfileDto?.jobTitle,
-      companyName: this.form.value.createUpdateCandidateProfileDto?.companyName,
-      rawDescription: this.form.value.createUpdateCandidateProfileDto?.rawDescription,
-    }).subscribe((res: any) => {
-      console.log(res);
-    });
+  onOptimizeWorkExperience(index: number): void {
+    const experienceForm = this.candidateExperienceForms.at(index);
+
+    if (!experienceForm) return;
+
+    const rawDescription = experienceForm.get('description')?.value;
+
+    this.cvContentAppService
+      .optimizeWorkExperience({
+        jobTitle: experienceForm.get('position')?.value,
+        companyName: experienceForm.get('companyName')?.value,
+        rawDescription: rawDescription,
+      })
+      .subscribe({
+        next: (res: string) => {
+          if (res) {
+            experienceForm.patchValue({
+              description: res,
+            });
+          }
+        },
+        error: (err) => {
+          console.error('Lỗi khi tối ưu kinh nghiệm:', err);
+        },
+      });
   }
   //# endregion
 }

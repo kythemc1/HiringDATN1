@@ -182,7 +182,15 @@
               <input type="checkbox" formControlName="isCurrent" />
             </div>
             <div class="col-12 form-group">
-              <label>Mô tả</label>
+              <div class="d-flex justify-content-between align-items-center gap-2">
+                <label class="mb-0">Mô tả</label>
+                <vt-button
+                  type="button"
+                  [label]="'Tối ưu mô tả'"
+                  [outline]="true"
+                  (buttonClick)="onOptimizeWorkExperience(i)"
+                ></vt-button>
+              </div>
               <textarea pInputTextarea rows="2" formControlName="description" class="form-control"></textarea>
             </div>
             <div class="col-12 text-end">
