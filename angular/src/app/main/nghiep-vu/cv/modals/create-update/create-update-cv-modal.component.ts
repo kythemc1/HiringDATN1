@@ -10,6 +10,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { Location } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { CVService } from '../../../../../proxy/controllers/cv.service';
 import {
@@ -26,7 +27,8 @@ import { Dialog } from 'primeng/dialog';
 import { EMPTY, catchError, finalize, map, of, switchMap, takeWhile, tap, timer } from 'rxjs';
 import { AppBaseComponent } from 'src/app/shared/components/base-component/base-component';
 import { CvContentAppService } from 'src/app/proxy/controllers/cv-content-app.service';
-
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 @Component({
   standalone: false,
   selector: 'app-create-update-cv-modal',
@@ -57,7 +59,7 @@ export class CreateUpdateCvModalComponent
     private fb: FormBuilder,
     private CvService: CVService,
     private cvContentAppService: CvContentAppService,
-    
+    private location: Location,
   ) {
     super(injector);
   }
@@ -270,7 +272,8 @@ export class CreateUpdateCvModalComponent
       return;
     }
     this.isModalOpen = false;
-    this.form.reset();
+    this.form?.reset();
+    this.location.back();
   }
   //#endregion
 
@@ -416,6 +419,87 @@ export class CreateUpdateCvModalComponent
           console.error('Lỗi khi tối ưu kinh nghiệm:', err);
         },
       });
+  }
+
+  async exportToPDF() {
+    const data = document.getElementById('cvPreview');
+    if (!data) return;
+  
+    this.showLoading();
+  
+    try {
+      // 1. Chụp ảnh với cấu hình an toàn nhất
+      const canvas = await html2canvas(data, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+        imageTimeout: 0, // Đợi tải ảnh vô thời hạn
+        onclone: (clonedDoc) => {
+          // Đảm bảo element hiển thị khi chụp (đôi khi element ẩn gây lỗi)
+          const el = clonedDoc.getElementById('cvPreview');
+          if (el) el.style.display = 'block';
+        }
+      });
+  
+      // 2. Kiểm tra canvas có hợp lệ không
+      if (canvas.width === 0 || canvas.height === 0) {
+        throw new Error("Canvas render failed: Width or height is 0");
+      }
+  
+      // 3. Lấy dữ liệu ảnh và kiểm tra chuỗi Base64
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      
+      // Kiểm tra nếu chuỗi không bắt đầu bằng data:image/jpeg
+      if (!imgData.startsWith('data:image/jpeg')) {
+         throw new Error("Invalid Image Format");
+      }
+  
+      const pdf = new jsPDF({
+        orientation: 'p',
+        unit: 'mm',
+        format: 'a4'
+      });
+  
+      // 4. Lấy thông tin ảnh từ jsPDF để chắc chắn không bị 'UNKNOWN'
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
+  
+      // 5. Thêm ảnh với định dạng JPEG tường minh
+      pdf.addImage(
+        imgData, 
+        'JPEG', 
+        0, 
+        0, 
+        pdfWidth, 
+        imgHeight, 
+        undefined, 
+        'FAST'
+      );
+  
+      // 6. Xử lý ngắt trang
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      let heightLeft = imgHeight - pageHeight;
+      let position = -pageHeight;
+  
+      while (heightLeft > 0) {
+        pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, imgHeight, undefined, 'FAST');
+        heightLeft -= pageHeight;
+        position -= pageHeight;
+      }
+  
+      const fullName = this.form.get('createUpdateCandidateProfileDto.fullName')?.value || 'Candidate';
+      pdf.save(`CV_${fullName.trim().replace(/\s+/g, '_')}.pdf`);
+  
+      this.showSuccessMessage("Xuất PDF thành công!");
+    } catch (error) {
+      console.error('Lỗi chi tiết:', error);
+      this.showErrorMessage("Lỗi: " + (error.message || "Không thể tạo PDF"));
+    } finally {
+      this.hideLoading();
+    }
   }
   //# endregion
 }
