@@ -46,4 +46,16 @@ public class JobApplicationController(IJobApplicationAppService JobApplicationAp
     {
         await _JobApplicationAppService.DeleteAsync(id);
     }
+
+    [HttpGet("status-chart")]
+    public async Task<List<SimpleChartDto>> GetCountByStatusAsync()
+    {
+        return await _JobApplicationAppService.GetCountByStatusAsync();
+    }
+
+    [HttpGet("trend-chart")]
+    public async Task<List<SimpleChartDto>> GetApplicationTrendAsync()
+    {
+        return await _JobApplicationAppService.GetApplicationTrendAsync();
+    }
 }

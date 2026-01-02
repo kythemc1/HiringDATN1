@@ -26,4 +26,10 @@ public class CreateUpdateJobApplicationDto : EntityDto<long?>
     public double? AiMatchingScore { get; set; }
 }
 
+public class SimpleChartDto
+{
+    public string Label { get; set; }
+    public double Value { get; set; }
+}
+
 public enum ApplicationStatus { Applied, Screened, Interview, Rejected, Offer }

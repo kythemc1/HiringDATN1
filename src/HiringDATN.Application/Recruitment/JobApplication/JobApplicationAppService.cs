@@ -95,4 +95,46 @@ public class JobApplicationAppService : HiringDATNAppService, IJobApplicationApp
 
     #endregion
 
+    #region Statistics Services
+
+    // 1. Thống kê số lượng theo trạng thái (Dùng cho biểu đồ Tròn)
+    public async Task<List<SimpleChartDto>> GetCountByStatusAsync()
+    {
+        var query = await _JobApplicationRepository.GetQueryableAsync();
+
+        var data = query
+            .GroupBy(x => x.Status)
+            .Select(g => new SimpleChartDto
+            {
+                Label = g.Key.ToString(),
+                Value = g.Count()
+            })
+            .ToList();
+
+        return data;
+    }
+
+    // 2. Thống kê số lượng hồ sơ theo Ngày (Dùng cho biểu đồ Đường/Cột)
+    public async Task<List<SimpleChartDto>> GetApplicationTrendAsync()
+    {
+        var query = await _JobApplicationRepository.GetQueryableAsync();
+        // Lấy dữ liệu trong 7 ngày gần đây
+        var sevenDaysAgo = Clock.Now.Date.AddDays(-7);
+
+        var data = query
+            .Where(x => x.CreationTime >= sevenDaysAgo)
+            .GroupBy(x => x.CreationTime.Date)
+            .Select(g => new SimpleChartDto
+            {
+                Label = g.Key.ToString("dd/MM"),
+                Value = g.Count()
+            })
+            .OrderBy(x => x.Label)
+            .ToList();
+
+        return data;
+    }
+
+    #endregion
+
 }

@@ -9,4 +9,6 @@ using Volo.Abp.Application.Services;
 namespace HiringDATN.Interfaces;
 public interface IJobApplicationAppService : ICrudAppService<JobApplicationDto, long, SearchInputDto, CreateUpdateJobApplicationDto>
 {
+    Task<List<SimpleChartDto>> GetCountByStatusAsync();
+    Task<List<SimpleChartDto>> GetApplicationTrendAsync();
 }
