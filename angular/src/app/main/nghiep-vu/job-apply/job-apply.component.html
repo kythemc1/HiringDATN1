@@ -1,0 +1,90 @@
+<div class="job-page-layout">
+  <aside class="job-sidebar">
+    <div class="job-list-wrapper" *ngIf="viewMode === 'list'">
+      <div *ngIf="loading" class="loading-mini">
+        <i class="pi pi-spin pi-spinner"></i>
+      </div>
+
+      <div *ngIf="!loading && dataDisplay?.length" class="mini-card-list">
+        <article 
+          *ngFor="let job of dataDisplay" 
+          class="job-mini-card"
+          [class.active]="selectedJob?.id === job.id"
+          (click)="onSelectJob(job)"
+        >
+          <div class="mini-card-body">
+            <h4 class="job-title-mini">{{ job.title }}</h4>
+            <p class="company-mini">{{ job.companyId ? ('Công ty #' + job.companyId) : 'N/A' }}</p>
+            <div class="meta-mini">
+              <span class="salary-mini">{{ job.salaryRange || 'Thỏa thuận' }}</span>
+              <span class="dot">•</span>
+              <span class="location-mini">{{ job.location || 'Toàn quốc' }}</span>
+            </div>
+          </div>
+          <i class="pi pi-chevron-right arrow-icon"></i>
+        </article>
+      </div>
+
+      <div *ngIf="!loading && !dataDisplay?.length" class="empty-mini">
+        Không tìm thấy tin tuyển dụng.
+      </div>
+    </div>
+  </aside>
+
+  <main class="job-detail-view">
+    <app-create-update-job-posting-modal
+      *ngIf="viewMode !== 'list'"
+      #inlineCreateUpdate
+      [inline]="true"
+      [modalTitle]="formTitle"
+      [updateJobPostingDto]="updateJobPostingDto"
+      [readOnly]="viewMode === 'view'"
+      (saved)="onChildSaved($event)"
+      (canceled)="onChildCanceled()"
+    ></app-create-update-job-posting-modal>
+
+    <div *ngIf="viewMode === 'list' && selectedJob" class="detail-content">
+      <header class="detail-header">
+        <div class="header-main">
+          <h2>{{ selectedJob.title }}</h2>
+          <p class="company-name-large">{{ selectedJob.companyId ? ('Công ty #' + selectedJob.companyId) : '' }}</p>
+        </div>
+        <vt-button
+          [label]="'Ứng tuyển ngay'"
+          [color]="'primary'"
+          (buttonClick)="onApplyToJob(selectedJob)"
+        ></vt-button>
+      </header>
+
+      <div class="detail-body">
+        <div class="info-grid">
+          <div class="info-item">
+            <label><i class="pi pi-wallet"></i> Mức lương</label>
+            <span>{{ selectedJob.salaryRange || 'Thỏa thuận' }}</span>
+          </div>
+          <div class="info-item">
+            <label><i class="pi pi-map-marker"></i> Địa điểm</label>
+            <span>{{ selectedJob.location || 'Chưa cập nhật' }}</span>
+          </div>
+        </div>
+
+        <section class="description-section">
+          <h5>Mô tả công việc</h5>
+          <div class="text-content">{{ selectedJob.jobDescription }}</div>
+        </section>
+
+        <section class="requirement-section">
+          <h5>Yêu cầu ứng viên</h5>
+          <div class="text-content">{{ selectedJob.jobRequirements }}</div>
+        </section>
+      </div>
+    </div>
+
+    <div *ngIf="viewMode === 'list' && !selectedJob" class="no-selection">
+      <div class="empty-illustration">
+        <i class="pi pi-inbox"></i>
+        <p>Chọn một tin tuyển dụng ở bên trái để xem chi tiết</p>
+      </div>
+    </div>
+  </main>
+</div>

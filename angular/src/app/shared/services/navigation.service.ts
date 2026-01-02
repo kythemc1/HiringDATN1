@@ -31,6 +31,7 @@ export class NavigationService {
       new AppMenuItem('Quản lý nghiệp vụ', '', null, '', [
         new AppMenuItem('CV', '', null, '/main/quan-ly-nghiep-vu/cv'),
         new AppMenuItem('Job posting', '', null, '/main/quan-ly-nghiep-vu/job-posting'),
+        new AppMenuItem('Job apply', '', null, '/main/quan-ly-nghiep-vu/job-apply'),
       ]),
      
     ];

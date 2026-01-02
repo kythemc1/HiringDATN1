@@ -10,7 +10,6 @@ const routes: Routes = [
     component: MainComponent,
     children: [
       //#region 0. Root
-      
       // Danh mục chung
       {
         path: 'danh-muc-chung',
@@ -85,6 +84,10 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('./nghiep-vu/job-posting/job-posting.module').then(m => m.JobPostingModule),
+          },
+          {
+            path: '',
+            loadChildren: () => import('./nghiep-vu/job-apply/job-apply.module').then(m => m.JobApplyModule),
           },
         ],
       },

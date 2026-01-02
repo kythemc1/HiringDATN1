@@ -1,0 +1,121 @@
+@primary-color: #0063e5;
+@border-color: #e0e0e0;
+@bg-active: #f0f7ff;
+
+.job-page-layout {
+  display: flex;
+  height: calc(100vh - 120px); // Trừ đi chiều cao của Navbar chính
+  background: #fff;
+  border: 1px solid @border-color;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 20px;
+
+  // Cột bên trái
+  .job-sidebar {
+    width: 380px;
+    border-right: 1px solid @border-color;
+    display: flex;
+    flex-direction: column;
+    background: #fdfdfd;
+
+    .sidebar-header {
+      padding: 16px;
+      border-bottom: 1px solid @border-color;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      h3 { margin: 0; font-size: 16px; font-weight: 600; }
+      
+      .btn-create-mini {
+        border: none; background: @primary-color; color: #fff;
+        width: 28px; height: 28px; border-radius: 4px; cursor: pointer;
+      }
+    }
+
+    .job-list-wrapper {
+      flex: 1;
+      overflow-y: auto; // Cuộn độc lập
+      
+      .job-mini-card {
+        padding: 16px;
+        border-bottom: 1px solid @border-color;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        transition: all 0.2s;
+
+        &:hover { background: #f8f9fa; }
+        &.active {
+          background: @bg-active;
+          border-left: 4px solid @primary-color;
+          .job-title-mini { color: @primary-color; }
+        }
+
+        .mini-card-body {
+          flex: 1;
+          .job-title-mini { font-size: 14px; font-weight: 600; margin: 0 0 4px 0; }
+          .company-mini { font-size: 13px; color: #666; margin: 0 0 8px 0; }
+          .meta-mini {
+            font-size: 12px;
+            display: flex;
+            gap: 8px;
+            color: #888;
+            .salary-mini { color: #d97706; font-weight: 500; }
+          }
+        }
+        .arrow-icon { font-size: 12px; color: #ccc; }
+      }
+    }
+  }
+
+  // Cột bên phải
+  .job-detail-view {
+    flex: 1;
+    overflow-y: auto;
+    background: #fff;
+    position: relative;
+
+    .detail-content {
+      padding: 32px;
+
+      .detail-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 20px;
+
+        h2 { margin: 0 0 8px 0; font-size: 24px; color: #1a1a1a; }
+        .company-name-large { font-size: 16px; color: @primary-color; margin: 0; }
+      }
+
+      .info-grid {
+        display: flex;
+        gap: 40px;
+        margin-bottom: 30px;
+        .info-item {
+          label { display: block; font-size: 12px; color: #888; margin-bottom: 4px; }
+          span { font-weight: 600; color: #333; i { color: @primary-color; margin-right: 5px; } }
+        }
+      }
+
+      .description-section, .requirement-section {
+        margin-bottom: 24px;
+        h5 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #333; }
+        .text-content { line-height: 1.6; color: #444; white-space: pre-line; }
+      }
+    }
+
+    .no-selection {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      text-align: center;
+      i { font-size: 48px; margin-bottom: 16px; color: #eee; }
+    }
+  }
+}
