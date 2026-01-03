@@ -1,0 +1,42 @@
+<div class="statistics-dashboard-full">
+  <nz-spin [nzSpinning]="loading">
+    
+    <div class="metrics-flex-container">
+      <div class="metric-item" *ngFor="let stat of quickStats">
+        <div class="metric-card-custom">
+          <div class="metric-icon" [style.backgroundColor]="stat.bgColor">
+            <i nz-icon [nzType]="stat.icon"></i>
+          </div>
+          <div class="metric-info">
+            <div class="label">{{ stat.label }}</div>
+            <div class="value">{{ stat.value | number }}</div>
+            <div class="trend" [ngClass]="stat.trend >= 0 ? 'up' : 'down'">
+              <span>{{ stat.trend >= 0 ? '↑' : '↓' }} {{ stat.trend }}%</span>
+              <span class="period">tháng này</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="charts-flex-container">
+      <div class="chart-item side">
+        <div class="chart-card-custom">
+          <h3 class="chart-title">Phân bổ trạng thái</h3>
+          <div class="chart-wrapper">
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="chart-item main">
+        <div class="chart-card-custom">
+          <h3 class="chart-title">Xu hướng nộp hồ sơ (7 ngày qua)</h3>
+          <div class="chart-wrapper">
+            <canvas id="lineChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </nz-spin>
+</div>

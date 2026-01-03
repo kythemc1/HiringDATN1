@@ -340,6 +340,11 @@ export interface SearchInputDto extends PagedAndSortedResultRequestDto {
   keyword?: string;
 }
 
+export interface SimpleChartDto {
+  label?: string;
+  value: number;
+}
+
 export interface SkillDefinitionDto extends AuditedEntityDto<number> {
   name?: string;
   category?: string;

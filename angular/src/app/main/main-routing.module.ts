@@ -3,6 +3,7 @@ import { permissionGuard } from '@abp/ng.core';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MainComponent } from './main.component';
+import { ThongKeComponent } from './thong-ke/thong-ke.component';
 
 const routes: Routes = [
   {
@@ -108,7 +109,15 @@ const routes: Routes = [
       },
 
       //#endregion
-      
+      //#region ThongKe
+      {
+        path: 'thong-ke',
+        children: [
+          { path: '', component: ThongKeComponent},
+        ],
+      },
+      //#endregion
+
     ],
   },
 ];

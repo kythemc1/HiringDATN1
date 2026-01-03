@@ -1,7 +1,7 @@
 import { RestService, Rest } from '@abp/ng.core';
 import type { PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
-import type { CreateUpdateJobApplicationDto, JobApplicationDto, SearchInputDto } from '../dtos/models';
+import type { CreateUpdateJobApplicationDto, JobApplicationDto, SearchInputDto, SimpleChartDto } from '../dtos/models';
 
 @Injectable({
   providedIn: 'root',
@@ -28,11 +28,27 @@ export class JobApplicationService {
     { apiName: this.apiName,...config });
   
 
+  getApplicationTrend = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, SimpleChartDto[]>({
+      method: 'GET',
+      url: '/api/JobApplication/trend-chart',
+    },
+    { apiName: this.apiName,...config });
+  
+
   getById = (id: number, config?: Partial<Rest.Config>) =>
     this.restService.request<any, JobApplicationDto>({
       method: 'GET',
       url: '/api/JobApplication',
       params: { id },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getCountByStatus = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, SimpleChartDto[]>({
+      method: 'GET',
+      url: '/api/JobApplication/status-chart',
     },
     { apiName: this.apiName,...config });
   

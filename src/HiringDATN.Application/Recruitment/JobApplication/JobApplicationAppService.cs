@@ -118,21 +118,28 @@ public class JobApplicationAppService : HiringDATNAppService, IJobApplicationApp
     public async Task<List<SimpleChartDto>> GetApplicationTrendAsync()
     {
         var query = await _JobApplicationRepository.GetQueryableAsync();
-        // Lấy dữ liệu trong 7 ngày gần đây
         var sevenDaysAgo = Clock.Now.Date.AddDays(-7);
 
-        var data = query
+        // 1. Thực hiện truy vấn và nhóm dữ liệu dưới Database (Server-side)
+        var rawData = query
             .Where(x => x.CreationTime >= sevenDaysAgo)
             .GroupBy(x => x.CreationTime.Date)
-            .Select(g => new SimpleChartDto
+            .Select(g => new
             {
-                Label = g.Key.ToString("dd/MM"),
-                Value = g.Count()
+                Date = g.Key,
+                Count = g.Count()
             })
-            .OrderBy(x => x.Label)
-            .ToList();
+            .OrderBy(x => x.Date)
+            .ToList(); // Dữ liệu được tải về RAM tại đây
 
-        return data;
+        // 2. Định dạng lại Label trên RAM (Client-side)
+        var result = rawData.Select(x => new SimpleChartDto
+        {
+            Label = x.Date.ToString("dd/MM"),
+            Value = x.Count
+        }).ToList();
+
+        return result;
     }
 
     #endregion

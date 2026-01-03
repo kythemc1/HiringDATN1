@@ -24,7 +24,8 @@
       "@ng-bootstrap/ng-bootstrap": ["node_modules/@ng-bootstrap/ng-bootstrap"],
       "@primeng/themes/*": ["./node_modules/primeng/themes/*"]
     },
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "types": ["node", "chart.js"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false

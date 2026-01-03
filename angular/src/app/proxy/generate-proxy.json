@@ -5947,6 +5947,22 @@
               "name": "IJobApplicationAppService",
               "methods": [
                 {
+                  "name": "GetCountByStatusAsync",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<HiringDATN.Dtos.SimpleChartDto>",
+                    "typeSimple": "[HiringDATN.Dtos.SimpleChartDto]"
+                  }
+                },
+                {
+                  "name": "GetApplicationTrendAsync",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<HiringDATN.Dtos.SimpleChartDto>",
+                    "typeSimple": "[HiringDATN.Dtos.SimpleChartDto]"
+                  }
+                },
+                {
                   "name": "GetAsync",
                   "parametersOnMethod": [
                     {
@@ -6283,6 +6299,36 @@
               },
               "allowAnonymous": null,
               "implementFrom": "Volo.Abp.Application.Services.IDeleteAppService<System.Int64>"
+            },
+            "GetCountByStatusAsync": {
+              "uniqueName": "GetCountByStatusAsync",
+              "name": "GetCountByStatusAsync",
+              "httpMethod": "GET",
+              "url": "api/app/job-application/count-by-status",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<HiringDATN.Dtos.SimpleChartDto>",
+                "typeSimple": "[HiringDATN.Dtos.SimpleChartDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "HiringDATN.Interfaces.IJobApplicationAppService"
+            },
+            "GetApplicationTrendAsync": {
+              "uniqueName": "GetApplicationTrendAsync",
+              "name": "GetApplicationTrendAsync",
+              "httpMethod": "GET",
+              "url": "api/app/job-application/application-trend",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<HiringDATN.Dtos.SimpleChartDto>",
+                "typeSimple": "[HiringDATN.Dtos.SimpleChartDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "HiringDATN.Interfaces.IJobApplicationAppService"
             }
           }
         },
@@ -6743,17 +6789,17 @@
             }
           }
         },
-        "HiringDATN.Service.JobPositionRecuitmentAppService": {
-          "controllerName": "JobPositionRecuitment",
-          "controllerGroupName": "JobPositionRecuitment",
+        "HiringDATN.Service.JobPostingAppService": {
+          "controllerName": "JobPosting",
+          "controllerGroupName": "JobPosting",
           "isRemoteService": true,
           "isIntegrationService": false,
           "apiVersion": null,
-          "type": "HiringDATN.Service.JobPositionRecuitmentAppService",
+          "type": "HiringDATN.Service.JobPostingAppService",
           "interfaces": [
             {
-              "type": "HiringDATN.Interfaces.IJobPositionAppService",
-              "name": "IJobPositionAppService",
+              "type": "HiringDATN.Interfaces.IJobPostingAppService",
+              "name": "IJobPostingAppService",
               "methods": [
                 {
                   "name": "GetAsync",
@@ -6768,8 +6814,8 @@
                     }
                   ],
                   "returnValue": {
-                    "type": "HiringDATN.Dtos.JobPositionDto",
-                    "typeSimple": "HiringDATN.Dtos.JobPositionDto"
+                    "type": "HiringDATN.Dtos.JobPostingDto",
+                    "typeSimple": "HiringDATN.Dtos.JobPostingDto"
                   }
                 },
                 {
@@ -6785,8 +6831,8 @@
                     }
                   ],
                   "returnValue": {
-                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<HiringDATN.Dtos.JobPositionDto>",
-                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<HiringDATN.Dtos.JobPositionDto>"
+                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<HiringDATN.Dtos.JobPostingDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<HiringDATN.Dtos.JobPostingDto>"
                   }
                 },
                 {
@@ -6794,16 +6840,16 @@
                   "parametersOnMethod": [
                     {
                       "name": "input",
-                      "typeAsString": "HiringDATN.Dtos.CreateUpdateJobPositionDto, HiringDATN.Application.Contracts",
-                      "type": "HiringDATN.Dtos.CreateUpdateJobPositionDto",
-                      "typeSimple": "HiringDATN.Dtos.CreateUpdateJobPositionDto",
+                      "typeAsString": "HiringDATN.Dtos.CreateUpdateJobPostingDto, HiringDATN.Application.Contracts",
+                      "type": "HiringDATN.Dtos.CreateUpdateJobPostingDto",
+                      "typeSimple": "HiringDATN.Dtos.CreateUpdateJobPostingDto",
                       "isOptional": false,
                       "defaultValue": null
                     }
                   ],
                   "returnValue": {
-                    "type": "HiringDATN.Dtos.JobPositionDto",
-                    "typeSimple": "HiringDATN.Dtos.JobPositionDto"
+                    "type": "HiringDATN.Dtos.JobPostingDto",
+                    "typeSimple": "HiringDATN.Dtos.JobPostingDto"
                   }
                 },
                 {
@@ -6819,16 +6865,16 @@
                     },
                     {
                       "name": "input",
-                      "typeAsString": "HiringDATN.Dtos.CreateUpdateJobPositionDto, HiringDATN.Application.Contracts",
-                      "type": "HiringDATN.Dtos.CreateUpdateJobPositionDto",
-                      "typeSimple": "HiringDATN.Dtos.CreateUpdateJobPositionDto",
+                      "typeAsString": "HiringDATN.Dtos.CreateUpdateJobPostingDto, HiringDATN.Application.Contracts",
+                      "type": "HiringDATN.Dtos.CreateUpdateJobPostingDto",
+                      "typeSimple": "HiringDATN.Dtos.CreateUpdateJobPostingDto",
                       "isOptional": false,
                       "defaultValue": null
                     }
                   ],
                   "returnValue": {
-                    "type": "HiringDATN.Dtos.JobPositionDto",
-                    "typeSimple": "HiringDATN.Dtos.JobPositionDto"
+                    "type": "HiringDATN.Dtos.JobPostingDto",
+                    "typeSimple": "HiringDATN.Dtos.JobPostingDto"
                   }
                 },
                 {
@@ -6856,7 +6902,7 @@
               "uniqueName": "GetAsyncById",
               "name": "GetAsync",
               "httpMethod": "GET",
-              "url": "api/app/job-position-recuitment/{id}",
+              "url": "api/app/job-posting/{id}",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
@@ -6883,17 +6929,17 @@
                 }
               ],
               "returnValue": {
-                "type": "HiringDATN.Dtos.JobPositionDto",
-                "typeSimple": "HiringDATN.Dtos.JobPositionDto"
+                "type": "HiringDATN.Dtos.JobPostingDto",
+                "typeSimple": "HiringDATN.Dtos.JobPostingDto"
               },
               "allowAnonymous": null,
-              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<HiringDATN.Dtos.JobPositionDto,HiringDATN.Dtos.JobPositionDto,System.Int64,HiringDATN.Dtos.SearchInputDto>"
+              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<HiringDATN.Dtos.JobPostingDto,HiringDATN.Dtos.JobPostingDto,System.Int64,HiringDATN.Dtos.SearchInputDto>"
             },
             "GetListAsyncByInput": {
               "uniqueName": "GetListAsyncByInput",
               "name": "GetListAsync",
               "httpMethod": "GET",
-              "url": "api/app/job-position-recuitment",
+              "url": "api/app/job-posting",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
@@ -6956,24 +7002,24 @@
                 }
               ],
               "returnValue": {
-                "type": "Volo.Abp.Application.Dtos.PagedResultDto<HiringDATN.Dtos.JobPositionDto>",
-                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<HiringDATN.Dtos.JobPositionDto>"
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<HiringDATN.Dtos.JobPostingDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<HiringDATN.Dtos.JobPostingDto>"
               },
               "allowAnonymous": null,
-              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<HiringDATN.Dtos.JobPositionDto,HiringDATN.Dtos.JobPositionDto,System.Int64,HiringDATN.Dtos.SearchInputDto>"
+              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<HiringDATN.Dtos.JobPostingDto,HiringDATN.Dtos.JobPostingDto,System.Int64,HiringDATN.Dtos.SearchInputDto>"
             },
             "CreateAsyncByInput": {
               "uniqueName": "CreateAsyncByInput",
               "name": "CreateAsync",
               "httpMethod": "POST",
-              "url": "api/app/job-position-recuitment",
+              "url": "api/app/job-posting",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
                   "name": "input",
-                  "typeAsString": "HiringDATN.Dtos.CreateUpdateJobPositionDto, HiringDATN.Application.Contracts",
-                  "type": "HiringDATN.Dtos.CreateUpdateJobPositionDto",
-                  "typeSimple": "HiringDATN.Dtos.CreateUpdateJobPositionDto",
+                  "typeAsString": "HiringDATN.Dtos.CreateUpdateJobPostingDto, HiringDATN.Application.Contracts",
+                  "type": "HiringDATN.Dtos.CreateUpdateJobPostingDto",
+                  "typeSimple": "HiringDATN.Dtos.CreateUpdateJobPostingDto",
                   "isOptional": false,
                   "defaultValue": null
                 }
@@ -6983,8 +7029,8 @@
                   "nameOnMethod": "input",
                   "name": "input",
                   "jsonName": null,
-                  "type": "HiringDATN.Dtos.CreateUpdateJobPositionDto",
-                  "typeSimple": "HiringDATN.Dtos.CreateUpdateJobPositionDto",
+                  "type": "HiringDATN.Dtos.CreateUpdateJobPostingDto",
+                  "typeSimple": "HiringDATN.Dtos.CreateUpdateJobPostingDto",
                   "isOptional": false,
                   "defaultValue": null,
                   "constraintTypes": null,
@@ -6993,17 +7039,17 @@
                 }
               ],
               "returnValue": {
-                "type": "HiringDATN.Dtos.JobPositionDto",
-                "typeSimple": "HiringDATN.Dtos.JobPositionDto"
+                "type": "HiringDATN.Dtos.JobPostingDto",
+                "typeSimple": "HiringDATN.Dtos.JobPostingDto"
               },
               "allowAnonymous": null,
-              "implementFrom": "Volo.Abp.Application.Services.ICreateAppService<HiringDATN.Dtos.JobPositionDto,HiringDATN.Dtos.CreateUpdateJobPositionDto>"
+              "implementFrom": "Volo.Abp.Application.Services.ICreateAppService<HiringDATN.Dtos.JobPostingDto,HiringDATN.Dtos.CreateUpdateJobPostingDto>"
             },
             "UpdateAsyncByIdAndInput": {
               "uniqueName": "UpdateAsyncByIdAndInput",
               "name": "UpdateAsync",
               "httpMethod": "PUT",
-              "url": "api/app/job-position-recuitment/{id}",
+              "url": "api/app/job-posting/{id}",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
@@ -7016,9 +7062,9 @@
                 },
                 {
                   "name": "input",
-                  "typeAsString": "HiringDATN.Dtos.CreateUpdateJobPositionDto, HiringDATN.Application.Contracts",
-                  "type": "HiringDATN.Dtos.CreateUpdateJobPositionDto",
-                  "typeSimple": "HiringDATN.Dtos.CreateUpdateJobPositionDto",
+                  "typeAsString": "HiringDATN.Dtos.CreateUpdateJobPostingDto, HiringDATN.Application.Contracts",
+                  "type": "HiringDATN.Dtos.CreateUpdateJobPostingDto",
+                  "typeSimple": "HiringDATN.Dtos.CreateUpdateJobPostingDto",
                   "isOptional": false,
                   "defaultValue": null
                 }
@@ -7040,8 +7086,8 @@
                   "nameOnMethod": "input",
                   "name": "input",
                   "jsonName": null,
-                  "type": "HiringDATN.Dtos.CreateUpdateJobPositionDto",
-                  "typeSimple": "HiringDATN.Dtos.CreateUpdateJobPositionDto",
+                  "type": "HiringDATN.Dtos.CreateUpdateJobPostingDto",
+                  "typeSimple": "HiringDATN.Dtos.CreateUpdateJobPostingDto",
                   "isOptional": false,
                   "defaultValue": null,
                   "constraintTypes": null,
@@ -7050,17 +7096,17 @@
                 }
               ],
               "returnValue": {
-                "type": "HiringDATN.Dtos.JobPositionDto",
-                "typeSimple": "HiringDATN.Dtos.JobPositionDto"
+                "type": "HiringDATN.Dtos.JobPostingDto",
+                "typeSimple": "HiringDATN.Dtos.JobPostingDto"
               },
               "allowAnonymous": null,
-              "implementFrom": "Volo.Abp.Application.Services.IUpdateAppService<HiringDATN.Dtos.JobPositionDto,System.Int64,HiringDATN.Dtos.CreateUpdateJobPositionDto>"
+              "implementFrom": "Volo.Abp.Application.Services.IUpdateAppService<HiringDATN.Dtos.JobPostingDto,System.Int64,HiringDATN.Dtos.CreateUpdateJobPostingDto>"
             },
             "DeleteAsyncById": {
               "uniqueName": "DeleteAsyncById",
               "name": "DeleteAsync",
               "httpMethod": "DELETE",
-              "url": "api/app/job-position-recuitment/{id}",
+              "url": "api/app/job-posting/{id}",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
@@ -14932,6 +14978,36 @@
               },
               "allowAnonymous": null,
               "implementFrom": "HiringDATN.Controllers.JobApplicationController"
+            },
+            "GetCountByStatusAsync": {
+              "uniqueName": "GetCountByStatusAsync",
+              "name": "GetCountByStatusAsync",
+              "httpMethod": "GET",
+              "url": "api/JobApplication/status-chart",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<HiringDATN.Dtos.SimpleChartDto>",
+                "typeSimple": "[HiringDATN.Dtos.SimpleChartDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "HiringDATN.Controllers.JobApplicationController"
+            },
+            "GetApplicationTrendAsync": {
+              "uniqueName": "GetApplicationTrendAsync",
+              "name": "GetApplicationTrendAsync",
+              "httpMethod": "GET",
+              "url": "api/JobApplication/trend-chart",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<HiringDATN.Dtos.SimpleChartDto>",
+                "typeSimple": "[HiringDATN.Dtos.SimpleChartDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "HiringDATN.Controllers.JobApplicationController"
             }
           }
         },
@@ -22510,6 +22586,39 @@
           "jsonName": null,
           "type": "System.String",
           "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "HiringDATN.Dtos.SimpleChartDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Label",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Value",
+          "jsonName": null,
+          "type": "System.Double",
+          "typeSimple": "number",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,

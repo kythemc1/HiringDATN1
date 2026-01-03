@@ -3,14 +3,16 @@ import { DynamicTableAction, DynamicTableColumn, DynamicTableConfig } from '../.
 
 
 import { HttpClient } from '@angular/common/http';
-import { finalize, take, tap, combineLatest, startWith, Subject, debounceTime, switchMap, takeUntil, catchError, of } from 'rxjs';
+import { finalize, take, tap, combineLatest, startWith, Subject, debounceTime, switchMap, takeUntil, catchError, of, throwError } from 'rxjs';
 import { AppBaseComponent } from 'src/app/shared/components/base-component/base-component';
 
-import { JobPostingDto, SearchInputDto } from '../../../proxy/dtos/models';
+import { CreateUpdateJobApplicationDto, JobPostingDto, SearchInputDto } from '../../../proxy/dtos/models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { JobPostingFacadeService } from './service/job-posting.facade';
 import { JobPostingRowView } from '../job-posting/interface/job-posting';
+import { JobApplicationService } from 'src/app/proxy/controllers/job-application.service';
+import { CvApiService } from '../cv/service/cv.service';
 
 type JobApplySearchTerms = SearchInputDto & {
   trangThai?: boolean | null;
@@ -46,7 +48,9 @@ export class JobApplyComponent extends AppBaseComponent implements OnInit, OnDes
     private router: Router,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private jobPostingFacadeService: JobPostingFacadeService
+    private jobPostingFacadeService: JobPostingFacadeService,
+    private jobApplicationService: JobApplicationService,
+    private cvApiService: CvApiService,
   ) {
     super(injector);
   }
@@ -220,9 +224,55 @@ export class JobApplyComponent extends AppBaseComponent implements OnInit, OnDes
     // this.viewMode = 'list'; 
   }
 
-  onApplyToJob(job: any) {
-    // Logic ứng tuyển
-    console.log('Applying for:', job.title);
-}
+  onApplyToJob(job: JobPostingRowView) {
+    if (!job?.id) {
+      return;
+    }
+
+    this.showLoading();
+
+    const searchPayload: SearchInputDto = {
+      keyword: '',
+      skipCount: 0,
+      maxResultCount: 1,
+    };
+
+    this.cvApiService
+      .getCv(searchPayload)
+      .pipe(
+        take(1),
+        switchMap((res: any) => {
+          const payloadCandidate = (res?.items || [])[0] as any;
+          const candidateProfileId =
+            payloadCandidate?.candidateProfileDto?.id ??
+            payloadCandidate?.CVDto?.candidateProfileDto?.id ??
+            payloadCandidate?.profile?.id ??
+            payloadCandidate?.candidateProfile?.id;
+
+          if (!candidateProfileId) {
+            return throwError(() => new Error('Vui lòng cập nhật hồ sơ ứng tuyển trước khi nộp đơn.'));
+          }
+
+          const dto: CreateUpdateJobApplicationDto = {
+            jobId: job.id,
+            candidateProfileId,
+            profileSnapshotJson: JSON.stringify(payloadCandidate),
+          };
+
+          return this.jobApplicationService.create(dto);
+        }),
+        finalize(() => {
+          this.hideLoading();
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.showSuccessMessage('Ứng tuyển thành công');
+        },
+        error: (err) => {
+          this.showErrorMessage(err?.message ?? 'Đã xảy ra lỗi khi ứng tuyển');
+        },
+      });
+  }
   // #endregion
 }

@@ -8,7 +8,7 @@ export class NavigationService {
 
   getMenu(): AppMenuItem[] {
     return [
-      new AppMenuItem('Bảng thống kê', '', null, '/main/dashboard'),
+      new AppMenuItem('Bảng thống kê', '', null, '/main/thong-ke'),
 
       // new AppMenuItem('Danh mục chung', '', null, '', [
       //   new AppMenuItem('Ai model config', '', null, '/main/danh-muc-chung/ai-model-config'),

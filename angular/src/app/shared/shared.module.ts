@@ -53,6 +53,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { CardModule } from 'primeng/card';
 //#endregion
 //#region Extension Modules
 import { NgxValidateCoreModule } from '@ngx-validate/core';
@@ -123,7 +124,7 @@ const modules = [
   ToastModule,
   TooltipModule,
   ToggleSwitchModule,
-
+  CardModule,
   // Extension Modules
   NgxValidateCoreModule,
 ];

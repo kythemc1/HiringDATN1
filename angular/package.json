@@ -33,6 +33,7 @@
     "@angular/router": "~20.0.0",
     "@babel/runtime": "^7.28.4",
     "@primeng/themes": "^21.0.2",
+    "chart.js": "^4.5.1",
     "material-icons": "^1.13.14",
     "primeicons": "^7.0.0",
     "primeng": "^20.4.0",
