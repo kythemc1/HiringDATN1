@@ -48,10 +48,7 @@ const routes: Routes = [
             loadChildren: () => import('./danh-muc-chung/candidate-skill/candidate-skill.module').then(m => m.CandidateSkillModule),
           },
 
-          {
-            path: '',
-            loadChildren: () => import('./danh-muc-chung/job-application/job-application.module').then(m => m.JobApplicationModule),
-          },
+
           // {
           //   path: '',
           //   loadChildren: () => import('./danh-muc-chung/university/university.module').then(m => m.UniversityModule),
@@ -74,6 +71,10 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('./nghiep-vu/job-apply/job-apply.module').then(m => m.JobApplyModule),
+          },
+          {
+            path: '',
+            loadChildren: () => import('./danh-muc-chung/job-application/job-application.module').then(m => m.JobApplicationModule),
           },
         ],
       },

@@ -18,13 +18,14 @@ export class NavigationService {
         new AppMenuItem('Candidate profile', '', null, '/main/danh-muc-chung/candidate-profile'),
         new AppMenuItem('Candidate skill', '', null, '/main/danh-muc-chung/candidate-skill'),
         new AppMenuItem('Candidate certificate', '', null, '/main/danh-muc-chung/candidate-certificate'),
-        new AppMenuItem('Job application', '', null, '/main/danh-muc-chung/job-application'),
+
           
       ]),
       new AppMenuItem('Quản lý nghiệp vụ', '', null, '', [
         new AppMenuItem('CV', '', null, '/main/quan-ly-nghiep-vu/cv'),
         new AppMenuItem('Job posting', '', null, '/main/quan-ly-nghiep-vu/job-posting'),
         new AppMenuItem('Job apply', '', null, '/main/quan-ly-nghiep-vu/job-apply'),
+        new AppMenuItem('Job application', '', null, '/main/quan-ly-nghiep-vu/job-application'),
       ]),
 
       new AppMenuItem('Master data', '', null, '', [

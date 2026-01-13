@@ -4,19 +4,31 @@
       <form [formGroup]="form" class="p-fluid"
         (ngSubmit)="!readOnly && (updateAIModelConfigDto?.id ? save() : saveAndNew())">
         <div class="row">
-          <div class="col-4 form-group">
+          <div class="col-6 form-group">
             <label for="providerName">{{ 'Tên nhà cung cấp' }} <span class="text-danger">*</span></label>
             <input pInputText type="text" placeholder="Nhập tên nhà cung cấp" id="providerName"
               formControlName="providerName" class="w-100" />
           </div>
-          <div class="col-4 form-group">
+          <div class="col-6 form-group">
             <label for="modelName">{{ 'Tên mô hình' }} <span class="text-danger">*</span></label>
             <input pInputText type="text" placeholder="Nhập tên mô hình" id="modelName"
               formControlName="modelName" class="w-100" />
             
           </div>
         </div>
-
+        <div class="row">
+          <div class="col-6 form-group">
+            <label for="apiKey">{{ 'API Key' }} <span class="text-danger">*</span></label>
+            <input pInputText type="text" placeholder="Nhập tên nhà cung cấp" id="providerName"
+              formControlName="apiKey" class="w-100" />
+          </div>
+          <div class="col-6 form-group">
+            <label for="baseUrl">{{ 'URL' }} <span class="text-danger">*</span></label>
+            <input pInputText type="text" placeholder="Nhập URL" id="baseUrl"
+              formControlName="baseUrl" class="w-100" />
+            
+          </div>
+        </div>
 
         <div class="row">
           <div class="col-12 form-group">

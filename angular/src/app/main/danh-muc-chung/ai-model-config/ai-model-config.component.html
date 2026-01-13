@@ -1,22 +1,16 @@
-<!-- <app-page-header
-  [title]="Danh Mục"
-  (titleClick)="onHeaderTitleClick()"
->
-  <div class="d-flex" *ngIf="viewMode === 'list'">
-    <vt-button
-      type="button"
-      [label]="CreateNew"
-      [color]="'custom'"
-      [width]="112"
-      [height]="36"
-      breadcrumbMode="create"
-      breadcrumbEntity="mô hình AI" 
-      [breadcrumb]="true"
-      (buttonClick)="startCreate()"
-    ></vt-button>
-  </div>
-  <p-menu #excelMenu [popup]="true" [model]="excelMenuItems" />
-</app-page-header> -->
+<div class="d-flex" *ngIf="viewMode === 'list'">
+  <vt-button
+    type="button"
+    [label]="'::CreateNew' | abpLocalization"
+    [color]="'custom'"
+    [width]="112"
+    [height]="36"
+    breadcrumbMode="create"
+    breadcrumbEntity="tin tuyển dụng" 
+    [breadcrumb]="true"
+    (buttonClick)="startCreate()"
+  ></vt-button>
+</div>
 
 <div class="page">
   <app-create-update-ai-model-config-modal
