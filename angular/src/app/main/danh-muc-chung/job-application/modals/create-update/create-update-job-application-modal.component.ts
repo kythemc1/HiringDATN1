@@ -1,25 +1,10 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Injector,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
-import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Component, EventEmitter, Injector, Input, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JobApplicationService } from '../../../../../proxy/controllers/job-application.service';
 import { JobApplicationDto, CreateUpdateJobApplicationDto } from '../../../../../proxy/dtos/models';
-import { Dialog } from 'primeng/dialog';
-import { EMPTY, catchError, finalize, takeWhile, tap } from 'rxjs';
 import { AppBaseComponent } from 'src/app/shared/components/base-component/base-component';
-import {
-  ApplicationStatus,
-  applicationStatusOptions,
-} from '../../../../../proxy/dtos/application-status.enum';
+import { applicationStatusOptions } from '../../../../../proxy/dtos/application-status.enum';
+import { EMPTY, catchError, finalize, takeWhile, tap } from 'rxjs';
 
 @Component({
   standalone: false,
@@ -27,30 +12,22 @@ import {
   templateUrl: './create-update-job-application-modal.component.html',
   styleUrls: ['./create-update-job-application-modal.component.less'],
 })
-export class CreateUpdateJobApplicationModalComponent
-  extends AppBaseComponent
-  implements OnInit, OnDestroy {
-  //#region Variables
+export class CreateUpdateJobApplicationModalComponent extends AppBaseComponent implements OnInit, OnDestroy {
   @Output() saved: EventEmitter<any> = new EventEmitter();
-  @ViewChild(Dialog, { static: false }) private modal: Dialog;
   @Output() canceled: EventEmitter<void> = new EventEmitter<void>();
-  @ViewChild('firstElm', { static: false }) firstElm: ElementRef;
+  
   @Input() inline = false;
   @Input() readOnly = false;
-  isModalOpen = false;
-  @Input() modalTitle: string;
   @Input() updateJobApplicationDto: JobApplicationDto;
-  statusOptions = applicationStatusOptions;
 
   form: FormGroup;
+  statusOptions = applicationStatusOptions;
+  snapshot: any = null;
 
-  //#endregion
-
-  //#region Constructor and Lifecycle
   constructor(
     injector: Injector,
     private fb: FormBuilder,
-    private JobApplicationService: JobApplicationService,
+    private jobApplicationService: JobApplicationService,
   ) {
     super(injector);
   }
@@ -68,152 +45,63 @@ export class CreateUpdateJobApplicationModalComponent
   ngOnDestroy(): void {
     this.componentActive = false;
   }
-  //#endregion
-
-  //#region Custom methods
-  show(): void {
-    if (this.inline) return;
-    this.isModalOpen = true;
-    setTimeout(() => this.firstElm.nativeElement.focus(), 300);
-  }
 
   buildForm(): void {
     const dto = this.updateJobApplicationDto ?? ({} as JobApplicationDto);
+    
+    // Parse dữ liệu theo cấu trúc JSON bạn cung cấp
+    try {
+      this.snapshot = dto.profileSnapshotJson ? JSON.parse(dto.profileSnapshotJson) : null;
+    } catch (e) {
+      this.snapshot = null;
+    }
+
     this.form = this.fb.group({
-      jobId: [dto.jobId ?? null, [Validators.required]],
-      candidateProfileId: [dto.candidateProfileId ?? null, [Validators.required]],
-      profileSnapshotJson: [dto.profileSnapshotJson ?? ''],
-      coverLetter: [dto.coverLetter ?? ''],
+      jobId: [{ value: dto.jobId, disabled: true }],
+      candidateProfileId: [{ value: dto.candidateProfileId, disabled: true }],
       status: [dto.status ?? null, [Validators.required]],
       aiMatchingScore: [dto.aiMatchingScore ?? null],
+      coverLetter: [dto.coverLetter ?? ''],
     });
 
     if (this.readOnly) {
-      this.form.disable();
+      this.form.get('aiMatchingScore')?.disable();
+      this.form.get('coverLetter')?.disable();
     }
   }
 
-  //#endregion
-
-  //#region OnChange methods
-
-  //#endregion
-
-  //#region Main methods
   save(): void {
-    if (this.form.invalid || this.form.pending) {
+    if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    // Preprocess form data: convert empty strings to null for decimal fields
-    const formValue = { ...this.form.value } as CreateUpdateJobApplicationDto;
-    formValue.jobId = Number(formValue.jobId ?? 0);
-    formValue.candidateProfileId = Number(formValue.candidateProfileId ?? 0);
-    formValue.aiMatchingScore = formValue.aiMatchingScore != null ? Number(formValue.aiMatchingScore) : undefined;
 
-    const request = this.updateJobApplicationDto?.id
-      ? this.JobApplicationService.update(this.updateJobApplicationDto.id, formValue)
-      : this.JobApplicationService.create(formValue);
+    const formValue = this.form.getRawValue();
+    const payload: CreateUpdateJobApplicationDto = {
+      ...formValue,
+      jobId: Number(formValue.jobId),
+      candidateProfileId: Number(formValue.candidateProfileId),
+      aiMatchingScore: formValue.aiMatchingScore ? Number(formValue.aiMatchingScore) : undefined,
+      profileSnapshotJson: this.updateJobApplicationDto.profileSnapshotJson // Giữ nguyên snapshot cũ
+    };
+
     this.showLoading();
-    request
+    this.jobApplicationService.update(this.updateJobApplicationDto.id, payload)
       .pipe(
         takeWhile(() => this.componentActive),
         tap(() => {
-          const isEdit = !!this.updateJobApplicationDto.id;
-          this.showSuccessMessage("Lưu dữ liệu thành công");
-          this.isModalOpen = false;
-          try { this.saved.emit(true); } catch { }
+          this.showSuccessMessage("Cập nhật trạng thái thành công");
+          this.saved.emit(true);
         }),
-        catchError((err) => {
-          // Lấy đúng message từ API trả về
-          
-          this.showErrorMessage("Đã xảy ra lỗi khi lưu dữ liệu");
+        catchError(() => {
+          this.showErrorMessage("Lỗi khi cập nhật");
           return EMPTY;
         }),
-        finalize(() => {
-          this.hideLoading();
-        })
-      )
-      .subscribe();
-  }
-
-  saveAndNew(): void {
-    if (this.form.invalid) return;
-
-    // Preprocess form data: convert empty strings to null for decimal fields
-    const formValue = { ...this.form.value } as CreateUpdateJobApplicationDto;
-    formValue.jobId = Number(formValue.jobId ?? 0);
-    formValue.candidateProfileId = Number(formValue.candidateProfileId ?? 0);
-    formValue.aiMatchingScore = formValue.aiMatchingScore != null ? Number(formValue.aiMatchingScore) : undefined;
-
-    const isUpdate = !!this.updateJobApplicationDto.id;
-    const request = isUpdate
-      ? this.JobApplicationService.update(this.updateJobApplicationDto.id, formValue)
-      : this.JobApplicationService.create(formValue);
-
-    this.showLoading();
-
-    request
-      .pipe(
-        takeWhile(() => this.componentActive),
-        tap(() => {
-          const message = isUpdate
-            ? "Cập nhật dữ liệu thành công"
-            : "Thêm mới dữ liệu thành công";
-          this.message.add({
-            severity: 'info',
-            summary: "Thông báo",
-            detail: message,
-            key: 'global',
-            life: 3000,
-          });
-          try { this.saved.emit(false); } catch { }
-          // Reset form and DTO for new entry
-          this.updateJobApplicationDto = {} as JobApplicationDto;
-          this.form.reset();
-          this.buildForm(); // Rebuild to apply default validators/state
-
-          setTimeout(() => {
-            this.firstElm.nativeElement.focus();
-          });
-        }),
-        finalize(() => {
-          this.hideLoading();
-        })
-      )
-      .subscribe();
+        finalize(() => this.hideLoading())
+      ).subscribe();
   }
 
   close(): void {
-    if (this.inline) {
-      this.canceled.emit();
-      this.form?.reset();
-      return;
-    }
-    this.isModalOpen = false;
-    this.form.reset();
+    this.canceled.emit();
   }
-
-
-  //#region Private methods
-  private noWhitespaceValidator(): ValidatorFn {
-    return (control): ValidationErrors | null => {
-      const value = control.value;
-
-      // Nếu không có giá trị thì không validate (để Validators.required xử lý)
-      if (!value) {
-        return null;
-      }
-
-      // Kiểm tra nếu chỉ toàn khoảng trắng
-      if (typeof value === 'string' && value.trim().length === 0) {
-        return { whitespace: true };
-      }
-
-      return null;
-    };
-  }
-
-
-  //#endregion
 }

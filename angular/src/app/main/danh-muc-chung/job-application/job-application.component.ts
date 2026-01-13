@@ -142,7 +142,7 @@ export class JobApplicationComponent extends AppBaseComponent implements OnInit,
             this.triggerBuildForm();
           } else {
             this.viewMode = 'list';
-            this.router.navigate(['/main/danh-muc-chung/job-application']);
+            this.router.navigate(['/main/quan-ly-nghiep-vu/job-application']);
           }
         } else if (mode === 'view') {
           this.viewMode = 'view';
@@ -151,7 +151,7 @@ export class JobApplicationComponent extends AppBaseComponent implements OnInit,
             this.triggerBuildForm();
           } else {
             this.viewMode = 'list';
-            this.router.navigate(['/main/danh-muc-chung/job-application']);
+            this.router.navigate(['/main/quan-ly-nghiep-vu/job-application']);
           }
         } else {
           this.viewMode = 'list';
@@ -200,12 +200,12 @@ export class JobApplicationComponent extends AppBaseComponent implements OnInit,
   cancelForm(): void {
     this.viewMode = 'list';
     this.updateJobApplicationDto = {} as any;
-    this.router.navigate(['/main/danh-muc-chung/job-application']);
+    this.router.navigate(['/main/quan-ly-nghiep-vu/job-application']);
   }
 
   onChildSaved(shouldClose?: boolean): void {
     this.viewMode = 'list';
-    this.router.navigate(['/main/danh-muc-chung/job-application']).then(() => this.apply());
+    this.router.navigate(['/main/quan-ly-nghiep-vu/job-application']).then(() => this.apply());
   }
 
 

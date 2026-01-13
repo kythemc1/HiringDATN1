@@ -1,120 +1,126 @@
 <ng-container *ngIf="inline">
-  <app-toggleable-card title="Thông tin đơn ứng tuyển">
-    <div class="card-body">
-      <form
-        [formGroup]="form"
-        class="p-fluid"
-        (ngSubmit)="!readOnly && (updateJobApplicationDto?.id ? save() : saveAndNew())"
-      >
-        <div class="row">
-          <div class="col-6 form-group">
-            <label for="jobId">ID công việc <span class="text-danger">*</span></label>
-            <input
-              pInputText
-              type="number"
-              min="0"
-              id="jobId"
-              placeholder="Nhập ID công việc"
-              formControlName="jobId"
-              class="w-100"
-            />
-          </div>
-          <div class="col-6 form-group">
-            <label for="candidateProfileId">ID hồ sơ ứng viên <span class="text-danger">*</span></label>
-            <input
-              pInputText
-              type="number"
-              min="0"
-              id="candidateProfileId"
-              placeholder="Nhập ID ứng viên"
-              formControlName="candidateProfileId"
-              class="w-100"
-            />
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-12 form-group">
-            <label for="coverLetter">Thư xin việc</label>
-            <textarea
-              pInputTextarea
-              id="coverLetter"
-              rows="4"
-              placeholder="Nhập thư xin việc"
-              formControlName="coverLetter"
-              class="form-control"
-            ></textarea>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-12 form-group">
-            <label for="profileSnapshotJson">Thông tin hồ sơ (JSON)</label>
-            <textarea
-              pInputTextarea
-              id="profileSnapshotJson"
-              rows="4"
-              placeholder="Nhập dữ liệu hồ sơ (JSON)"
-              formControlName="profileSnapshotJson"
-              class="form-control"
-            ></textarea>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-4 form-group">
-            <label for="status">Trạng thái <span class="text-danger">*</span></label>
-            <p-dropdown
-              id="status"
-              [options]="statusOptions"
-              optionLabel="label"
-              optionValue="value"
+  <app-toggleable-card title="Quản lý đơn ứng tuyển">
+    <div class="card-body application-page">
+      
+      <form [formGroup]="form" class="p-fluid">
+        <div class="row info-card mb-4">
+          <div class="col-md-5 border-right">
+            <label class="field-label">Trạng thái hiện tại</label>
+            <p-dropdown 
+              [options]="statusOptions" 
+              optionLabel="label" 
+              optionValue="value" 
               formControlName="status"
-              class="w-100"
-            ></p-dropdown>
+              placeholder="Chọn trạng thái">
+            </p-dropdown>
           </div>
-          <div class="col-4 form-group">
-            <label for="aiMatchingScore">Điểm AI</label>
-            <input
-              pInputText
-              type="number"
-              step="0.01"
-              id="aiMatchingScore"
-              placeholder="Nhập số điểm"
-              formControlName="aiMatchingScore"
-              class="w-100"
-            />
+          <!-- <div class="col-md-3 border-right">
+            <label class="field-label">Điểm AI</label>
+            <div class="score-badge">
+              <i class="pi pi-bolt mr-2"></i>
+              {{form.get('aiMatchingScore').value || 0}}%
+            </div>
+          </div> -->
+          <div class="col-md-4">
+            <label class="field-label">Mã đơn / Công việc</label>
+            <div class="id-text">#{{updateJobApplicationDto?.id}} / Job ID: {{updateJobApplicationDto?.jobId}}</div>
+          </div>
+          
+          <div class="col-12 mt-3">
+            <label class="field-label">Thư xin việc</label>
+            <div class="cover-letter-display">
+              {{form.get('coverLetter').value || 'Ứng viên không gửi kèm thư xin việc.'}}
+            </div>
           </div>
         </div>
       </form>
-    </div>
-    <div class="card-fotter d-flex justify-content-between align-items-center" style="padding: 10px">
-      <div></div>
-      <div class="d-flex gap-2">
-        <vt-button
-          type="button"
-          [label]="readOnly ? 'Đóng' : 'Hủy'"
-          [color]="readOnly ? 'danger' : 'danger'"
-          [outline]="true"
-          [width]="112"
-          [height]="36"
-          (buttonClick)="close()"
-        >
-          <i class="pi pi-times"></i>
-        </vt-button>
-        <vt-button
-          *ngIf="!readOnly"
-          type="button"
-          [disabled]="form?.invalid || form?.pending"
-          [label]="(updateJobApplicationDto?.id ? 'Cập nhật' : 'Thêm mới')"
-          [color]="'custom'"
-          [width]="112"
-          [height]="36"
-          (buttonClick)="form?.invalid || form?.pending ? null : save()"
-        >
-          <i class="pi pi-check"></i>
-        </vt-button>
+
+      <div class="cv-paper" *ngIf="snapshot; else noData">
+        
+        <div class="profile-header" *ngIf="snapshot.candidateProfileDto">
+          <div class="row align-items-center">
+            <div class="col-md-7">
+              <h1 class="name">{{snapshot.candidateProfileDto.fullName}}</h1>
+              <h4 class="title">{{snapshot.candidateProfileDto.jobTitle}}</h4>
+            </div>
+            <div class="col-md-5 contact-list">
+              <p><i class="pi pi-envelope"></i> {{snapshot.candidateProfileDto.email}}</p>
+              <p><i class="pi pi-phone"></i> {{snapshot.candidateProfileDto.phoneNumber}}</p>
+              <p><i class="pi pi-map-marker"></i> {{snapshot.candidateProfileDto.address}}</p>
+            </div>
+          </div>
+          <div class="about-me mt-3">
+            <strong>Giới thiệu:</strong> {{snapshot.candidateProfileDto.aboutMe}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <div class="section" *ngIf="snapshot.candidateExperienceDtos?.length">
+              <h5 class="section-heading"><i class="pi pi-briefcase"></i> Kinh nghiệm làm việc</h5>
+              <div class="timeline">
+                <div class="timeline-item" *ngFor="let exp of snapshot.candidateExperienceDtos">
+                  <div class="d-flex justify-content-between font-bold">
+                    <span>{{exp.position}}</span>
+                    <span class="text-secondary">{{exp.startDate | date:'MM/yyyy'}} - {{exp.isCurrent ? 'Hiện tại' : (exp.endDate | date:'MM/yyyy')}}</span>
+                  </div>
+                  <div class="company">{{exp.companyName}}</div>
+                  <p class="desc">{{exp.description}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="section" *ngIf="snapshot.candidateProjectDtos?.length">
+              <h5 class="section-heading"><i class="pi pi-code"></i> Dự án tiêu biểu</h5>
+              <div class="project-card" *ngFor="let p of snapshot.candidateProjectDtos">
+                <div class="font-bold">{{p.name}} <small class="text-primary">({{p.role}})</small></div>
+                <div class="techs">Công nghệ: {{p.technologies}}</div>
+                <p class="desc">{{p.description}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="section" *ngIf="snapshot.candidateEducationDtos?.length">
+              <h5 class="section-heading"><i class="pi pi-book"></i> Học vấn</h5>
+              <div class="edu-item mb-3" *ngFor="let edu of snapshot.candidateEducationDtos">
+                <div class="font-bold">{{edu.degree}}</div>
+                <div>{{edu.schoolName}}</div>
+                <small class="text-muted">{{edu.startDate | date:'yyyy'}} - {{edu.endDate | date:'yyyy'}}</small>
+              </div>
+            </div>
+
+            <div class="section" *ngIf="snapshot.candidateCertificateDtos?.length">
+              <h5 class="section-heading"><i class="pi pi-id-card"></i> Chứng chỉ</h5>
+              <div class="cert-item" *ngFor="let c of snapshot.candidateCertificateDtos">
+                <div class="font-bold">{{c.name}}</div>
+                <div class="issuer">{{c.issuer}}</div>
+              </div>
+            </div>
+
+            <div class="section" *ngIf="snapshot.candidateSkillDtos?.length">
+              <h5 class="section-heading"><i class="pi pi-cog"></i> Kỹ năng</h5>
+              <div class="skill-tags">
+                <span class="tag" *ngFor="let s of snapshot.candidateSkillDtos">{{s.name}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <ng-template #noData>
+        <div class="text-center p-5 border-round surface-100">
+          <i class="pi pi-info-circle text-4xl mb-3"></i>
+          <p>Dữ liệu hồ sơ chưa được lưu lại tại thời điểm ứng tuyển.</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <div class="card-footer d-flex justify-content-end gap-2 border-top pt-3 pb-3 pr-4">
+      <vt-button label="Đóng" color="danger" [outline]="true" (buttonClick)="close()"></vt-button>
+      <vt-button *ngIf="form.dirty" label="Lưu thay đổi" color="custom" (buttonClick)="save()">
+        <i class="pi pi-save"></i>
+      </vt-button>
     </div>
   </app-toggleable-card>
 </ng-container>
