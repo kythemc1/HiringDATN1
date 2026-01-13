@@ -3,21 +3,17 @@ import { AiPromptTemplateDto } from '../../../../proxy/dtos/models';
 
 export interface AiPromptTemplateRowView {
   id: number;
-  providerName?: string;
-  modelName?: string;
-  apiKey?: string;
-  baseUrl?: string;
-  isActive?: boolean;
+  code?: string;
+  templateContent?: string;
+  description?: string;
+  modelConfigId?: string;
+  temperature?: number;
   creationTime?: string | Date | null;
   lastModificationTime?: string | Date | null;
-  ma?: string;
-  ten?: string;
-  moTa?: string;
-  trangThai?: string | number | null;
-  displayProvider?: string;
-  displayModel?: string;
+  displayCode?: string;
   displayDescription?: string;
-  displayStatus?: string | number | boolean | null;
+  displayTemperature?: string;
+  displayModelConfigId?: string;
 }
 
 export function mapAiPromptTemplateResponse(
@@ -33,43 +29,26 @@ export function mapAiPromptTemplateResponse(
     [];
 
   const data: AiPromptTemplateRowView[] = items.map((it: any) => {
-    const payload = (it?.AiPromptTemplate ?? it?.AiPromptTemplate ?? it) as AiPromptTemplateDto | any;
+    const payload = (it?.AiPromptTemplate ?? it) as AiPromptTemplateDto | any;
 
-    const displayProvider =
-      payload?.providerName ??
-      payload?.tenAiPromptTemplate ??
-      payload?.provider ??
-      payload?.ten ??
-      payload?.ma ??
-      '';
-    const displayModel =
-      payload?.modelName ??
-      payload?.tenAiPromptTemplate ??
-      payload?.name ??
-      payload?.ten ??
-      '';
-    const displayDescription = payload?.description ?? payload?.moTa ?? '';
-    const statusValue =
-      payload?.isActive ??
-      (payload?.trangThai != null ? (payload.trangThai === '1' || payload.trangThai === 1 || payload.trangThai === true) : null);
+    const displayCode = payload?.code ?? '';
+    const displayDescription = payload?.description ?? '';
+    const displayTemperature =
+      payload?.temperature != null ? String(payload.temperature) : '';
 
     return {
       id: payload?.id ?? it?.id ?? 0,
-      providerName: payload?.providerName,
-      modelName: payload?.modelName,
-      apiKey: payload?.apiKey,
-      baseUrl: payload?.baseUrl,
-      isActive: payload?.isActive,
+      code: payload?.code,
+      templateContent: payload?.templateContent,
+      description: payload?.description,
+      modelConfigId: payload?.modelConfigId,
+      temperature: payload?.temperature,
       creationTime: payload?.creationTime,
       lastModificationTime: payload?.lastModificationTime,
-      ma: payload?.ma,
-      ten: payload?.ten,
-      moTa: payload?.moTa,
-      trangThai: payload?.trangThai,
-      displayProvider,
-      displayModel,
+      displayCode,
       displayDescription,
-      displayStatus: statusValue,
+      displayTemperature,
+      displayModelConfigId: payload?.modelConfigId,
     };
   });
 
@@ -83,11 +62,11 @@ export function buildUpdateDtoFromRow(row: AiPromptTemplateRowView): AiPromptTem
 
   return {
     id: row.id,
-    providerName: row.providerName,
-    modelName: row.modelName,
-    apiKey: row.apiKey,
-    baseUrl: row.baseUrl,
-    isActive: row.isActive,
+    code: row.code,
+    templateContent: row.templateContent,
+    description: row.description,
+    modelConfigId: row.modelConfigId,
+    temperature: row.temperature,
     creationTime: row.creationTime,
     lastModificationTime: row.lastModificationTime,
   } as AiPromptTemplateDto;

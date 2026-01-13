@@ -10,11 +10,11 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AiPromptTemplateService } from '../../../../../proxy/controllers/ai-prompt-template.service';
 import {  AiPromptTemplateDto,CreateUpdateAiPromptTemplateDto } from '../../../../../proxy/dtos/models';
 import { Dialog } from 'primeng/dialog';
-import { EMPTY, catchError, finalize, map, of, switchMap, takeWhile, tap, timer } from 'rxjs';
+import { EMPTY, catchError, finalize, takeWhile, tap } from 'rxjs';
 import { AppBaseComponent } from 'src/app/shared/components/base-component/base-component';
 
 @Component({
@@ -51,10 +51,12 @@ export class CreateUpdateAiPromptTemplateModalComponent
   }
 
   // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.buildForm();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ('updateAiPromptTemplateDto' in changes && this.inline) {
+    if ('updateAiPromptTemplateDto' in changes) {
       this.buildForm();
     }
   }
@@ -72,18 +74,18 @@ export class CreateUpdateAiPromptTemplateModalComponent
   }
 
   buildForm(): void {
-    this.form = this.fb.group(
-      {
-        
-      },
-    );
+    const dto = this.updateAiPromptTemplateDto ?? ({} as AiPromptTemplateDto);
+    this.form = this.fb.group({
+      code: [dto.code ?? '', [Validators.required, this.noWhitespaceValidator()]],
+      templateContent: [dto.templateContent ?? '', Validators.required],
+      description: [dto.description ?? ''],
+      modelConfigId: [dto.modelConfigId ?? ''],
+      temperature: [dto.temperature ?? null],
+    });
 
-    // ⚙️ Nếu là read-only thì disable toàn form và return sớm
     if (this.readOnly) {
       this.form.disable();
-      return;
     }
-
   }
 
   //#endregion
@@ -98,20 +100,13 @@ export class CreateUpdateAiPromptTemplateModalComponent
       this.form.markAllAsTouched();
       return;
     }
-    // Preprocess form data: convert empty strings to null for decimal fields
-    const formValue = { ...this.form.value };
-    if (formValue.tenAiPromptTemplate) {
-      formValue.tenAiPromptTemplate = formValue.tenAiPromptTemplate.trim();
-    }
 
-    if (formValue.vonTapDoanTu === '' || formValue.vonTapDoanTu === undefined) {
-      formValue.vonTapDoanTu = null;
-    }
-    if (formValue.vonTapDoanDen === '' || formValue.vonTapDoanDen === undefined) {
-      formValue.vonTapDoanDen = null;
-    }
+    const formValue = { ...this.form.value } as CreateUpdateAiPromptTemplateDto;
+    formValue.code = formValue.code?.trim() ?? '';
+    formValue.templateContent = formValue.templateContent?.trim() ?? '';
+    formValue.modelConfigId = formValue.modelConfigId?.trim() ?? '';
 
-    const request = this.updateAiPromptTemplateDto.id
+    const request = this.updateAiPromptTemplateDto?.id
       ? this.AiPromptTemplateService.update(this.updateAiPromptTemplateDto.id, formValue)
       : this.AiPromptTemplateService.create(formValue);
     this.showLoading();
@@ -125,8 +120,6 @@ export class CreateUpdateAiPromptTemplateModalComponent
           try { this.saved.emit(true); } catch { }
         }),
         catchError((err) => {
-          // Lấy đúng message từ API trả về
-          
           this.showErrorMessage("Đã xảy ra lỗi khi lưu dữ liệu");
           return EMPTY;
         }),
@@ -140,13 +133,15 @@ export class CreateUpdateAiPromptTemplateModalComponent
   saveAndNew(): void {
     if (this.form.invalid) return;
 
-    // Preprocess form data: convert empty strings to null for decimal fields
-    const formValue = { ...this.form.value };
+    const formValue = { ...this.form.value } as CreateUpdateAiPromptTemplateDto;
+    formValue.code = formValue.code?.trim() ?? '';
+    formValue.templateContent = formValue.templateContent?.trim() ?? '';
+    formValue.modelConfigId = formValue.modelConfigId?.trim() ?? '';
 
     const isUpdate = !!this.updateAiPromptTemplateDto.id;
     const request = isUpdate
-      ? this.AiPromptTemplateService.update(this.updateAiPromptTemplateDto.id, formValue as CreateUpdateAiPromptTemplateDto)
-      : this.AiPromptTemplateService.create(formValue as CreateUpdateAiPromptTemplateDto);
+      ? this.AiPromptTemplateService.update(this.updateAiPromptTemplateDto.id, formValue)
+      : this.AiPromptTemplateService.create(formValue);
 
     this.showLoading();
 
@@ -165,7 +160,6 @@ export class CreateUpdateAiPromptTemplateModalComponent
             life: 3000,
           });
           try { this.saved.emit(false); } catch { }
-          // Reset form and DTO for new entry
           this.updateAiPromptTemplateDto = {} as AiPromptTemplateDto;
           this.form.reset();
           this.buildForm(); // Rebuild to apply default validators/state

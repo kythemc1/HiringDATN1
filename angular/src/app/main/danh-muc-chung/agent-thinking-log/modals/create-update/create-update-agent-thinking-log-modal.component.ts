@@ -4,15 +4,19 @@ import {
   EventEmitter,
   Injector,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AgentThinkingLogService } from '../../../../../proxy/controllers/agent-thinking-log.service';
-import {  AgentThinkingLogDto,CreateUpdateAgentThinkingLogDto } from '../../../../../proxy/dtos/models';
+import {
+  AgentThinkingLogDto,
+  CreateUpdateAgentThinkingLogDto,
+} from '../../../../../proxy/dtos/models';
 import { Dialog } from 'primeng/dialog';
 import { EMPTY, catchError, finalize, map, of, switchMap, takeWhile, tap, timer } from 'rxjs';
 import { AppBaseComponent } from 'src/app/shared/components/base-component/base-component';
@@ -25,7 +29,7 @@ import { AppBaseComponent } from 'src/app/shared/components/base-component/base-
 })
 export class CreateUpdateAgentThinkingLogModalComponent
   extends AppBaseComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy, OnChanges {
   //#region Variables
   @Output() saved: EventEmitter<any> = new EventEmitter();
   @ViewChild(Dialog, { static: false }) private modal: Dialog;
@@ -35,7 +39,7 @@ export class CreateUpdateAgentThinkingLogModalComponent
   @Input() readOnly = false;
   isModalOpen = false;
   @Input() modalTitle: string;
-  @Input() updateAgentThinkingLogDto: AgentThinkingLogDto;
+  @Input() updateAgentThinkingLogDto: AgentThinkingLogDto = {} as AgentThinkingLogDto;
 
   form: FormGroup;
 
@@ -50,8 +54,9 @@ export class CreateUpdateAgentThinkingLogModalComponent
     super(injector);
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.buildForm();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('updateAgentThinkingLogDto' in changes && this.inline) {
@@ -67,16 +72,22 @@ export class CreateUpdateAgentThinkingLogModalComponent
   //#region Custom methods
   show(): void {
     if (this.inline) return;
+    this.buildForm();
     this.isModalOpen = true;
     setTimeout(() => this.firstElm.nativeElement.focus(), 300);
   }
 
   buildForm(): void {
-    this.form = this.fb.group(
-      {
-        
-      },
-    );
+    const dto = this.updateAgentThinkingLogDto ?? ({} as AgentThinkingLogDto);
+
+    this.form = this.fb.group({
+      messageId: [dto.messageId ?? null, [Validators.required, Validators.min(0)]],
+      agentName: [dto.agentName ?? '', [this.noWhitespaceValidator()]],
+      stepName: [dto.stepName ?? ''],
+      inputData: [dto.inputData ?? ''],
+      outputData: [dto.outputData ?? ''],
+      durationMs: [dto.durationMs ?? null, [Validators.required, Validators.min(0)]],
+    });
 
     // ⚙️ Nếu là read-only thì disable toàn form và return sớm
     if (this.readOnly) {
@@ -98,22 +109,20 @@ export class CreateUpdateAgentThinkingLogModalComponent
       this.form.markAllAsTouched();
       return;
     }
-    // Preprocess form data: convert empty strings to null for decimal fields
-    const formValue = { ...this.form.value };
-    if (formValue.tenAgentThinkingLog) {
-      formValue.tenAgentThinkingLog = formValue.tenAgentThinkingLog.trim();
-    }
+    const formValue = { ...this.form.value } as CreateUpdateAgentThinkingLogDto;
+    const payload: CreateUpdateAgentThinkingLogDto = {
+      ...formValue,
+      messageId: Number(formValue.messageId),
+      durationMs: Number(formValue.durationMs),
+      agentName: formValue.agentName?.trim(),
+      stepName: formValue.stepName?.trim(),
+      inputData: formValue.inputData?.trim(),
+      outputData: formValue.outputData?.trim(),
+    };
 
-    if (formValue.vonTapDoanTu === '' || formValue.vonTapDoanTu === undefined) {
-      formValue.vonTapDoanTu = null;
-    }
-    if (formValue.vonTapDoanDen === '' || formValue.vonTapDoanDen === undefined) {
-      formValue.vonTapDoanDen = null;
-    }
-
-    const request = this.updateAgentThinkingLogDto.id
-      ? this.AgentThinkingLogService.update(this.updateAgentThinkingLogDto.id, formValue)
-      : this.AgentThinkingLogService.create(formValue);
+    const request = this.updateAgentThinkingLogDto?.id
+      ? this.AgentThinkingLogService.update(this.updateAgentThinkingLogDto.id, payload)
+      : this.AgentThinkingLogService.create(payload);
     this.showLoading();
     request
       .pipe(
@@ -141,12 +150,22 @@ export class CreateUpdateAgentThinkingLogModalComponent
     if (this.form.invalid) return;
 
     // Preprocess form data: convert empty strings to null for decimal fields
-    const formValue = { ...this.form.value };
+    const formValue = { ...this.form.value } as CreateUpdateAgentThinkingLogDto;
 
-    const isUpdate = !!this.updateAgentThinkingLogDto.id;
+    const payload: CreateUpdateAgentThinkingLogDto = {
+      ...formValue,
+      messageId: Number(formValue.messageId),
+      durationMs: Number(formValue.durationMs),
+      agentName: formValue.agentName?.trim(),
+      stepName: formValue.stepName?.trim(),
+      inputData: formValue.inputData?.trim(),
+      outputData: formValue.outputData?.trim(),
+    };
+
+    const isUpdate = !!this.updateAgentThinkingLogDto?.id;
     const request = isUpdate
-      ? this.AgentThinkingLogService.update(this.updateAgentThinkingLogDto.id, formValue as CreateUpdateAgentThinkingLogDto)
-      : this.AgentThinkingLogService.create(formValue as CreateUpdateAgentThinkingLogDto);
+      ? this.AgentThinkingLogService.update(this.updateAgentThinkingLogDto.id, payload)
+      : this.AgentThinkingLogService.create(payload);
 
     this.showLoading();
 

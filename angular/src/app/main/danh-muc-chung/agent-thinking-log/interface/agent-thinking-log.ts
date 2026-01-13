@@ -24,43 +24,16 @@ export function mapAgentThinkingLogResponse(
     [];
 
   const data: AgentThinkingLogRowView[] = items.map((it: any) => {
-    const payload = (it?.AgentThinkingLog ?? it?.AgentThinkingLog ?? it) as AgentThinkingLogDto | any;
-
-    const displayProvider =
-      payload?.providerName ??
-      payload?.tenAgentThinkingLog ??
-      payload?.provider ??
-      payload?.ten ??
-      payload?.ma ??
-      '';
-    const displayModel =
-      payload?.modelName ??
-      payload?.tenAgentThinkingLog ??
-      payload?.name ??
-      payload?.ten ??
-      '';
-    const displayDescription = payload?.description ?? payload?.moTa ?? '';
-    const statusValue =
-      payload?.isActive ??
-      (payload?.trangThai != null ? (payload.trangThai === '1' || payload.trangThai === 1 || payload.trangThai === true) : null);
+    const payload = (it?.AgentThinkingLog ?? it) as AgentThinkingLogDto;
 
     return {
       id: payload?.id ?? it?.id ?? 0,
-      providerName: payload?.providerName,
-      modelName: payload?.modelName,
-      apiKey: payload?.apiKey,
-      baseUrl: payload?.baseUrl,
-      isActive: payload?.isActive,
-      creationTime: payload?.creationTime,
-      lastModificationTime: payload?.lastModificationTime,
-      ma: payload?.ma,
-      ten: payload?.ten,
-      moTa: payload?.moTa,
-      trangThai: payload?.trangThai,
-      displayProvider,
-      displayModel,
-      displayDescription,
-      displayStatus: statusValue,
+      messageId: payload?.messageId ?? 0,
+      agentName: payload?.agentName,
+      stepName: payload?.stepName,
+      inputData: payload?.inputData,
+      outputData: payload?.outputData,
+      durationMs: payload?.durationMs ?? 0,
     };
   });
 
@@ -80,5 +53,5 @@ export function buildUpdateDtoFromRow(row: AgentThinkingLogRowView): AgentThinki
     inputData: row.inputData,
     outputData: row.outputData,
     durationMs: row.durationMs,
-  } as AgentThinkingLogDto;
+  };
 }

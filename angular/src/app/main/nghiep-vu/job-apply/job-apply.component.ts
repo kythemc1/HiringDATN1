@@ -1,21 +1,35 @@
-import { Component, Injector, OnDestroy, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DynamicTableAction, DynamicTableColumn, DynamicTableConfig } from '../../../shared/components/dynamic-table/dynamic-table.component';
 
 
 import { HttpClient } from '@angular/common/http';
-import { finalize, take, tap, combineLatest, startWith, Subject, debounceTime, switchMap, takeUntil, catchError, of, throwError } from 'rxjs';
+import { finalize, take, combineLatest, startWith, Subject, debounceTime, switchMap, takeUntil, catchError, of } from 'rxjs';
 import { AppBaseComponent } from 'src/app/shared/components/base-component/base-component';
 
-import { CreateUpdateJobApplicationDto, JobPostingDto, SearchInputDto } from '../../../proxy/dtos/models';
+import {
+  CreateUpdateJobApplicationDto,
+  JobPostingDto,
+  SearchInputDto,
+  CoverLetterGenerationInputDto,
+  CandidateProfileDto,
+} from '../../../proxy/dtos/models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { JobPostingFacadeService } from './service/job-posting.facade';
 import { JobPostingRowView } from '../job-posting/interface/job-posting';
 import { JobApplicationService } from 'src/app/proxy/controllers/job-application.service';
 import { CvApiService } from '../cv/service/cv.service';
+import { CoverLetterService } from 'src/app/proxy/controllers';
+import { CoverLetterTone } from 'src/app/proxy/dtos';
 
 type JobApplySearchTerms = SearchInputDto & {
   trangThai?: boolean | null;
+};
+
+type CoverLetterPreset = {
+  label: string;
+  tone?: CoverLetterTone;
+  language?: string;
 };
 
 export function createJobApplyTableConfig(): DynamicTableConfig {
@@ -51,6 +65,7 @@ export class JobApplyComponent extends AppBaseComponent implements OnInit, OnDes
     private jobPostingFacadeService: JobPostingFacadeService,
     private jobApplicationService: JobApplicationService,
     private cvApiService: CvApiService,
+    private coverLetterService: CoverLetterService,
   ) {
     super(injector);
   }
@@ -86,6 +101,21 @@ export class JobApplyComponent extends AppBaseComponent implements OnInit, OnDes
   formTitle = 'Thông tin cơ bản';
   updateJobPostingDto = {} as JobPostingDto;
   dataDisplay: JobPostingRowView[] = [];
+  coverLetterDraft = '';
+  coverLetterPresets: CoverLetterPreset[] = [
+    { label: 'Chuyên nghiệp', tone: CoverLetterTone.Professional, language: 'vi' },
+    { label: 'Startup sáng tạo', tone: CoverLetterTone.Startup, language: 'vi' },
+    { label: 'Sáng tạo & cá tính', tone: CoverLetterTone.Creative, language: 'vi' },
+    { label: 'Tự tin & quyết đoán', tone: CoverLetterTone.Confident, language: 'vi' },
+  ];
+  isCoverLetterModalVisible = false;
+  isGeneratingCoverLetter = false;
+  isSubmittingApplication = false;
+  coverLetterModalError = '';
+  activeCoverLetterPreset?: CoverLetterPreset;
+  private pendingJobForApplication?: JobPostingRowView;
+  private pendingCandidateSnapshot?: any;
+  private pendingCandidateProfileId?: number;
   // #region Menu & Dynamic Table Config
 
 
@@ -229,6 +259,12 @@ export class JobApplyComponent extends AppBaseComponent implements OnInit, OnDes
       return;
     }
 
+    this.selectedJob = job;
+    this.pendingJobForApplication = job;
+    this.coverLetterModalError = '';
+    this.coverLetterDraft = '';
+    this.activeCoverLetterPreset = undefined;
+
     this.showLoading();
 
     const searchPayload: SearchInputDto = {
@@ -241,38 +277,175 @@ export class JobApplyComponent extends AppBaseComponent implements OnInit, OnDes
       .getCv(searchPayload)
       .pipe(
         take(1),
-        switchMap((res: any) => {
-          const payloadCandidate = (res?.items || [])[0] as any;
-          const candidateProfileId =
-            payloadCandidate?.candidateProfileDto?.id ??
-            payloadCandidate?.CVDto?.candidateProfileDto?.id ??
-            payloadCandidate?.profile?.id ??
-            payloadCandidate?.candidateProfile?.id;
-
-          if (!candidateProfileId) {
-            return throwError(() => new Error('Vui lòng cập nhật hồ sơ ứng tuyển trước khi nộp đơn.'));
-          }
-
-          const dto: CreateUpdateJobApplicationDto = {
-            jobId: job.id,
-            candidateProfileId,
-            profileSnapshotJson: JSON.stringify(payloadCandidate),
-          };
-
-          return this.jobApplicationService.create(dto);
-        }),
         finalize(() => {
           this.hideLoading();
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          const payloadCandidate = (res?.items || [])[0] as any;
+          const candidateProfileId = this.resolveCandidateProfileId(payloadCandidate);
+
+          if (!candidateProfileId) {
+            this.showErrorMessage('Vui lòng cập nhật hồ sơ ứng tuyển trước khi nộp đơn.');
+            return;
+          }
+
+          this.pendingCandidateSnapshot = payloadCandidate;
+          this.pendingCandidateProfileId = candidateProfileId;
+          this.coverLetterDraft = this.extractAboutSection(payloadCandidate);
+          this.isCoverLetterModalVisible = true;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          this.showErrorMessage(err?.message ?? 'Đã xảy ra lỗi khi lấy hồ sơ ứng tuyển.');
+        },
+      });
+  }
+  // #endregion
+
+  onGenerateCoverLetter(option: CoverLetterPreset): void {
+    if (!this.pendingJobForApplication || !this.pendingCandidateSnapshot) {
+      return;
+    }
+
+    const input = this.buildCoverLetterInput(option);
+    if (!input) {
+      this.coverLetterModalError = 'Không đủ thông tin để tạo thư ứng tuyển.';
+      return;
+    }
+
+    this.activeCoverLetterPreset = option;
+    this.coverLetterModalError = '';
+    this.isGeneratingCoverLetter = true;
+
+    this.coverLetterService
+      .generateCoverLetter(input)
+      .pipe(
+        finalize(() => {
+          this.isGeneratingCoverLetter = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: (res: string) => {
+          if (res) {
+            this.coverLetterDraft = res;
+          }
+        },
+        error: (err) => {
+          this.coverLetterModalError = err?.message ?? 'Không thể tạo thư ứng tuyển bằng AI';
+        },
+      });
+  }
+
+  submitCoverLetterApplication(): void {
+    if (!this.pendingJobForApplication || !this.pendingCandidateProfileId) {
+      return;
+    }
+
+    this.isSubmittingApplication = true;
+
+    const dto: CreateUpdateJobApplicationDto = {
+      jobId: this.pendingJobForApplication.id,
+      candidateProfileId: this.pendingCandidateProfileId,
+      profileSnapshotJson: JSON.stringify(this.pendingCandidateSnapshot ?? {}),
+      coverLetter: this.coverLetterDraft,
+    };
+
+    this.jobApplicationService
+      .create(dto)
+      .pipe(
+        finalize(() => {
+          this.isSubmittingApplication = false;
+          this.cdr.detectChanges();
         })
       )
       .subscribe({
         next: () => {
           this.showSuccessMessage('Ứng tuyển thành công');
+          this.closeCoverLetterModal();
+          this.apply();
         },
         error: (err) => {
           this.showErrorMessage(err?.message ?? 'Đã xảy ra lỗi khi ứng tuyển');
         },
       });
   }
-  // #endregion
+
+  closeCoverLetterModal(): void {
+    this.isCoverLetterModalVisible = false;
+    this.coverLetterModalError = '';
+    this.coverLetterDraft = '';
+    this.pendingJobForApplication = undefined;
+    this.pendingCandidateSnapshot = undefined;
+    this.pendingCandidateProfileId = undefined;
+    this.activeCoverLetterPreset = undefined;
+    this.isGeneratingCoverLetter = false;
+    this.isSubmittingApplication = false;
+    this.cdr.detectChanges();
+  }
+
+  private buildCoverLetterInput(option?: CoverLetterPreset): CoverLetterGenerationInputDto | null {
+    if (!this.pendingJobForApplication || !this.pendingCandidateSnapshot) {
+      return null;
+    }
+
+    const profile = this.resolveCandidateProfile(this.pendingCandidateSnapshot);
+    if (!profile) {
+      return null;
+    }
+
+    return {
+      candidateName: profile.fullName ?? 'Ứng viên',
+      candidateEmail: profile.email,
+      candidatePhone: profile.phoneNumber,
+      cvContent: this.serializeCv(this.pendingCandidateSnapshot),
+      targetCompanyName: this.getTargetCompanyLabel(),
+      targetJobTitle: this.pendingJobForApplication.title ?? '',
+      jobDescription: this.pendingJobForApplication.jobDescription ?? '',
+      language: option?.language ?? 'vi',
+      tone: option?.tone,
+    };
+  }
+
+  private getTargetCompanyLabel(): string {
+    const companyId = this.pendingJobForApplication?.companyId;
+    if (companyId) {
+      return `Công ty #${companyId}`;
+    }
+    return 'Công ty chưa rõ';
+  }
+
+  private resolveCandidateProfile(payload: any): CandidateProfileDto | undefined {
+    return (
+      payload?.candidateProfileDto ??
+      payload?.CVDto?.candidateProfileDto ??
+      payload?.profile ??
+      payload?.candidateProfile
+    );
+  }
+
+  private resolveCandidateProfileId(payload: any): number | undefined {
+    return (
+      payload?.candidateProfileDto?.id ??
+      payload?.CVDto?.candidateProfileDto?.id ??
+      payload?.profile?.id ??
+      payload?.candidateProfile?.id
+    );
+  }
+
+  private extractAboutSection(payload: any): string {
+    const profile = this.resolveCandidateProfile(payload);
+    return profile?.aboutMe ?? '';
+  }
+
+  private serializeCv(payload: any): string {
+    const cvData = payload?.CVDto ?? payload?.cv ?? payload?.CV;
+    if (cvData) {
+      return JSON.stringify(cvData);
+    }
+    return JSON.stringify(payload ?? {});
+  }
 }

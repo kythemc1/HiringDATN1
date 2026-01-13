@@ -3,10 +3,10 @@ import { DynamicTableAction, DynamicTableColumn, DynamicTableConfig } from '../.
 
 // Columns configuration for AiPromptTemplate dynamic table
 export const AiPromptTemplateColumns: DynamicTableColumn[] = [
-  { field: 'displayProvider', header: 'Nhà cung cấp' },
-  { field: 'displayModel', header: 'Tên mô hình', minWidth: '220px' },
+  { field: 'displayCode', header: 'Mã mẫu', minWidth: '160px' },
   { field: 'displayDescription', header: 'Mô tả', minWidth: '220px' },
-  { field: 'displayStatus', header: 'Trạng thái', align: 'center', minWidth: '150px' },
+  { field: 'modelConfigId', header: 'Cấu hình', minWidth: '180px' },
+  { field: 'displayTemperature', header: 'Nhiệt độ', align: 'center', minWidth: '120px' },
 ];
 
 // Row actions for AiPromptTemplate dynamic table

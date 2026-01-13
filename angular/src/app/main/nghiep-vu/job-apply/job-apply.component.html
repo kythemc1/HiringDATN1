@@ -87,4 +87,47 @@
       </div>
     </div>
   </main>
+
+  <div class="cover-letter-modal" *ngIf="isCoverLetterModalVisible">
+    <div class="cover-letter-backdrop" (click)="closeCoverLetterModal()"></div>
+    <section class="cover-letter-dialog">
+      <header class="cover-letter-header">
+        <div>
+          <h3>Thư ứng tuyển cho "{{ pendingJobForApplication?.title }}"</h3>
+          <p>{{ pendingJobForApplication?.companyId ? ('Công ty #' + pendingJobForApplication?.companyId) : 'Công ty chưa rõ' }}</p>
+        </div>
+        <button type="button" class="close-button" (click)="closeCoverLetterModal()">×</button>
+      </header>
+
+      <div class="cover-letter-actions">
+        <button
+          type="button"
+          *ngFor="let preset of coverLetterPresets"
+          class="ai-btn"
+          [class.active]="preset === activeCoverLetterPreset"
+          [disabled]="isGeneratingCoverLetter || isSubmittingApplication"
+          (click)="onGenerateCoverLetter(preset)"
+        >
+          {{ preset.label }}
+          <i *ngIf="preset === activeCoverLetterPreset && isGeneratingCoverLetter" class="pi pi-spin pi-spinner"></i>
+        </button>
+      </div>
+
+      <div class="cover-letter-editor">
+        <textarea rows="12" [(ngModel)]="coverLetterDraft"></textarea>
+      </div>
+
+      <p class="cover-letter-error" *ngIf="coverLetterModalError">{{ coverLetterModalError }}</p>
+
+      <div class="cover-letter-footer">
+        <button type="button" class="outline-btn" (click)="closeCoverLetterModal()" [disabled]="isSubmittingApplication">
+          Huỷ
+        </button>
+        <button type="button" class="primary-btn" (click)="submitCoverLetterApplication()" [disabled]="isSubmittingApplication">
+          <i *ngIf="isSubmittingApplication" class="pi pi-spin pi-spinner"></i>
+          Nộp đơn
+        </button>
+      </div>
+    </section>
+  </div>
 </div>
