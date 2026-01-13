@@ -8,6 +8,10 @@ export interface CompanyRowView {
   website?: string;
   logoUrl?: string;
   address?: string;
+  displayName?: string;
+  displayDescription?: string;
+  displayWebsite?: string;
+  displayAddress?: string;
 }
 
 export function mapCompanyResponse(
@@ -23,43 +27,23 @@ export function mapCompanyResponse(
     [];
 
   const data: CompanyRowView[] = items.map((it: any) => {
-    const payload = (it?.Company ?? it?.Company ?? it) as CompanyDto | any;
-
-    const displayProvider =
-      payload?.providerName ??
-      payload?.tenCompany ??
-      payload?.provider ??
-      payload?.ten ??
-      payload?.ma ??
-      '';
-    const displayModel =
-      payload?.modelName ??
-      payload?.tenCompany ??
-      payload?.name ??
-      payload?.ten ??
-      '';
-    const displayDescription = payload?.description ?? payload?.moTa ?? '';
-    const statusValue =
-      payload?.isActive ??
-      (payload?.trangThai != null ? (payload.trangThai === '1' || payload.trangThai === 1 || payload.trangThai === true) : null);
+    const payload = (it?.Company ?? it) as CompanyDto | any;
+    const displayName = payload?.name ?? '';
+    const displayDescription = payload?.description ?? '';
+    const displayWebsite = payload?.website ?? '';
+    const displayAddress = payload?.address ?? '';
 
     return {
       id: payload?.id ?? it?.id ?? 0,
-      providerName: payload?.providerName,
-      modelName: payload?.modelName,
-      apiKey: payload?.apiKey,
-      baseUrl: payload?.baseUrl,
-      isActive: payload?.isActive,
-      creationTime: payload?.creationTime,
-      lastModificationTime: payload?.lastModificationTime,
-      ma: payload?.ma,
-      ten: payload?.ten,
-      moTa: payload?.moTa,
-      trangThai: payload?.trangThai,
-      displayProvider,
-      displayModel,
+      name: payload?.name,
+      description: payload?.description,
+      website: payload?.website,
+      logoUrl: payload?.logoUrl,
+      address: payload?.address,
+      displayName,
       displayDescription,
-      displayStatus: statusValue,
+      displayWebsite,
+      displayAddress,
     };
   });
 

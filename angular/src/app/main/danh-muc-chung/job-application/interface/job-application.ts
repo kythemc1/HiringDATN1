@@ -4,10 +4,17 @@ import { ApplicationStatus } from 'src/app/proxy/dtos/application-status.enum';
 
 export interface JobApplicationRowView {
   id: number;
+  jobId?: number;
+  candidateProfileId?: number;
   profileSnapshotJson?: string;
   coverLetter?: string;
   status?: ApplicationStatus;
   aiMatchingScore?: number;
+  displayJobId?: string;
+  displayCandidateProfileId?: string;
+  displayCoverLetter?: string;
+  displayStatus?: string;
+  displayAiMatchingScore?: string;
 }
 
 export function mapJobApplicationResponse(
@@ -23,43 +30,28 @@ export function mapJobApplicationResponse(
     [];
 
   const data: JobApplicationRowView[] = items.map((it: any) => {
-    const payload = (it?.JobApplication ?? it?.JobApplication ?? it) as JobApplicationDto | any;
-
-    const displayProvider =
-      payload?.providerName ??
-      payload?.tenJobApplication ??
-      payload?.provider ??
-      payload?.ten ??
-      payload?.ma ??
-      '';
-    const displayModel =
-      payload?.modelName ??
-      payload?.tenJobApplication ??
-      payload?.name ??
-      payload?.ten ??
-      '';
-    const displayDescription = payload?.description ?? payload?.moTa ?? '';
-    const statusValue =
-      payload?.isActive ??
-      (payload?.trangThai != null ? (payload.trangThai === '1' || payload.trangThai === 1 || payload.trangThai === true) : null);
+    const payload = (it?.JobApplication ?? it) as JobApplicationDto | any;
+    const displayJobId = payload?.jobId != null ? String(payload.jobId) : '';
+    const displayCandidateProfileId = payload?.candidateProfileId != null ? String(payload.candidateProfileId) : '';
+    const displayCoverLetter = payload?.coverLetter ? payload.coverLetter.slice(0, 120) : '';
+    const displayStatus =
+      payload?.status != null ? (ApplicationStatus[payload.status] ?? payload.status?.toString() ?? '') : '';
+    const displayAiMatchingScore =
+      payload?.aiMatchingScore != null ? `${payload.aiMatchingScore}` : '';
 
     return {
       id: payload?.id ?? it?.id ?? 0,
-      providerName: payload?.providerName,
-      modelName: payload?.modelName,
-      apiKey: payload?.apiKey,
-      baseUrl: payload?.baseUrl,
-      isActive: payload?.isActive,
-      creationTime: payload?.creationTime,
-      lastModificationTime: payload?.lastModificationTime,
-      ma: payload?.ma,
-      ten: payload?.ten,
-      moTa: payload?.moTa,
-      trangThai: payload?.trangThai,
-      displayProvider,
-      displayModel,
-      displayDescription,
-      displayStatus: statusValue,
+      jobId: payload?.jobId,
+      candidateProfileId: payload?.candidateProfileId,
+      profileSnapshotJson: payload?.profileSnapshotJson,
+      coverLetter: payload?.coverLetter,
+      status: payload?.status,
+      aiMatchingScore: payload?.aiMatchingScore,
+      displayJobId,
+      displayCandidateProfileId,
+      displayCoverLetter,
+      displayStatus,
+      displayAiMatchingScore,
     };
   });
 
@@ -73,9 +65,11 @@ export function buildUpdateDtoFromRow(row: JobApplicationRowView): JobApplicatio
 
   return {
     id: row.id,
+    jobId: row.jobId ?? 0,
+    candidateProfileId: row.candidateProfileId ?? 0,
     profileSnapshotJson: row.profileSnapshotJson,
     coverLetter: row.coverLetter,
     status: row.status,
     aiMatchingScore: row.aiMatchingScore,
-  } as unknown as JobApplicationDto;
+  } as JobApplicationDto;
 }

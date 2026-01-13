@@ -3,10 +3,10 @@ import { DynamicTableAction, DynamicTableColumn, DynamicTableConfig } from '../.
 
 // Columns configuration for Company dynamic table
 export const CompanyColumns: DynamicTableColumn[] = [
-  { field: 'displayProvider', header: 'Nhà cung cấp' },
-  { field: 'displayModel', header: 'Tên mô hình', minWidth: '220px' },
+  { field: 'displayName', header: 'Tên công ty', minWidth: '220px' },
   { field: 'displayDescription', header: 'Mô tả', minWidth: '220px' },
-  { field: 'displayStatus', header: 'Trạng thái', align: 'center', minWidth: '150px' },
+  { field: 'displayWebsite', header: 'Website', minWidth: '200px' },
+  { field: 'displayAddress', header: 'Địa chỉ', minWidth: '200px' },
 ];
 
 // Row actions for Company dynamic table

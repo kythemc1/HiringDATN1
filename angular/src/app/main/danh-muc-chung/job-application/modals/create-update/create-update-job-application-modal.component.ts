@@ -10,12 +10,16 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { JobApplicationService } from '../../../../../proxy/controllers/job-application.service';
-import {  JobApplicationDto,CreateUpdateJobApplicationDto } from '../../../../../proxy/dtos/models';
+import { JobApplicationDto, CreateUpdateJobApplicationDto } from '../../../../../proxy/dtos/models';
 import { Dialog } from 'primeng/dialog';
-import { EMPTY, catchError, finalize, map, of, switchMap, takeWhile, tap, timer } from 'rxjs';
+import { EMPTY, catchError, finalize, takeWhile, tap } from 'rxjs';
 import { AppBaseComponent } from 'src/app/shared/components/base-component/base-component';
+import {
+  ApplicationStatus,
+  applicationStatusOptions,
+} from '../../../../../proxy/dtos/application-status.enum';
 
 @Component({
   standalone: false,
@@ -36,6 +40,7 @@ export class CreateUpdateJobApplicationModalComponent
   isModalOpen = false;
   @Input() modalTitle: string;
   @Input() updateJobApplicationDto: JobApplicationDto;
+  statusOptions = applicationStatusOptions;
 
   form: FormGroup;
 
@@ -50,11 +55,12 @@ export class CreateUpdateJobApplicationModalComponent
     super(injector);
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.buildForm();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ('updateJobApplicationDto' in changes && this.inline) {
+    if ('updateJobApplicationDto' in changes) {
       this.buildForm();
     }
   }
@@ -72,18 +78,19 @@ export class CreateUpdateJobApplicationModalComponent
   }
 
   buildForm(): void {
-    this.form = this.fb.group(
-      {
-        
-      },
-    );
+    const dto = this.updateJobApplicationDto ?? ({} as JobApplicationDto);
+    this.form = this.fb.group({
+      jobId: [dto.jobId ?? null, [Validators.required]],
+      candidateProfileId: [dto.candidateProfileId ?? null, [Validators.required]],
+      profileSnapshotJson: [dto.profileSnapshotJson ?? ''],
+      coverLetter: [dto.coverLetter ?? ''],
+      status: [dto.status ?? null, [Validators.required]],
+      aiMatchingScore: [dto.aiMatchingScore ?? null],
+    });
 
-    // ⚙️ Nếu là read-only thì disable toàn form và return sớm
     if (this.readOnly) {
       this.form.disable();
-      return;
     }
-
   }
 
   //#endregion
@@ -99,19 +106,12 @@ export class CreateUpdateJobApplicationModalComponent
       return;
     }
     // Preprocess form data: convert empty strings to null for decimal fields
-    const formValue = { ...this.form.value };
-    if (formValue.tenJobApplication) {
-      formValue.tenJobApplication = formValue.tenJobApplication.trim();
-    }
+    const formValue = { ...this.form.value } as CreateUpdateJobApplicationDto;
+    formValue.jobId = Number(formValue.jobId ?? 0);
+    formValue.candidateProfileId = Number(formValue.candidateProfileId ?? 0);
+    formValue.aiMatchingScore = formValue.aiMatchingScore != null ? Number(formValue.aiMatchingScore) : undefined;
 
-    if (formValue.vonTapDoanTu === '' || formValue.vonTapDoanTu === undefined) {
-      formValue.vonTapDoanTu = null;
-    }
-    if (formValue.vonTapDoanDen === '' || formValue.vonTapDoanDen === undefined) {
-      formValue.vonTapDoanDen = null;
-    }
-
-    const request = this.updateJobApplicationDto.id
+    const request = this.updateJobApplicationDto?.id
       ? this.JobApplicationService.update(this.updateJobApplicationDto.id, formValue)
       : this.JobApplicationService.create(formValue);
     this.showLoading();
@@ -141,12 +141,15 @@ export class CreateUpdateJobApplicationModalComponent
     if (this.form.invalid) return;
 
     // Preprocess form data: convert empty strings to null for decimal fields
-    const formValue = { ...this.form.value };
+    const formValue = { ...this.form.value } as CreateUpdateJobApplicationDto;
+    formValue.jobId = Number(formValue.jobId ?? 0);
+    formValue.candidateProfileId = Number(formValue.candidateProfileId ?? 0);
+    formValue.aiMatchingScore = formValue.aiMatchingScore != null ? Number(formValue.aiMatchingScore) : undefined;
 
     const isUpdate = !!this.updateJobApplicationDto.id;
     const request = isUpdate
-      ? this.JobApplicationService.update(this.updateJobApplicationDto.id, formValue as CreateUpdateJobApplicationDto)
-      : this.JobApplicationService.create(formValue as CreateUpdateJobApplicationDto);
+      ? this.JobApplicationService.update(this.updateJobApplicationDto.id, formValue)
+      : this.JobApplicationService.create(formValue);
 
     this.showLoading();
 

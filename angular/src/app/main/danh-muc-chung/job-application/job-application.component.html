@@ -19,16 +19,16 @@
 </app-page-header> -->
 
 <div class="page">
-  <app-create-update-ai-model-config-modal
+  <app-create-update-job-application-modal
     *ngIf="viewMode !== 'list'"
     #inlineCreateUpdate
     [inline]="true"
     [modalTitle]="formTitle"
-      [updateAIModelConfigDto]="updateAIModelConfigDto"
+    [updateJobApplicationDto]="updateJobApplicationDto"
     [readOnly]="viewMode === 'view'"
     (saved)="onChildSaved($event)"
     (canceled)="onChildCanceled()"
-  ></app-create-update-ai-model-config-modal>
+  ></app-create-update-job-application-modal>
   <!-- Advanced filter template -->
   <ng-template #advancedFilter>
     <div class="row">
