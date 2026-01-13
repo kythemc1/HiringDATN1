@@ -3,21 +3,12 @@ import { SkillDefinitionDto } from '../../../../proxy/dtos/models';
 
 export interface SkillDefinitionRowView {
   id: number;
-  providerName?: string;
-  modelName?: string;
-  apiKey?: string;
-  baseUrl?: string;
-  isActive?: boolean;
-  creationTime?: string | Date | null;
-  lastModificationTime?: string | Date | null;
-  ma?: string;
-  ten?: string;
-  moTa?: string;
-  trangThai?: string | number | null;
-  displayProvider?: string;
-  displayModel?: string;
+  name?: string;
+  category?: string;
+  description?: string;
+  displayName?: string;
+  displayCategory?: string;
   displayDescription?: string;
-  displayStatus?: string | number | boolean | null;
 }
 
 export function mapSkillDefinitionResponse(
@@ -33,43 +24,19 @@ export function mapSkillDefinitionResponse(
     [];
 
   const data: SkillDefinitionRowView[] = items.map((it: any) => {
-    const payload = (it?.SkillDefinition ?? it?.SkillDefinition ?? it) as SkillDefinitionDto | any;
-
-    const displayProvider =
-      payload?.providerName ??
-      payload?.tenSkillDefinition ??
-      payload?.provider ??
-      payload?.ten ??
-      payload?.ma ??
-      '';
-    const displayModel =
-      payload?.modelName ??
-      payload?.tenSkillDefinition ??
-      payload?.name ??
-      payload?.ten ??
-      '';
-    const displayDescription = payload?.description ?? payload?.moTa ?? '';
-    const statusValue =
-      payload?.isActive ??
-      (payload?.trangThai != null ? (payload.trangThai === '1' || payload.trangThai === 1 || payload.trangThai === true) : null);
+    const payload = (it?.SkillDefinition ?? it) as SkillDefinitionDto | any;
+    const displayName = payload?.name ?? '';
+    const displayCategory = payload?.category ?? '';
+    const displayDescription = payload?.description ?? '';
 
     return {
       id: payload?.id ?? it?.id ?? 0,
-      providerName: payload?.providerName,
-      modelName: payload?.modelName,
-      apiKey: payload?.apiKey,
-      baseUrl: payload?.baseUrl,
-      isActive: payload?.isActive,
-      creationTime: payload?.creationTime,
-      lastModificationTime: payload?.lastModificationTime,
-      ma: payload?.ma,
-      ten: payload?.ten,
-      moTa: payload?.moTa,
-      trangThai: payload?.trangThai,
-      displayProvider,
-      displayModel,
+      name: payload?.name,
+      category: payload?.category,
+      description: payload?.description,
+      displayName,
+      displayCategory,
       displayDescription,
-      displayStatus: statusValue,
     };
   });
 
@@ -83,12 +50,8 @@ export function buildUpdateDtoFromRow(row: SkillDefinitionRowView): SkillDefinit
 
   return {
     id: row.id,
-    providerName: row.providerName,
-    modelName: row.modelName,
-    apiKey: row.apiKey,
-    baseUrl: row.baseUrl,
-    isActive: row.isActive,
-    creationTime: row.creationTime,
-    lastModificationTime: row.lastModificationTime,
+    name: row.name,
+    category: row.category,
+    description: row.description,
   } as SkillDefinitionDto;
 }

@@ -142,7 +142,7 @@ export class JobPositionComponent extends AppBaseComponent implements OnInit, On
             this.triggerBuildForm();
           } else {
             this.viewMode = 'list';
-            this.router.navigate(['/main/danh-muc-chung/job-position']);
+            this.router.navigate(['/main/master-data/job-position']);
           }
         } else if (mode === 'view') {
           this.viewMode = 'view';
@@ -151,7 +151,7 @@ export class JobPositionComponent extends AppBaseComponent implements OnInit, On
             this.triggerBuildForm();
           } else {
             this.viewMode = 'list';
-            this.router.navigate(['/main/danh-muc-chung/job-position']);
+            this.router.navigate(['/main/master-data/job-position']);
           }
         } else {
           this.viewMode = 'list';
@@ -200,12 +200,12 @@ export class JobPositionComponent extends AppBaseComponent implements OnInit, On
   cancelForm(): void {
     this.viewMode = 'list';
     this.updateJobPositionDto = {} as any;
-    this.router.navigate(['/main/danh-muc-chung/job-position']);
+    this.router.navigate(['/main/master-data/job-position']);
   }
 
   onChildSaved(shouldClose?: boolean): void {
     this.viewMode = 'list';
-    this.router.navigate(['/main/danh-muc-chung/job-position']).then(() => this.apply());
+    this.router.navigate(['/main/master-data/job-position']).then(() => this.apply());
   }
 
 

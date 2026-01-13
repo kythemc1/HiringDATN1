@@ -24,6 +24,7 @@ import {
   CandidateSkillDto,
 } from '../../../../../proxy/dtos/models';
 import { Dialog } from 'primeng/dialog';
+import { ConfigStateService } from '@abp/ng.core';
 import { EMPTY, catchError, finalize, map, of, switchMap, takeWhile, tap, timer } from 'rxjs';
 import { AppBaseComponent } from 'src/app/shared/components/base-component/base-component';
 import { CvContentAppService } from 'src/app/proxy/controllers/cv-content-app.service';
@@ -60,6 +61,7 @@ export class CreateUpdateCvModalComponent
     private CvService: CVService,
     private cvContentAppService: CvContentAppService,
     private location: Location,
+    private configState: ConfigStateService,
   ) {
     super(injector);
   }
@@ -87,10 +89,14 @@ export class CreateUpdateCvModalComponent
 
   buildForm(): void {
     const profile = this.updateCvDto?.candidateProfileDto ?? ({} as CandidateProfileDto);
+    const currentUser: any = this.configState.getOne('currentUser') ?? {};
+    const resolvedUserId = profile?.userId ?? currentUser?.id ?? currentUser?.userId ?? null;
+    // resolvedUserId = 1;
+    const userId =1;
     this.form = this.fb.group({
       createUpdateCandidateProfileDto: this.fb.group({
         id: [profile?.id ?? null],
-        userId: [profile?.userId ?? null],
+        userId: [userId],
         fullName: [profile?.fullName ?? ''],
         jobTitle: [profile?.jobTitle ?? ''],
         aboutMe: [profile?.aboutMe ?? ''],

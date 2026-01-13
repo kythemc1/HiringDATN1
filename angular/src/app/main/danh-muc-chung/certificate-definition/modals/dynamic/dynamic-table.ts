@@ -3,10 +3,8 @@ import { DynamicTableAction, DynamicTableColumn, DynamicTableConfig } from '../.
 
 // Columns configuration for CertificateDefinition dynamic table
 export const CertificateDefinitionColumns: DynamicTableColumn[] = [
-  { field: 'displayProvider', header: 'Nhà cung cấp' },
-  { field: 'displayModel', header: 'Tên mô hình', minWidth: '220px' },
-  { field: 'displayDescription', header: 'Mô tả', minWidth: '220px' },
-  { field: 'displayStatus', header: 'Trạng thái', align: 'center', minWidth: '150px' },
+  { field: 'displayName', header: 'Tên chứng chỉ', minWidth: '220px' },
+  { field: 'displayIssuer', header: 'Tổ chức cấp', minWidth: '220px' },
 ];
 
 // Row actions for CertificateDefinition dynamic table

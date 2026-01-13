@@ -3,10 +3,9 @@ import { DynamicTableAction, DynamicTableColumn, DynamicTableConfig } from '../.
 
 // Columns configuration for SkillDefinition dynamic table
 export const SkillDefinitionColumns: DynamicTableColumn[] = [
-  { field: 'displayProvider', header: 'Nhà cung cấp' },
-  { field: 'displayModel', header: 'Tên mô hình', minWidth: '220px' },
-  { field: 'displayDescription', header: 'Mô tả', minWidth: '220px' },
-  { field: 'displayStatus', header: 'Trạng thái', align: 'center', minWidth: '150px' },
+  { field: 'displayName', header: 'Tên kỹ năng', minWidth: '220px' },
+  { field: 'displayCategory', header: 'Danh mục', minWidth: '200px' },
+  { field: 'displayDescription', header: 'Mô tả', minWidth: '240px' },
 ];
 
 // Row actions for SkillDefinition dynamic table

@@ -147,7 +147,7 @@ export class CvComponent extends AppBaseComponent implements OnInit, OnDestroy {
             this.triggerBuildForm();
           } else {
             this.viewMode = 'list';
-            this.router.navigate(['/main/danh-muc-chung/cv']);
+            this.router.navigate(['/main/quan-ly-nghiep-vu/cv']);
           }
         } else if (mode === 'view') {
           this.viewMode = 'view';
@@ -156,7 +156,7 @@ export class CvComponent extends AppBaseComponent implements OnInit, OnDestroy {
             this.triggerBuildForm();
           } else {
             this.viewMode = 'list';
-            this.router.navigate(['/main/danh-muc-chung/cv']);
+            this.router.navigate(['/main/quan-ly-nghiep-vu/cv']);
           }
         } else {
           this.viewMode = 'list';
@@ -205,12 +205,12 @@ export class CvComponent extends AppBaseComponent implements OnInit, OnDestroy {
   cancelForm(): void {
     this.viewMode = 'list';
     this.updateCvDto = {} as any;
-    this.router.navigate(['/main/danh-muc-chung/cv']);
+    this.router.navigate(['/main/quan-ly-nghiep-vu/cv']);
   }
 
   onChildSaved(shouldClose?: boolean): void {
     this.viewMode = 'list';
-    this.router.navigate(['/main/danh-muc-chung/cv']).then(() => this.apply());
+    this.router.navigate(['/main/quan-ly-nghiep-vu/cv']).then(() => this.apply());
   }
 
 

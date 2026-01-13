@@ -3,21 +3,10 @@ import { JobPositionDto } from '../../../../proxy/dtos/models';
 
 export interface JobPositionRowView {
   id: number;
-  providerName?: string;
-  modelName?: string;
-  apiKey?: string;
-  baseUrl?: string;
-  isActive?: boolean;
-  creationTime?: string | Date | null;
-  lastModificationTime?: string | Date | null;
-  ma?: string;
-  ten?: string;
-  moTa?: string;
-  trangThai?: string | number | null;
-  displayProvider?: string;
-  displayModel?: string;
-  displayDescription?: string;
-  displayStatus?: string | number | boolean | null;
+  name?: string;
+  alias?: string;
+  displayName?: string;
+  displayAlias?: string;
 }
 
 export function mapJobPositionResponse(
@@ -33,43 +22,16 @@ export function mapJobPositionResponse(
     [];
 
   const data: JobPositionRowView[] = items.map((it: any) => {
-    const payload = (it?.JobPosition ?? it?.JobPosition ?? it) as JobPositionDto | any;
-
-    const displayProvider =
-      payload?.providerName ??
-      payload?.tenJobPosition ??
-      payload?.provider ??
-      payload?.ten ??
-      payload?.ma ??
-      '';
-    const displayModel =
-      payload?.modelName ??
-      payload?.tenJobPosition ??
-      payload?.name ??
-      payload?.ten ??
-      '';
-    const displayDescription = payload?.description ?? payload?.moTa ?? '';
-    const statusValue =
-      payload?.isActive ??
-      (payload?.trangThai != null ? (payload.trangThai === '1' || payload.trangThai === 1 || payload.trangThai === true) : null);
+    const payload = (it?.JobPosition ?? it) as JobPositionDto | any;
+    const displayName = payload?.name ?? '';
+    const displayAlias = payload?.alias ?? '';
 
     return {
       id: payload?.id ?? it?.id ?? 0,
-      providerName: payload?.providerName,
-      modelName: payload?.modelName,
-      apiKey: payload?.apiKey,
-      baseUrl: payload?.baseUrl,
-      isActive: payload?.isActive,
-      creationTime: payload?.creationTime,
-      lastModificationTime: payload?.lastModificationTime,
-      ma: payload?.ma,
-      ten: payload?.ten,
-      moTa: payload?.moTa,
-      trangThai: payload?.trangThai,
-      displayProvider,
-      displayModel,
-      displayDescription,
-      displayStatus: statusValue,
+      name: payload?.name,
+      alias: payload?.alias,
+      displayName,
+      displayAlias,
     };
   });
 
@@ -83,12 +45,7 @@ export function buildUpdateDtoFromRow(row: JobPositionRowView): JobPositionDto {
 
   return {
     id: row.id,
-    providerName: row.providerName,
-    modelName: row.modelName,
-    apiKey: row.apiKey,
-    baseUrl: row.baseUrl,
-    isActive: row.isActive,
-    creationTime: row.creationTime,
-    lastModificationTime: row.lastModificationTime,
+    name: row.name,
+    alias: row.alias,
   } as JobPositionDto;
 }

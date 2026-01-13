@@ -10,11 +10,11 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { JobPositionService } from '../../../../../proxy/controllers/job-position.service';
-import {  JobPositionDto,CreateUpdateJobPositionDto } from '../../../../../proxy/dtos/models';
+import { JobPositionDto, CreateUpdateJobPositionDto } from '../../../../../proxy/dtos/models';
 import { Dialog } from 'primeng/dialog';
-import { EMPTY, catchError, finalize, map, of, switchMap, takeWhile, tap, timer } from 'rxjs';
+import { EMPTY, catchError, finalize, takeWhile, tap } from 'rxjs';
 import { AppBaseComponent } from 'src/app/shared/components/base-component/base-component';
 
 @Component({
@@ -50,11 +50,12 @@ export class CreateUpdateJobPositionModalComponent
     super(injector);
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.buildForm();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ('updateJobPositionDto' in changes && this.inline) {
+    if ('updateJobPositionDto' in changes) {
       this.buildForm();
     }
   }
@@ -72,18 +73,15 @@ export class CreateUpdateJobPositionModalComponent
   }
 
   buildForm(): void {
-    this.form = this.fb.group(
-      {
-        
-      },
-    );
+    const dto = this.updateJobPositionDto ?? ({} as JobPositionDto);
+    this.form = this.fb.group({
+      name: [dto.name ?? '', [Validators.required, this.noWhitespaceValidator()]],
+      alias: [dto.alias ?? '', Validators.required],
+    });
 
-    // ⚙️ Nếu là read-only thì disable toàn form và return sớm
     if (this.readOnly) {
       this.form.disable();
-      return;
     }
-
   }
 
   //#endregion
@@ -99,19 +97,11 @@ export class CreateUpdateJobPositionModalComponent
       return;
     }
     // Preprocess form data: convert empty strings to null for decimal fields
-    const formValue = { ...this.form.value };
-    if (formValue.tenJobPosition) {
-      formValue.tenJobPosition = formValue.tenJobPosition.trim();
-    }
+    const formValue = { ...this.form.value } as CreateUpdateJobPositionDto;
+    formValue.name = formValue.name?.trim() ?? '';
+    formValue.alias = formValue.alias?.trim() ?? '';
 
-    if (formValue.vonTapDoanTu === '' || formValue.vonTapDoanTu === undefined) {
-      formValue.vonTapDoanTu = null;
-    }
-    if (formValue.vonTapDoanDen === '' || formValue.vonTapDoanDen === undefined) {
-      formValue.vonTapDoanDen = null;
-    }
-
-    const request = this.updateJobPositionDto.id
+    const request = this.updateJobPositionDto?.id
       ? this.JobPositionService.update(this.updateJobPositionDto.id, formValue)
       : this.JobPositionService.create(formValue);
     this.showLoading();
@@ -141,12 +131,14 @@ export class CreateUpdateJobPositionModalComponent
     if (this.form.invalid) return;
 
     // Preprocess form data: convert empty strings to null for decimal fields
-    const formValue = { ...this.form.value };
+    const formValue = { ...this.form.value } as CreateUpdateJobPositionDto;
+    formValue.name = formValue.name?.trim() ?? '';
+    formValue.alias = formValue.alias?.trim() ?? '';
 
     const isUpdate = !!this.updateJobPositionDto.id;
     const request = isUpdate
-      ? this.JobPositionService.update(this.updateJobPositionDto.id, formValue as CreateUpdateJobPositionDto)
-      : this.JobPositionService.create(formValue as CreateUpdateJobPositionDto);
+      ? this.JobPositionService.update(this.updateJobPositionDto.id, formValue)
+      : this.JobPositionService.create(formValue);
 
     this.showLoading();
 

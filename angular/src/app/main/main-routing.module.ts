@@ -47,22 +47,7 @@ const routes: Routes = [
             path: '',
             loadChildren: () => import('./danh-muc-chung/candidate-skill/candidate-skill.module').then(m => m.CandidateSkillModule),
           },
-          {
-            path: '',
-            loadChildren: () => import('./danh-muc-chung/skill-definition/skill-definition.module').then(m => m.SkillDefinitionModule),
-          },
-          {
-            path: '',
-            loadChildren: () => import('./danh-muc-chung/certificate-definition/certificate-definition.module').then(m => m.CertificateDefinitionModule),
-          },
-          {
-            path: '',
-            loadChildren: () => import('./danh-muc-chung/company/company.module').then(m => m.CompanyModule),
-          },
-          {
-            path: '',
-            loadChildren: () => import('./danh-muc-chung/job-position/job-position.module').then(m => m.JobPositionModule),
-          },
+
           {
             path: '',
             loadChildren: () => import('./danh-muc-chung/job-application/job-application.module').then(m => m.JobApplicationModule),
@@ -117,6 +102,30 @@ const routes: Routes = [
         ],
       },
       //#endregion
+
+      //#region Master data
+      {
+        path: 'master-data',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./danh-muc-chung/skill-definition/skill-definition.module').then(m => m.SkillDefinitionModule),
+          },
+          {
+            path: '',
+            loadChildren: () => import('./danh-muc-chung/certificate-definition/certificate-definition.module').then(m => m.CertificateDefinitionModule),
+          },
+          {
+            path: '',
+            loadChildren: () => import('./danh-muc-chung/company/company.module').then(m => m.CompanyModule),
+          },
+          {
+            path: '',
+            loadChildren: () => import('./danh-muc-chung/job-position/job-position.module').then(m => m.JobPositionModule),
+          },
+          
+        ],
+      },
 
     ],
   },

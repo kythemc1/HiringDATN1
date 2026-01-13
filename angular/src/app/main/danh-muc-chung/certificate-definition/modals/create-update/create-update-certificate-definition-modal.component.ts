@@ -10,11 +10,11 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { CertificateDefinitionService } from '../../../../../proxy/controllers/certificate-definition.service';
-import {  CertificateDefinitionDto,CreateUpdateCertificateDefinitionDto } from '../../../../../proxy/dtos/models';
+import { CertificateDefinitionDto, CreateUpdateCertificateDefinitionDto } from '../../../../../proxy/dtos/models';
 import { Dialog } from 'primeng/dialog';
-import { EMPTY, catchError, finalize, map, of, switchMap, takeWhile, tap, timer } from 'rxjs';
+import { EMPTY, catchError, finalize, takeWhile, tap } from 'rxjs';
 import { AppBaseComponent } from 'src/app/shared/components/base-component/base-component';
 
 @Component({
@@ -50,11 +50,12 @@ export class CreateUpdateCertificateDefinitionModalComponent
     super(injector);
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.buildForm();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ('updateCertificateDefinitionDto' in changes && this.inline) {
+    if ('updateCertificateDefinitionDto' in changes) {
       this.buildForm();
     }
   }
@@ -72,18 +73,15 @@ export class CreateUpdateCertificateDefinitionModalComponent
   }
 
   buildForm(): void {
-    this.form = this.fb.group(
-      {
-        
-      },
-    );
+    const dto = this.updateCertificateDefinitionDto ?? ({} as CertificateDefinitionDto);
+    this.form = this.fb.group({
+      name: [dto.name ?? '', [Validators.required, this.noWhitespaceValidator()]],
+      issuer: [dto.issuer ?? '', Validators.required],
+    });
 
-    // ⚙️ Nếu là read-only thì disable toàn form và return sớm
     if (this.readOnly) {
       this.form.disable();
-      return;
     }
-
   }
 
   //#endregion
@@ -99,19 +97,11 @@ export class CreateUpdateCertificateDefinitionModalComponent
       return;
     }
     // Preprocess form data: convert empty strings to null for decimal fields
-    const formValue = { ...this.form.value };
-    if (formValue.tenCertificateDefinition) {
-      formValue.tenCertificateDefinition = formValue.tenCertificateDefinition.trim();
-    }
+    const formValue = { ...this.form.value } as CreateUpdateCertificateDefinitionDto;
+    formValue.name = formValue.name?.trim() ?? '';
+    formValue.issuer = formValue.issuer?.trim() ?? '';
 
-    if (formValue.vonTapDoanTu === '' || formValue.vonTapDoanTu === undefined) {
-      formValue.vonTapDoanTu = null;
-    }
-    if (formValue.vonTapDoanDen === '' || formValue.vonTapDoanDen === undefined) {
-      formValue.vonTapDoanDen = null;
-    }
-
-    const request = this.updateCertificateDefinitionDto.id
+    const request = this.updateCertificateDefinitionDto?.id
       ? this.CertificateDefinitionService.update(this.updateCertificateDefinitionDto.id, formValue)
       : this.CertificateDefinitionService.create(formValue);
     this.showLoading();
@@ -141,12 +131,14 @@ export class CreateUpdateCertificateDefinitionModalComponent
     if (this.form.invalid) return;
 
     // Preprocess form data: convert empty strings to null for decimal fields
-    const formValue = { ...this.form.value };
+    const formValue = { ...this.form.value } as CreateUpdateCertificateDefinitionDto;
+    formValue.name = formValue.name?.trim() ?? '';
+    formValue.issuer = formValue.issuer?.trim() ?? '';
 
     const isUpdate = !!this.updateCertificateDefinitionDto.id;
     const request = isUpdate
-      ? this.CertificateDefinitionService.update(this.updateCertificateDefinitionDto.id, formValue as CreateUpdateCertificateDefinitionDto)
-      : this.CertificateDefinitionService.create(formValue as CreateUpdateCertificateDefinitionDto);
+      ? this.CertificateDefinitionService.update(this.updateCertificateDefinitionDto.id, formValue)
+      : this.CertificateDefinitionService.create(formValue);
 
     this.showLoading();
 

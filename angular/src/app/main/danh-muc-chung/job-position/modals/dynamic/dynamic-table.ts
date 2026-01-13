@@ -3,10 +3,8 @@ import { DynamicTableAction, DynamicTableColumn, DynamicTableConfig } from '../.
 
 // Columns configuration for JobPosition dynamic table
 export const JobPositionColumns: DynamicTableColumn[] = [
-  { field: 'displayProvider', header: 'Nhà cung cấp' },
-  { field: 'displayModel', header: 'Tên mô hình', minWidth: '220px' },
-  { field: 'displayDescription', header: 'Mô tả', minWidth: '220px' },
-  { field: 'displayStatus', header: 'Trạng thái', align: 'center', minWidth: '150px' },
+  { field: 'displayName', header: 'Tên vị trí', minWidth: '220px' },
+  { field: 'displayAlias', header: 'Bí danh', minWidth: '220px' },
 ];
 
 // Row actions for JobPosition dynamic table

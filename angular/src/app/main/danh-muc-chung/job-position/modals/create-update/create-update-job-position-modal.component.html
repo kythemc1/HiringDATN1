@@ -1,28 +1,33 @@
 <ng-container *ngIf="inline">
-  <app-toggleable-card title="Thông tin cơ bản">
+  <app-toggleable-card title="Thông tin vị trí">
     <div class="card-body">
-      <form [formGroup]="form" class="p-fluid"
-        (ngSubmit)="!readOnly && (updateAIModelConfigDto?.id ? save() : saveAndNew())">
+      <form
+        [formGroup]="form"
+        class="p-fluid"
+        (ngSubmit)="!readOnly && (updateJobPositionDto?.id ? save() : saveAndNew())"
+      >
         <div class="row">
-          <div class="col-4 form-group">
-            <label for="providerName">{{ 'Tên nhà cung cấp' }} <span class="text-danger">*</span></label>
-            <input pInputText type="text" placeholder="Nhập tên nhà cung cấp" id="providerName"
-              formControlName="providerName" class="w-100" />
+          <div class="col-6 form-group">
+            <label for="name">Tên vị trí <span class="text-danger">*</span></label>
+            <input
+              pInputText
+              type="text"
+              id="name"
+              placeholder="Nhập tên vị trí"
+              formControlName="name"
+              class="w-100"
+            />
           </div>
-          <div class="col-4 form-group">
-            <label for="modelName">{{ 'Tên mô hình' }} <span class="text-danger">*</span></label>
-            <input pInputText type="text" placeholder="Nhập tên mô hình" id="modelName"
-              formControlName="modelName" class="w-100" />
-            
-          </div>
-        </div>
-
-
-        <div class="row">
-          <div class="col-12 form-group">
-            <label for="description">{{ 'Mô tả' }}</label>
-            <textarea pInputTextarea id="description" rows="3" viPlaceholderIfHasValue [viPlaceholderActive]="readOnly"  placeholder="Nhập mô tả" formControlName="description"
-              class="form-control"></textarea>
+          <div class="col-6 form-group">
+            <label for="alias">Bí danh <span class="text-danger">*</span></label>
+            <input
+              pInputText
+              type="text"
+              id="alias"
+              placeholder="Nhập bí danh"
+              formControlName="alias"
+              class="w-100"
+            />
           </div>
         </div>
       </form>
@@ -30,30 +35,29 @@
     <div class="card-fotter d-flex justify-content-between align-items-center" style="padding: 10px">
       <div></div>
       <div class="d-flex gap-2">
-          <vt-button
-            type="button"
-            [label]="readOnly ? 'Đóng' : 'Hủy'"
-            [color]="readOnly ? 'danger' : 'danger'"
-            [outline]="true"
-            [width]="112"
-            [height]="36"
-            (buttonClick)="close()"
-          >
-            <i class="pi pi-times"></i>
-          </vt-button>
-          <vt-button
-            *ngIf="!readOnly"
-            type="button"
-            [disabled]="form?.invalid || form?.pending"
-            [label]="(updateAIModelConfigDto?.id ? 'Cập nhật' : 'Thêm mới')"
-            [color]="'custom'"
-            [width]="112"
-            [height]="36"
-            (buttonClick)="form?.invalid || form?.pending ? null : save()"
-          >
-            <i class="pi pi-check"></i>
-          </vt-button>
-
+        <vt-button
+          type="button"
+          [label]="readOnly ? 'Đóng' : 'Hủy'"
+          [color]="readOnly ? 'danger' : 'danger'"
+          [outline]="true"
+          [width]="112"
+          [height]="36"
+          (buttonClick)="close()"
+        >
+          <i class="pi pi-times"></i>
+        </vt-button>
+        <vt-button
+          *ngIf="!readOnly"
+          type="button"
+          [disabled]="form?.invalid || form?.pending"
+          [label]="(updateJobPositionDto?.id ? 'Cập nhật' : 'Thêm mới')"
+          [color]="'custom'"
+          [width]="112"
+          [height]="36"
+          (buttonClick)="form?.invalid || form?.pending ? null : save()"
+        >
+          <i class="pi pi-check"></i>
+        </vt-button>
       </div>
     </div>
   </app-toggleable-card>

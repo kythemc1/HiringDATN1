@@ -142,7 +142,7 @@ export class SkillDefinitionComponent extends AppBaseComponent implements OnInit
             this.triggerBuildForm();
           } else {
             this.viewMode = 'list';
-            this.router.navigate(['/main/danh-muc-chung/skill-definition']);
+            this.router.navigate(['/main/master-data/skill-definition']);
           }
         } else if (mode === 'view') {
           this.viewMode = 'view';
@@ -151,7 +151,7 @@ export class SkillDefinitionComponent extends AppBaseComponent implements OnInit
             this.triggerBuildForm();
           } else {
             this.viewMode = 'list';
-            this.router.navigate(['/main/danh-muc-chung/skill-definition']);
+            this.router.navigate(['/main/master-data/skill-definition']);
           }
         } else {
           this.viewMode = 'list';
@@ -200,12 +200,12 @@ export class SkillDefinitionComponent extends AppBaseComponent implements OnInit
   cancelForm(): void {
     this.viewMode = 'list';
     this.updateSkillDefinitionDto = {} as any;
-    this.router.navigate(['/main/danh-muc-chung/skill-definition']);
+    this.router.navigate(['/main/master-data/skill-definition']);
   }
 
   onChildSaved(shouldClose?: boolean): void {
     this.viewMode = 'list';
-    this.router.navigate(['/main/danh-muc-chung/skill-definition']).then(() => this.apply());
+    this.router.navigate(['/main/master-data/skill-definition']).then(() => this.apply());
   }
 
 

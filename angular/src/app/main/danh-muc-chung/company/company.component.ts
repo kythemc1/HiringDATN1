@@ -142,7 +142,7 @@ export class CompanyComponent extends AppBaseComponent implements OnInit, OnDest
             this.triggerBuildForm();
           } else {
             this.viewMode = 'list';
-            this.router.navigate(['/main/danh-muc-chung/company']);
+            this.router.navigate(['/main/master-data/company']);
           }
         } else if (mode === 'view') {
           this.viewMode = 'view';
@@ -151,7 +151,7 @@ export class CompanyComponent extends AppBaseComponent implements OnInit, OnDest
             this.triggerBuildForm();
           } else {
             this.viewMode = 'list';
-            this.router.navigate(['/main/danh-muc-chung/company']);
+            this.router.navigate(['/main/master-data/company']);
           }
         } else {
           this.viewMode = 'list';
@@ -200,12 +200,12 @@ export class CompanyComponent extends AppBaseComponent implements OnInit, OnDest
   cancelForm(): void {
     this.viewMode = 'list';
     this.updateCompanyDto = {} as any;
-    this.router.navigate(['/main/danh-muc-chung/company']);
+    this.router.navigate(['/main/master-data/company']);
   }
 
   onChildSaved(shouldClose?: boolean): void {
     this.viewMode = 'list';
-    this.router.navigate(['/main/danh-muc-chung/company']).then(() => this.apply());
+    this.router.navigate(['/main/master-data/company']).then(() => this.apply());
   }
 
 
