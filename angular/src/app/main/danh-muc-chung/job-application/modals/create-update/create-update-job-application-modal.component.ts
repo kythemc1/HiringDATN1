@@ -3,8 +3,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JobApplicationService } from '../../../../../proxy/controllers/job-application.service';
 import { JobApplicationDto, CreateUpdateJobApplicationDto } from '../../../../../proxy/dtos/models';
 import { AppBaseComponent } from 'src/app/shared/components/base-component/base-component';
-import { applicationStatusOptions } from '../../../../../proxy/dtos/application-status.enum';
+import { ApplicationStatus, applicationStatusOptions } from '../../../../../proxy/dtos/application-status.enum';
 import { EMPTY, catchError, finalize, takeWhile, tap } from 'rxjs';
+
+export const applicationStatusOptionDto = [
+  { label: 'Ứng tuyển', value: ApplicationStatus.Applied },   // value: 0
+  { label: 'Đã sàng lọc', value: ApplicationStatus.Screened }, // value: 1
+  { label: 'Phỏng vấn', value: ApplicationStatus.Interview },  // value: 2
+  { label: 'Từ chối', value: ApplicationStatus.Rejected },    // value: 3
+  { label: 'Đề nghị', value: ApplicationStatus.Offer },       // value: 4
+];
 
 @Component({
   standalone: false,
@@ -21,7 +29,7 @@ export class CreateUpdateJobApplicationModalComponent extends AppBaseComponent i
   @Input() updateJobApplicationDto: JobApplicationDto;
 
   form: FormGroup;
-  statusOptions = applicationStatusOptions;
+  statusOptions = applicationStatusOptionDto;
   snapshot: any = null;
 
   constructor(

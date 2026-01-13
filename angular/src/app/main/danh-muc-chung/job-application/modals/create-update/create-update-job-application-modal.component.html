@@ -6,13 +6,14 @@
         <div class="row info-card mb-4">
           <div class="col-md-5 border-right">
             <label class="field-label">Trạng thái hiện tại</label>
-            <p-dropdown 
-              [options]="statusOptions" 
-              optionLabel="label" 
-              optionValue="value" 
-              formControlName="status"
-              placeholder="Chọn trạng thái">
-            </p-dropdown>
+            <p-select 
+                [options]="statusOptions" 
+                optionLabel="label" 
+                optionValue="value" 
+                formControlName="status"
+                placeholder="Chọn trạng thái"
+                [appendTo]="'body'">
+              </p-select>
           </div>
           <!-- <div class="col-md-3 border-right">
             <label class="field-label">Điểm AI</label>
