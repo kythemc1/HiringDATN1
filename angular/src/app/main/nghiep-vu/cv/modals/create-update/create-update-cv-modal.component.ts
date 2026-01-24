@@ -383,8 +383,8 @@ export class CreateUpdateCvModalComponent
   
     this.cvContentAppService.generateCareerObjective({
       currentRole: rawValue.jobTitle,
-      targetCompanyName: rawValue.targetCompanyName,
-      targetJobTitle: rawValue.targetJobTitle,
+      targetCompanyName: 'áp dụng chung cho tất cả công ty',
+      targetJobTitle: 'áp dụng chung cho tất cả vị trí tuyển dụng',
       yearsOfExperience: rawValue.yearsOfExperience,
     }).subscribe({
       next: (res: string) => {

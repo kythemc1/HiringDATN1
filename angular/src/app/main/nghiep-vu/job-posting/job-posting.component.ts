@@ -142,7 +142,7 @@ export class JobPostingComponent extends AppBaseComponent implements OnInit, OnD
             this.triggerBuildForm();
           } else {
             this.viewMode = 'list';
-            this.router.navigate(['/main/danh-muc-chung/job-posting']);
+            this.router.navigate(['/main/quan-ly-nghiep-vu/job-posting']);
           }
         } else if (mode === 'view') {
           this.viewMode = 'view';
@@ -151,7 +151,7 @@ export class JobPostingComponent extends AppBaseComponent implements OnInit, OnD
             this.triggerBuildForm();
           } else {
             this.viewMode = 'list';
-            this.router.navigate(['/main/danh-muc-chung/job-posting']);
+            this.router.navigate(['/main/quan-ly-nghiep-vu/job-posting']);
           }
         } else {
           this.viewMode = 'list';
@@ -164,7 +164,7 @@ export class JobPostingComponent extends AppBaseComponent implements OnInit, OnD
 
   // Helper để build form an toàn
   private triggerBuildForm() {
-    setTimeout(() => {
+    setTimeout(() => {  
       if (this.inlineCreateUpdate) {
         this.inlineCreateUpdate.buildForm();
         this.cdr.detectChanges(); // Update tiếp component con sau khi build form
@@ -200,12 +200,12 @@ export class JobPostingComponent extends AppBaseComponent implements OnInit, OnD
   cancelForm(): void {
     this.viewMode = 'list';
     this.updateJobPostingDto = {} as any;
-    this.router.navigate(['/main/danh-muc-chung/job-posting']);
+    this.router.navigate(['/main/quan-ly-nghiep-vu/job-posting']);
   }
 
   onChildSaved(shouldClose?: boolean): void {
     this.viewMode = 'list';
-    this.router.navigate(['/main/danh-muc-chung/job-posting']).then(() => this.apply());
+    this.router.navigate(['/main/quan-ly-nghiep-vu/job-posting']).then(() => this.apply());
   }
 
 

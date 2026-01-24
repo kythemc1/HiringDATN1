@@ -79,7 +79,7 @@ export class CreateUpdateJobPostingModalComponent
   buildForm(): void {
     const dto = this.updateJobPostingDto ?? ({} as JobPostingDto);
     this.form = this.fb.group({
-      companyId: [dto.companyId ?? null, Validators.required],
+      companyId: 1,
       title: [dto.title ?? '', [Validators.required, this.noWhitespaceValidator()]],
       jobDescription: [dto.jobDescription ?? ''],
       jobRequirements: [dto.jobRequirements ?? ''],

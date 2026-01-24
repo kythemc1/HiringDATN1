@@ -7,18 +7,8 @@
         (ngSubmit)="!readOnly && (updateJobPostingDto?.id ? save() : saveAndNew())"
       >
         <div class="row">
-          <div class="col-4 form-group">
-            <label for="companyId">Công ty <span class="text-danger">*</span></label>
-            <input
-              pInputText
-              type="text"
-              id="companyId"
-              formControlName="companyId"
-              class="w-100"
-              placeholder="Nhập tên công ty"
-            />
-          </div>
-          <div class="col-8 form-group">
+          
+          <div class="col-12 form-group">
             <label for="title">Tiêu đề <span class="text-danger">*</span></label>
             <input
               pInputText
@@ -96,18 +86,6 @@
               placeholder="Tỉnh/Thành phố"
             />
           </div>
-          <!-- <div class="col-4 form-group">
-            <label for="status">Trạng thái <span class="text-danger">*</span></label>
-            <p-dropdown
-              id="status"
-              formControlName="status"
-              [options]="statusOptions"
-              optionLabel="label"
-              optionValue="value"
-              placeholder="Chọn trạng thái"
-              class="w-100"
-            ></p-dropdown>
-          </div> -->
         </div>
 
         <!-- <div class="row">

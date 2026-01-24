@@ -8,7 +8,7 @@ using Volo.Abp.Application.Dtos;
 namespace HiringDATN.Dtos;
 public class CandidateEducationDto : AuditedEntityDto<long?>
 {
-    public long ProfileId { get; set; }
+    public long? ProfileId { get; set; }
     public string? SchoolName { get; set; }
     public string? Degree { get; set; }
     public string? Major { get; set; }
@@ -20,7 +20,7 @@ public class CandidateEducationDto : AuditedEntityDto<long?>
 
 public class CreateUpdateCandidateEducationDto : EntityDto<long?>
 {
-    public long ProfileId { get; set; }
+    public long? ProfileId { get; set; }
     public string? SchoolName { get; set; }
     public string? Degree { get; set; }
     public string? Major { get; set; }
