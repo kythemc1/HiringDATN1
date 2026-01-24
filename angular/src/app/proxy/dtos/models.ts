@@ -39,7 +39,7 @@ export interface CVDto {
 }
 
 export interface CandidateCertificateDto extends AuditedEntityDto<number> {
-  profileId: number;
+  profileId?: number;
   name?: string;
   issuer?: string;
   issueDate?: string;
@@ -48,7 +48,7 @@ export interface CandidateCertificateDto extends AuditedEntityDto<number> {
 }
 
 export interface CandidateEducationDto extends AuditedEntityDto<number> {
-  profileId: number;
+  profileId?: number;
   schoolName?: string;
   degree?: string;
   major?: string;
@@ -59,7 +59,7 @@ export interface CandidateEducationDto extends AuditedEntityDto<number> {
 }
 
 export interface CandidateExperienceDto extends AuditedEntityDto<number> {
-  profileId: number;
+  profileId?: number;
   companyName?: string;
   position?: string;
   startDate?: string;
@@ -82,7 +82,7 @@ export interface CandidateProfileDto extends AuditedEntityDto<number> {
 }
 
 export interface CandidateProjectDto extends AuditedEntityDto<number> {
-  profileId: number;
+  profileId?: number;
   name?: string;
   linkUrl?: string;
   description?: string;
@@ -92,7 +92,7 @@ export interface CandidateProjectDto extends AuditedEntityDto<number> {
 }
 
 export interface CandidateSkillDto extends AuditedEntityDto<number> {
-  profileId: number;
+  profileId?: number;
   skillDefinitionId: number;
   level?: SkillLevel;
 }
@@ -169,7 +169,7 @@ export interface CreateUpdateCVDto {
 }
 
 export interface CreateUpdateCandidateCertificateDto extends EntityDto<number> {
-  profileId: number;
+  profileId?: number;
   name?: string;
   issuer?: string;
   issueDate?: string;
@@ -178,7 +178,7 @@ export interface CreateUpdateCandidateCertificateDto extends EntityDto<number> {
 }
 
 export interface CreateUpdateCandidateEducationDto extends EntityDto<number> {
-  profileId: number;
+  profileId?: number;
   schoolName?: string;
   degree?: string;
   major?: string;
@@ -189,7 +189,7 @@ export interface CreateUpdateCandidateEducationDto extends EntityDto<number> {
 }
 
 export interface CreateUpdateCandidateExperienceDto extends EntityDto<number> {
-  profileId: number;
+  profileId?: number;
   companyName?: string;
   position?: string;
   startDate?: string;
@@ -212,7 +212,7 @@ export interface CreateUpdateCandidateProfileDto extends EntityDto<number> {
 }
 
 export interface CreateUpdateCandidateProjectDto extends EntityDto<number> {
-  profileId: number;
+  profileId?: number;
   name?: string;
   linkUrl?: string;
   description?: string;
@@ -222,7 +222,7 @@ export interface CreateUpdateCandidateProjectDto extends EntityDto<number> {
 }
 
 export interface CreateUpdateCandidateSkillDto extends EntityDto<number> {
-  profileId: number;
+  profileId?: number;
   skillDefinitionId: number;
   level?: SkillLevel;
 }

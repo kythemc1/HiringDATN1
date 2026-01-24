@@ -13,7 +13,7 @@ public class CandidateProjectDto : AuditedEntityDto<long?>
     public string? LinkUrl { get; set; }
     public string? Description { get; set; }
     public string? Technologies { get; set; }
-    public int TeamSize { get; set; }
+    public int? TeamSize { get; set; }
     public string? Role { get; set; }
 }
 
@@ -24,6 +24,6 @@ public class CreateUpdateCandidateProjectDto : EntityDto<long?>
     public string? LinkUrl { get; set; }
     public string? Description { get; set; }
     public string? Technologies { get; set; }
-    public int TeamSize { get; set; }
+    public int? TeamSize { get; set; }
     public string? Role { get; set; }
 }

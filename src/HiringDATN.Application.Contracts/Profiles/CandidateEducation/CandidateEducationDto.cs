@@ -12,7 +12,7 @@ public class CandidateEducationDto : AuditedEntityDto<long?>
     public string? SchoolName { get; set; }
     public string? Degree { get; set; }
     public string? Major { get; set; }
-    public DateTime StartDate { get; set; }
+    public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public double? GPA { get; set; }
     public string? Description { get; set; }
@@ -24,7 +24,7 @@ public class CreateUpdateCandidateEducationDto : EntityDto<long?>
     public string? SchoolName { get; set; }
     public string? Degree { get; set; }
     public string? Major { get; set; }
-    public DateTime StartDate { get; set; }
+    public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public double? GPA { get; set; }
     public string? Description { get; set; }

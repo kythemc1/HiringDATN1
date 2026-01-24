@@ -9,14 +9,14 @@ namespace HiringDATN.Dtos;
 public class CandidateSkillDto : AuditedEntityDto<long?>
 {
     public long? ProfileId { get; set; }
-    public long SkillDefinitionId { get; set; }
+    public long? SkillDefinitionId { get; set; }
     public SkillLevel Level { get; set; }
 }
 
 public class CreateUpdateCandidateSkillDto : EntityDto<long?>
 {
     public long? ProfileId { get; set; }
-    public long SkillDefinitionId { get; set; }
+    public long? SkillDefinitionId { get; set; }
     public SkillLevel Level { get; set; }
 }
 
