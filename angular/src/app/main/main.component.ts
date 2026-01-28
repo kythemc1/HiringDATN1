@@ -1,4 +1,4 @@
-import { ConfigStateService, LocalizationService, PermissionService } from '@abp/ng.core';
+import { AuthService, LocalizationService, PermissionService } from '@abp/ng.core';
 import { Component, OnInit } from '@angular/core';
 import { NavigationCancel, NavigationEnd, Router } from '@angular/router';
 import { GlobalService, NavigationService } from '../shared/services';
@@ -24,77 +24,85 @@ export class MainComponent implements OnInit {
     private router: Router,
     private localizationService: LocalizationService,
     private permissionService: PermissionService,
-    private configState: ConfigStateService,
+    private authService: AuthService,
     private globalService: GlobalService,
     private navigationService: NavigationService,
   ) { }
 
   ngOnInit(): void {
-    this.buildMenu();
+    void this.buildMenu();
 
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd || event instanceof NavigationCancel))
-      .subscribe((event) => {
-        this.buildMenu();
+      .subscribe(() => {
+        void this.buildMenu();
       });
   }
   //#endregion
 
   //#region Custom methods
-  buildMenu(): void {
+  async buildMenu(): Promise<void> {
     const currentRouteUrl = this.router.url.split(/[?#]/)[0];
-    this.setCurrentUserRoles();
-    this.navMenu = this.navigationService.getMenu().map(menu => {
-      const items = menu.items?.map((submenu) => ({
-        label: (submenu.name.startsWith('::')) ? this.localizationService.instant(submenu.name) : submenu.name,
-        icon: submenu.icon,
-        visible: this.isMenuVisible(submenu),
-        routerLink: submenu.route,
-      }));
-      const output: MenuItem = {
-        label: (menu.name.startsWith('::')) ? this.localizationService.instant(menu.name) : menu.name,
-        icon: menu.icon,
-        items,
-        visible: this.isMenuVisible(menu),
-        routerLink: menu.route,
-      };
-      output.expanded = output.items?.length
-        ? output.items.some((submenu) => submenu.routerLink === currentRouteUrl)
-        : output.routerLink === currentRouteUrl;
-      return output;
-    });
+    const roles = this.authService.isAuthenticated
+      ? await this.navigationService.getListRoles()
+      : [];
+  
+    this.currentUserRoles = this.normalizeRoles(roles);
+  
+    this.navMenu = this.navigationService.getMenu()
+      // 🔥 FILTER MENU CHA
+      .filter(menu => this.isMenuVisible(menu))
+      .map(menu => {
+  
+        // 🔥 FILTER MENU CON
+        const items = menu.items
+          ?.filter(sub => this.isMenuVisible(sub))
+          .map(submenu => ({
+            label: submenu.name.startsWith('::')
+              ? this.localizationService.instant(submenu.name)
+              : submenu.name,
+            icon: submenu.icon,
+            routerLink: submenu.route,
+          }));
+  
+        const output: MenuItem = {
+          label: menu.name.startsWith('::')
+            ? this.localizationService.instant(menu.name)
+            : menu.name,
+          icon: menu.icon,
+          items,
+          routerLink: menu.route,
+        };
+  
+        output.expanded = items?.length
+          ? items.some(sub => sub.routerLink === currentRouteUrl)
+          : output.routerLink === currentRouteUrl;
+  
+        return output;
+      });
   }
+  
   //#endregion
 
   //#region Main methods
   //#endregion
 
   //#region Private methods
-  private setCurrentUserRoles(): void {
-    const currentUser = this.configState.getOne('currentUser');
-    this.currentUserRoles = currentUser?.roles ?? [];
-  }
-
   private isMenuVisible(menu: AppMenuItem): boolean {
     if (!menu) {
       return true;
     }
-
-    const hasRole = this.hasRoleAny(...menu.roles);
-
-    if (menu.permissions == null) {
-      return hasRole || menu.roles.length === 0;
+  
+    // Không có role khai báo → ẩn
+    if (!menu.roles || menu.roles.length === 0) {
+      return false;
     }
-
-    if (menu.permissions.length === 0) {
-      return this.isGrantedAny('AbpIdentity.Users', 'AbpIdentity.Roles') || hasRole;
-    }
-
-    return this.isGrantedAny(...menu.permissions) || hasRole;
+  
+    return this.hasRoleAny(...menu.roles);
   }
 
   private hasRoleAny(...roles: string[]): boolean {
-    const list = roles.filter((role) => !!role && role.trim().length > 0);
+    const list = this.normalizeRoles(roles);
     if (!list.length) {
       return false;
     }
@@ -105,6 +113,12 @@ export class MainComponent implements OnInit {
   private isGrantedAny(...permissions: string[]): boolean {
     const list = permissions.filter((p) => !!p && p.trim().length > 0);
     return this.permissionService.getGrantedPolicy(list.join(' || '));
+  }
+
+  private normalizeRoles(roles?: string[]): string[] {
+    return (roles ?? [])
+      .map((role) => role?.trim().toLowerCase())
+      .filter((role): role is string => Boolean(role));
   }
 
   onNavClick(event: MouseEvent): void {

@@ -8196,6 +8196,32 @@
               "implementFrom": "Volo.Abp.Application.Services.IDeleteAppService<System.Int64>"
             }
           }
+        },
+        "HiringDATN.Shared.ShareAppService": {
+          "controllerName": "Share",
+          "controllerGroupName": "Share",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "HiringDATN.Shared.ShareAppService",
+          "interfaces": [],
+          "actions": {
+            "GetCurrentUserRoleNamesAsync": {
+              "uniqueName": "GetCurrentUserRoleNamesAsync",
+              "name": "GetCurrentUserRoleNamesAsync",
+              "httpMethod": "GET",
+              "url": "api/app/share/current-user-role-names",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<System.String>",
+                "typeSimple": "[string]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "HiringDATN.Shared.ShareAppService"
+            }
+          }
         }
       }
     },
@@ -15872,6 +15898,32 @@
               },
               "allowAnonymous": null,
               "implementFrom": "HiringDATN.Controllers.JobPostionRecruitmentController"
+            }
+          }
+        },
+        "HiringDATN.Controllers.ShareControllers": {
+          "controllerName": "ShareControllers",
+          "controllerGroupName": null,
+          "isRemoteService": false,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "HiringDATN.Controllers.ShareControllers",
+          "interfaces": [],
+          "actions": {
+            "GetListRole": {
+              "uniqueName": "GetListRole",
+              "name": "GetListRole",
+              "httpMethod": "GET",
+              "url": "api/shared/roles",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<System.String>",
+                "typeSimple": "[string]"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "HiringDATN.Controllers.ShareControllers"
             }
           }
         },
