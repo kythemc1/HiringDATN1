@@ -1,9 +1,10 @@
-import { LocalizationService, PermissionService } from '@abp/ng.core';
+import { ConfigStateService, LocalizationService, PermissionService } from '@abp/ng.core';
 import { Component, OnInit } from '@angular/core';
 import { NavigationCancel, NavigationEnd, Router } from '@angular/router';
 import { GlobalService, NavigationService } from '../shared/services';
 import { MenuItem } from 'primeng/api';
 import { filter } from 'rxjs';
+import { AppMenuItem } from '../shared/models';
 
 @Component({
   standalone: false,
@@ -13,6 +14,7 @@ import { filter } from 'rxjs';
 export class MainComponent implements OnInit {
   //#region Variables
   loading$ = this.globalService.loading$;
+  private currentUserRoles: string[] = [];
 
   navMenu: MenuItem[] = [];
   //#endregion
@@ -22,6 +24,7 @@ export class MainComponent implements OnInit {
     private router: Router,
     private localizationService: LocalizationService,
     private permissionService: PermissionService,
+    private configState: ConfigStateService,
     private globalService: GlobalService,
     private navigationService: NavigationService,
   ) { }
@@ -40,17 +43,19 @@ export class MainComponent implements OnInit {
   //#region Custom methods
   buildMenu(): void {
     const currentRouteUrl = this.router.url.split(/[?#]/)[0];
+    this.setCurrentUserRoles();
     this.navMenu = this.navigationService.getMenu().map(menu => {
+      const items = menu.items?.map((submenu) => ({
+        label: (submenu.name.startsWith('::')) ? this.localizationService.instant(submenu.name) : submenu.name,
+        icon: submenu.icon,
+        visible: this.isMenuVisible(submenu),
+        routerLink: submenu.route,
+      }));
       const output: MenuItem = {
         label: (menu.name.startsWith('::')) ? this.localizationService.instant(menu.name) : menu.name,
         icon: menu.icon,
-        items: menu.items?.map((submenu) => ({
-          label: (submenu.name.startsWith('::')) ? this.localizationService.instant(submenu.name) : submenu.name,
-          icon: submenu.icon,
-          visible: this.isMenuVisible(submenu.permissions),
-          routerLink: submenu.route,
-        })),
-        visible: this.isMenuVisible(menu.permissions),
+        items,
+        visible: this.isMenuVisible(menu),
         routerLink: menu.route,
       };
       output.expanded = output.items?.length
@@ -65,14 +70,36 @@ export class MainComponent implements OnInit {
   //#endregion
 
   //#region Private methods
-  private isMenuVisible(permissions: string[]): boolean {
-    if (permissions == null) return true;
+  private setCurrentUserRoles(): void {
+    const currentUser = this.configState.getOne('currentUser');
+    this.currentUserRoles = currentUser?.roles ?? [];
+  }
 
-    if (permissions.length === 0) {
-      return this.isGrantedAny('AbpIdentity.Users', 'AbpIdentity.Roles');
+  private isMenuVisible(menu: AppMenuItem): boolean {
+    if (!menu) {
+      return true;
     }
 
-    return this.isGrantedAny(...permissions);
+    const hasRole = this.hasRoleAny(...menu.roles);
+
+    if (menu.permissions == null) {
+      return hasRole || menu.roles.length === 0;
+    }
+
+    if (menu.permissions.length === 0) {
+      return this.isGrantedAny('AbpIdentity.Users', 'AbpIdentity.Roles') || hasRole;
+    }
+
+    return this.isGrantedAny(...menu.permissions) || hasRole;
+  }
+
+  private hasRoleAny(...roles: string[]): boolean {
+    const list = roles.filter((role) => !!role && role.trim().length > 0);
+    if (!list.length) {
+      return false;
+    }
+
+    return list.some((role) => this.currentUserRoles.includes(role));
   }
 
   private isGrantedAny(...permissions: string[]): boolean {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AppMenu, AppMenuItem } from '../models';
+import { AppMenuItem } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class NavigationService {
@@ -7,34 +7,44 @@ export class NavigationService {
   constructor() { }
 
   getMenu(): AppMenuItem[] {
+    const navigationRoles = {
+      hr: ['hr'],
+      candidate: ['candidate'],
+      admin: ['admin'],
+    };
+
+    const createLeaf = (name: string, route: string, roles?: string[]) =>
+      new AppMenuItem(name, '', null, route, undefined, undefined, undefined, undefined, undefined, roles);
+
+    const createSection = (name: string, items: AppMenuItem[], roles?: string[]) =>
+      new AppMenuItem(name, '', null, '', items, undefined, undefined, undefined, undefined, roles);
+
     return [
-      new AppMenuItem('Bảng thống kê', '', null, '/main/thong-ke'),
+      createLeaf('Bảng thống kê', '/main/thong-ke'),
 
-      new AppMenuItem('Danh mục chung', '', null, '', [
-        new AppMenuItem('Agent thinking log', '', null, '/main/danh-muc-chung/agent-thinking-log'),
-        new AppMenuItem('Ai model config', '', null, '/main/danh-muc-chung/ai-model-config'),
-        new AppMenuItem('Ai prompt template', '', null, '/main/danh-muc-chung/ai-prompt-template'),
-        new AppMenuItem('Candidate project', '', null, '/main/danh-muc-chung/candidate-project'),
-        new AppMenuItem('Candidate profile', '', null, '/main/danh-muc-chung/candidate-profile'),
-        new AppMenuItem('Candidate skill', '', null, '/main/danh-muc-chung/candidate-skill'),
-        new AppMenuItem('Candidate certificate', '', null, '/main/danh-muc-chung/candidate-certificate'),
-
-          
-      ]),
-      new AppMenuItem('Quản lý nghiệp vụ', '', null, '', [
-        new AppMenuItem('CV', '', null, '/main/quan-ly-nghiep-vu/cv'),
-        new AppMenuItem('Job posting', '', null, '/main/quan-ly-nghiep-vu/job-posting'),
-        new AppMenuItem('Job apply', '', null, '/main/quan-ly-nghiep-vu/job-apply'),
-        new AppMenuItem('Job application', '', null, '/main/quan-ly-nghiep-vu/job-application'),
+      createSection('Danh mục chung', [
+        createLeaf('Agent thinking log', '/main/danh-muc-chung/agent-thinking-log', navigationRoles.admin),
+        createLeaf('Ai model config', '/main/danh-muc-chung/ai-model-config', navigationRoles.admin),
+        createLeaf('Ai prompt template', '/main/danh-muc-chung/ai-prompt-template', navigationRoles.admin),
+        createLeaf('Candidate project', '/main/danh-muc-chung/candidate-project', navigationRoles.admin),
+        createLeaf('Candidate profile', '/main/danh-muc-chung/candidate-profile', navigationRoles.admin),
+        createLeaf('Candidate skill', '/main/danh-muc-chung/candidate-skill', navigationRoles.admin),
+        createLeaf('Candidate certificate', '/main/danh-muc-chung/candidate-certificate', navigationRoles.admin),
       ]),
 
-      new AppMenuItem('Master data', '', null, '', [
-        new AppMenuItem('Company', '', null, '/main/master-data/company'),
-        new AppMenuItem('Job position', '', null, '/main/master-data/job-position'),
-        new AppMenuItem('Skill definition', '', null, '/main/master-data/skill-definition'),
-        new AppMenuItem('Certificate definition', '', null, '/main/master-data/certificate-definition'),
+      createSection('Quản lý nghiệp vụ', [
+        createLeaf('CV', '/main/quan-ly-nghiep-vu/cv', navigationRoles.candidate),
+        createLeaf('Job posting', '/main/quan-ly-nghiep-vu/job-posting', navigationRoles.hr),
+        createLeaf('Job apply', '/main/quan-ly-nghiep-vu/job-apply', navigationRoles.candidate),
+        createLeaf('Job application', '/main/quan-ly-nghiep-vu/job-application', navigationRoles.hr),
       ]),
-     
+
+      createSection('Master data', [
+        createLeaf('Company', '/main/master-data/company', navigationRoles.admin),
+        createLeaf('Job position', '/main/master-data/job-position', navigationRoles.admin),
+        createLeaf('Skill definition', '/main/master-data/skill-definition', navigationRoles.admin),
+        createLeaf('Certificate definition', '/main/master-data/certificate-definition', navigationRoles.admin),
+      ]),
     ];
   }
 }

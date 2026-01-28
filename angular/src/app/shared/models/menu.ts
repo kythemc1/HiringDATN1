@@ -18,6 +18,7 @@ export class AppMenuItem {
   items: AppMenuItem[];
   external: boolean;
   requiresAuthentication: boolean;
+  roles: string[];
   featureDependency: any;
   parameters: {};
 
@@ -30,7 +31,8 @@ export class AppMenuItem {
     external?: boolean,
     parameters?: Object,
     featureDependency?: any,
-    requiresAuthentication?: boolean
+    requiresAuthentication?: boolean,
+    roles?: string[]
   ) {
     this.name = name;
     this.icon = icon;
@@ -51,6 +53,7 @@ export class AppMenuItem {
     } else {
       this.requiresAuthentication = requiresAuthentication ? requiresAuthentication : false;
     }
+    this.roles = roles ?? [];
   }
 
   hasFeatureDependency(): boolean {

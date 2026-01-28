@@ -64,7 +64,7 @@ export interface CandidateExperienceDto extends AuditedEntityDto<number> {
   position?: string;
   startDate?: string;
   endDate?: string;
-  isCurrent: boolean;
+  isCurrent?: boolean;
   description?: string;
 }
 
@@ -87,13 +87,13 @@ export interface CandidateProjectDto extends AuditedEntityDto<number> {
   linkUrl?: string;
   description?: string;
   technologies?: string;
-  teamSize: number;
+  teamSize?: number;
   role?: string;
 }
 
 export interface CandidateSkillDto extends AuditedEntityDto<number> {
   profileId?: number;
-  skillDefinitionId: number;
+  skillDefinitionId?: number;
   level?: SkillLevel;
 }
 
@@ -217,13 +217,13 @@ export interface CreateUpdateCandidateProjectDto extends EntityDto<number> {
   linkUrl?: string;
   description?: string;
   technologies?: string;
-  teamSize: number;
+  teamSize?: number;
   role?: string;
 }
 
 export interface CreateUpdateCandidateSkillDto extends EntityDto<number> {
   profileId?: number;
-  skillDefinitionId: number;
+  skillDefinitionId?: number;
   level?: SkillLevel;
 }
 
