@@ -5,8 +5,6 @@ import { DynamicTableAction, DynamicTableColumn, DynamicTableConfig } from '../.
 export const AiPromptTemplateColumns: DynamicTableColumn[] = [
   { field: 'displayCode', header: 'Mã mẫu', minWidth: '160px' },
   { field: 'displayDescription', header: 'Mô tả', minWidth: '220px' },
-  { field: 'modelConfigId', header: 'Cấu hình', minWidth: '180px' },
-  { field: 'displayTemperature', header: 'Nhiệt độ', align: 'center', minWidth: '120px' },
 ];
 
 // Row actions for AiPromptTemplate dynamic table

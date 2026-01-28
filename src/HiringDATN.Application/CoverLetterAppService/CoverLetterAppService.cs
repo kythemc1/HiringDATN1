@@ -15,6 +15,8 @@ using Microsoft.SemanticKernel.Plugins.Web;
 // Namespace của dự án
 using Volo.Abp.Application.Services;
 using HiringDATN.Dtos;
+using Volo.Abp;
+using Volo.Abp.Domain.Repositories;
 
 namespace HiringDATN.Service;
 
@@ -22,11 +24,13 @@ public class CoverLetterAppService : ApplicationService
 {
     private readonly Kernel _kernel;
     private readonly IServiceProvider _serviceProvider;
+    private readonly IRepository<AiPromptTemplate, long> _aiPromptTemplateRepository;
 
-    public CoverLetterAppService(Kernel kernel, IServiceProvider serviceProvider)
+    public CoverLetterAppService(Kernel kernel, IServiceProvider serviceProvider, IRepository<AiPromptTemplate, long> aiPromptTemplateRepository)
     {
         _kernel = kernel;
         _serviceProvider = serviceProvider;
+        _aiPromptTemplateRepository = aiPromptTemplateRepository;
     }
 
     public async Task<string> GenerateCoverLetterAsync(CoverLetterGenerationInputDto input)
@@ -38,17 +42,10 @@ public class CoverLetterAppService : ApplicationService
             // Lưu ý: Đảm bảo bạn đã đăng ký WebSearchEnginePlugin trong file Module/Startup 
             // hoặc khởi tạo thủ công ở đây nếu chưa có DI.
 
-            // Kiểm tra xem Plugin đã tồn tại trong Kernel chưa để tránh lỗi "Duplicate key" khi gọi hàm lần 2
             if (!_kernel.Plugins.Contains("WebSearch"))
             {
-                // Cách 1: Lấy từ DI (Nếu bạn đã đăng ký trong Program.cs)
                 var searchPlugin = _serviceProvider.GetRequiredService<WebSearchEnginePlugin>();
                 _kernel.Plugins.AddFromObject(searchPlugin, "WebSearch");
-
-                // Cách 2: (Dự phòng) Nếu chưa đăng ký DI, hãy uncomment dòng dưới và điền Key Bing:
-                // var bingConnector = new BingConnector("YOUR_BING_API_KEY");
-                // var searchPlugin = new WebSearchEnginePlugin(bingConnector);
-                // _kernel.Plugins.AddFromObject(searchPlugin, "WebSearch");
             }
 
             // --- 2. Xử lý logic Tone và Ngôn ngữ ---
@@ -96,23 +93,28 @@ public class CoverLetterAppService : ApplicationService
             };
 
             // --- 5. Tạo Prompt ---
-            string userPrompt = $@"
-                --- THÔNG TIN ỨNG VIÊN ---
-                Tên: {input.CandidateName}
-                Email: {input.CandidateEmail}
-                SĐT: {input.CandidatePhone}
-                
-                --- HỒ SƠ NĂNG LỰC (CV) ---
-                {input.CvContent}
 
-                --- THÔNG TIN ỨNG TUYỂN ---
-                Công ty: {input.TargetCompanyName}
-                Vị trí: {input.TargetJobTitle}
-                
-                --- YÊU CẦU CÔNG VIỆC (JD) ---
-                {input.JobDescription}
+            var template = await GetByCodeAsync("CoverLetterTemplate");
 
-                Hãy viết một lá thư hoàn chỉnh.";
+            var userPrompt = ApplyGenerateCoverLetterTemplate(template.TemplateContent!, input);
+
+            //string userPrompt = $@"
+            //    --- THÔNG TIN ỨNG VIÊN ---
+            //    Tên: {input.CandidateName}
+            //    Email: {input.CandidateEmail}
+            //    SĐT: {input.CandidatePhone}
+                
+            //    --- HỒ SƠ NĂNG LỰC (CV) ---
+            //    {input.CvContent}
+
+            //    --- THÔNG TIN ỨNG TUYỂN ---
+            //    Công ty: {input.TargetCompanyName}
+            //    Vị trí: {input.TargetJobTitle}
+                
+            //    --- YÊU CẦU CÔNG VIỆC (JD) ---
+            //    {input.JobDescription}
+
+            //    Hãy viết một lá thư hoàn chỉnh.";
 
             // --- 6. Thực thi ---
             AgentGroupChat chat = new(letterWriter);
@@ -162,5 +164,40 @@ public class CoverLetterAppService : ApplicationService
 
             throw; // Ném tiếp lỗi để hiện ra 500 (nhưng giờ ta đã xem được log)
         }
+    }
+
+    private string ApplyGenerateCoverLetterTemplate(
+    string template,
+    CoverLetterGenerationInputDto input)
+    {
+        if (string.IsNullOrWhiteSpace(template))
+        {
+            return string.Empty;
+        }
+
+        return template
+            .Replace("{{CandidateName}}", input.CandidateName ?? string.Empty)
+            .Replace("{{CandidateEmail}}", input.CandidateEmail ?? string.Empty)
+            .Replace("{{CandidatePhone}}", input.CandidatePhone ?? string.Empty)
+            .Replace("{{CvContent}}", input.CvContent ?? string.Empty)
+            .Replace("{{TargetCompanyName}}", input.TargetCompanyName ?? string.Empty)
+            .Replace("{{TargetJobTitle}}", input.TargetJobTitle ?? string.Empty)
+            .Replace("{{JobDescription}}", input.JobDescription ?? string.Empty)
+            .Replace("{{Language}}", input.Language ?? "vi-VN")
+            .Replace("{{Tone}}", input.Tone.ToString());
+    }
+
+
+
+    public async Task<AiPromptTemplate> GetByCodeAsync(string code)
+    {
+        var template = await _aiPromptTemplateRepository.FirstOrDefaultAsync(x => x.Code == code);
+        if (template == null)
+        {
+            throw new BusinessException("AI_PROMPT_TEMPLATE_NOT_FOUND")
+                .WithData("Code", code);
+        }
+
+        return template;
     }
 }

@@ -8,8 +8,6 @@ export interface AiPromptTemplateRowView {
   description?: string;
   modelConfigId?: string;
   temperature?: number;
-  creationTime?: string | Date | null;
-  lastModificationTime?: string | Date | null;
   displayCode?: string;
   displayDescription?: string;
   displayTemperature?: string;
@@ -43,8 +41,6 @@ export function mapAiPromptTemplateResponse(
       description: payload?.description,
       modelConfigId: payload?.modelConfigId,
       temperature: payload?.temperature,
-      creationTime: payload?.creationTime,
-      lastModificationTime: payload?.lastModificationTime,
       displayCode,
       displayDescription,
       displayTemperature,
@@ -67,7 +63,5 @@ export function buildUpdateDtoFromRow(row: AiPromptTemplateRowView): AiPromptTem
     description: row.description,
     modelConfigId: row.modelConfigId,
     temperature: row.temperature,
-    creationTime: row.creationTime,
-    lastModificationTime: row.lastModificationTime,
   } as AiPromptTemplateDto;
 }

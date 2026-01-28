@@ -11,6 +11,8 @@ using Microsoft.SemanticKernel.Connectors.Google;
 using Microsoft.SemanticKernel.Plugins.Web;
 using Microsoft.SemanticKernel;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
+using Volo.Abp;
 
 namespace HiringDATN.CvGenerationAppService;
 
@@ -18,11 +20,16 @@ public class CvContentAppService : ApplicationService
 {
     private readonly Kernel _kernel;
     private readonly IServiceProvider _serviceProvider;
+    private readonly IRepository<AiPromptTemplate, long> _aiPromptTemplateRepository;
 
-    public CvContentAppService(Kernel kernel, IServiceProvider serviceProvider)
+    public CvContentAppService(
+        Kernel kernel,
+        IServiceProvider serviceProvider,
+        IRepository<AiPromptTemplate, long> aiPromptTemplateRepository)
     {
         _kernel = kernel;
         _serviceProvider = serviceProvider;
+        _aiPromptTemplateRepository = aiPromptTemplateRepository;
     }
 
     // --- FUNCTION 1: TỐI ƯU HÓA KINH NGHIỆM LÀM VIỆC ---
@@ -31,7 +38,9 @@ public class CvContentAppService : ApplicationService
         // 1. Cấu hình Plugin & Settings
         ConfigureSearchPlugin();
         var settings = GetGeminiSettings();
+        var template = await GetByCodeAsync("OPTIMIZE_WORK_EXPERIENCE");
 
+        var prompt = ApplyTemplate(template.TemplateContent!, input);
         // 2. Tạo Agent chuyên gia viết CV
         ChatCompletionAgent cvExpert = new()
         {
@@ -42,20 +51,20 @@ public class CvContentAppService : ApplicationService
         };
 
         // 3. Tạo Prompt thông minh (Kết hợp Search)
-        string prompt = $@"
-        Người dùng muốn tối ưu hóa kinh nghiệm làm việc cho vị trí: '{input.JobTitle}' tại công ty '{input.CompanyName}'.
+        //string prompt = $@"
+        //Người dùng muốn tối ưu hóa kinh nghiệm làm việc cho vị trí: '{input.JobTitle}' tại công ty '{input.CompanyName}'.
         
-        Mô tả thô của người dùng:
-        ""{input.RawDescription}""
+        //Mô tả thô của người dùng:
+        //""{input.RawDescription}""
 
-        NHIỆM VỤ CỦA BẠN:
-        1. Bước 1 (SEARCH): Hãy dùng công cụ Search để tìm kiếm 'Top keywords and skills for {input.JobTitle} resume' để biết thị trường đang cần kỹ năng gì.
-        2. Bước 2 (REWRITE): Viết lại mô tả thô của người dùng thành 3-5 gạch đầu dòng súc tích, mạnh mẽ.
-           - Bắt đầu bằng động từ chỉ hành động (Action Verbs).
-           - Lồng ghép các từ khóa (keywords) bạn vừa tìm được ở Bước 1 vào nội dung nếu phù hợp.
-           - Nếu có số liệu trong mô tả thô, hãy làm nổi bật nó.
+        //NHIỆM VỤ CỦA BẠN:
+        //1. Bước 1 (SEARCH): Hãy dùng công cụ Search để tìm kiếm 'Top keywords and skills for {input.JobTitle} resume' để biết thị trường đang cần kỹ năng gì.
+        //2. Bước 2 (REWRITE): Viết lại mô tả thô của người dùng thành 3-5 gạch đầu dòng súc tích, mạnh mẽ.
+        //   - Bắt đầu bằng động từ chỉ hành động (Action Verbs).
+        //   - Lồng ghép các từ khóa (keywords) bạn vừa tìm được ở Bước 1 vào nội dung nếu phù hợp.
+        //   - Nếu có số liệu trong mô tả thô, hãy làm nổi bật nó.
         
-        Chỉ trả về kết quả là các gạch đầu dòng (Bullet points), không cần lời dẫn và là tiếng việt.";
+        //Chỉ trả về kết quả là các gạch đầu dòng (Bullet points), không cần lời dẫn và là tiếng việt.";
 
         // 4. Thực thi
         return await ExecuteAgentAsync(cvExpert, prompt);
@@ -78,18 +87,22 @@ public class CvContentAppService : ApplicationService
         };
 
         // 3. Tạo Prompt (Kết hợp Search văn hóa công ty)
-        string prompt = $@"
-        Ứng viên: {input.CurrentRole} ({input.YearsOfExperience} năm kinh nghiệm).
-        Đang ứng tuyển vào: {input.TargetCompanyName} cho vị trí {input.TargetJobTitle}.
+        var template = await GetByCodeAsync("GenerateObjectiveTemplate");
 
-        NHIỆM VỤ CỦA BẠN:
-        1. Bước 1 (SEARCH): Dùng công cụ Search để tìm 'Mission, Vision, Core Values of {input.TargetCompanyName}'. Nếu không tìm thấy công ty cụ thể, hãy tìm xu hướng chung của vị trí {input.TargetJobTitle}.
-        2. Bước 2 (WRITE): Viết một đoạn Mục tiêu nghề nghiệp (Career Objective) bằng Tiếng Việt.
-           - Câu 1: Nêu rõ kinh nghiệm/thế mạnh hiện tại.
-           - Câu 2: Thể hiện mong muốn đóng góp cho công ty, lồng ghép khéo léo Sứ mệnh/Giá trị cốt lõi bạn tìm được ở Bước 1.
-           - Giọng văn: Cầu tiến, chuyên nghiệp và cam kết gắn bó.
+        var prompt = ApplyGenerateObjectiveTemplate(template.TemplateContent!, input);
 
-        Hãy trả về kết quả đoạn văn hoàn chỉnh bằng tiếng việt.";
+        //string prompt = $@"
+        //Ứng viên: {input.CurrentRole} ({input.YearsOfExperience} năm kinh nghiệm).
+        //Đang ứng tuyển vào: {input.TargetCompanyName} cho vị trí {input.TargetJobTitle}.
+
+        //NHIỆM VỤ CỦA BẠN:
+        //1. Bước 1 (SEARCH): Dùng công cụ Search để tìm 'Mission, Vision, Core Values of {input.TargetCompanyName}'. Nếu không tìm thấy công ty cụ thể, hãy tìm xu hướng chung của vị trí {input.TargetJobTitle}.
+        //2. Bước 2 (WRITE): Viết một đoạn Mục tiêu nghề nghiệp (Career Objective) bằng Tiếng Việt.
+        //   - Câu 1: Nêu rõ kinh nghiệm/thế mạnh hiện tại.
+        //   - Câu 2: Thể hiện mong muốn đóng góp cho công ty, lồng ghép khéo léo Sứ mệnh/Giá trị cốt lõi bạn tìm được ở Bước 1.
+        //   - Giọng văn: Cầu tiến, chuyên nghiệp và cam kết gắn bó.
+
+        //Hãy trả về kết quả đoạn văn hoàn chỉnh bằng tiếng việt.";
 
         // 4. Thực thi
         return await ExecuteAgentAsync(careerCoach, prompt);
@@ -146,5 +159,44 @@ public class CvContentAppService : ApplicationService
         }
 
         return result;
+    }
+
+    private string ApplyTemplate(
+        string template,
+        OptimizeWorkExperienceInputDto input)
+    {
+        return template
+            .Replace("{{JobTitle}}", input.JobTitle ?? "")
+            .Replace("{{CompanyName}}", input.CompanyName ?? "")
+            .Replace("{{RawDescription}}", input.RawDescription ?? "");
+    }
+
+    private string ApplyGenerateObjectiveTemplate(
+    string template,
+    GenerateObjectiveInputDto input)
+    {
+        if (string.IsNullOrWhiteSpace(template))
+        {
+            return string.Empty;
+        }
+
+        return template
+            .Replace("{{CurrentRole}}", input.CurrentRole ?? string.Empty)
+            .Replace("{{YearsOfExperience}}", input.YearsOfExperience.ToString())
+            .Replace("{{TargetCompanyName}}", input.TargetCompanyName ?? string.Empty)
+            .Replace("{{TargetJobTitle}}", input.TargetJobTitle ?? string.Empty);
+    }
+
+
+    public async Task<AiPromptTemplate> GetByCodeAsync(string code)
+    {
+        var template = await _aiPromptTemplateRepository.FirstOrDefaultAsync(x => x.Code == code);
+        if (template == null)
+        {
+            throw new BusinessException("AI_PROMPT_TEMPLATE_NOT_FOUND")
+                .WithData("Code", code);
+        }
+
+        return template;
     }
 }

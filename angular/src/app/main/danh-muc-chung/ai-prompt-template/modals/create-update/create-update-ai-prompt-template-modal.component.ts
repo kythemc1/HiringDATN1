@@ -79,8 +79,6 @@ export class CreateUpdateAiPromptTemplateModalComponent
       code: [dto.code ?? '', [Validators.required, this.noWhitespaceValidator()]],
       templateContent: [dto.templateContent ?? '', Validators.required],
       description: [dto.description ?? ''],
-      modelConfigId: [dto.modelConfigId ?? ''],
-      temperature: [dto.temperature ?? null],
     });
 
     if (this.readOnly) {
@@ -104,7 +102,6 @@ export class CreateUpdateAiPromptTemplateModalComponent
     const formValue = { ...this.form.value } as CreateUpdateAiPromptTemplateDto;
     formValue.code = formValue.code?.trim() ?? '';
     formValue.templateContent = formValue.templateContent?.trim() ?? '';
-    formValue.modelConfigId = formValue.modelConfigId?.trim() ?? '';
 
     const request = this.updateAiPromptTemplateDto?.id
       ? this.AiPromptTemplateService.update(this.updateAiPromptTemplateDto.id, formValue)

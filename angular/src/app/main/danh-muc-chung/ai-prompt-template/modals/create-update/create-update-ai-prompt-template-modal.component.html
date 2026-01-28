@@ -7,7 +7,7 @@
         (ngSubmit)="!readOnly && (updateAiPromptTemplateDto?.id ? save() : saveAndNew())"
       >
         <div class="row">
-          <div class="col-4 form-group">
+          <div class="col-12 form-group">
             <label for="code">Mã mẫu <span class="text-danger">*</span></label>
             <input
               pInputText
@@ -18,18 +18,18 @@
               class="w-100"
             />
           </div>
-          <div class="col-4 form-group">
+          <!-- <div class="col-4 form-group">
             <label for="modelConfigId">Cấu hình (ID)</label>
             <input
               pInputText
-              type="text"
+              type="number"
               placeholder="Nhập ID cấu hình"
               id="modelConfigId"
               formControlName="modelConfigId"
               class="w-100"
             />
-          </div>
-          <div class="col-4 form-group">
+          </div> -->
+          <!-- <div class="col-4 form-group">
             <label for="temperature">Nhiệt độ</label>
             <input
               pInputText
@@ -40,7 +40,7 @@
               formControlName="temperature"
               class="w-100"
             />
-          </div>
+          </div> -->
         </div>
 
         <div class="row">
